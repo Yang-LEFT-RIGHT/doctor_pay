@@ -18,11 +18,20 @@ public class Paper {
     private int citations;
     private int refs;
     private String wos_id;
+    private String keywords;
     public String getWos_id(){
         return wos_id;
     }
     public void setWos_id(String wos_id){
         this.wos_id=wos_id;
+    }
+    
+    public String getKeywords() {
+        return keywords;
+    }
+    
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
     public int getRefs(){
         return refs;

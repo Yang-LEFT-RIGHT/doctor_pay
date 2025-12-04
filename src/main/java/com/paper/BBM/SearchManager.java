@@ -30,12 +30,13 @@ public class SearchManager {
                 paper.setAuthor(set.getString("author"));
                 paper.setTitle(set.getString("title"));
                 paper.setAbstract_text(set.getString("abstract"));
-                paper.setPublish_date(set.getDate("publish_data").toLocalDate());
+                paper.setPublish_date(set.getDate("publish_date").toLocalDate());
                 paper.setJournal(set.getString("journal"));
                 paper.setVolume(set.getInt("volume"));
                 paper.setIssue(set.getInt("issue"));
                 paper.setDoi(set.getString("doi"));
                 paper.setCountry(set.getString("country"));
+                paper.setKeywords(set.getString("keywords"));
                 paperList.add(paper);
             }
         } catch (SQLException e) {

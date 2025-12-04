@@ -426,7 +426,7 @@
         //检测输入框是否可以正常传参
         document.querySelector("#b").onclick=function(){
             var question=document.querySelector("#question").value;
-            fetch("/hello?question="+question)
+            fetch("/search/result?keyword="+question)
                 .then(resp=>resp.text())
                 .then(text=>{
                     document.querySelector("h4").innerText=text;
