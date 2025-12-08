@@ -17,7 +17,7 @@ public class MySQLHelper {
     public MySQLHelper() throws ClassNotFoundException, SQLException{
         //System.out.println("密码是"+DB_PASSWORD);
         Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://39.106.90.206:3306/PAPER_sys","PAPER_sys",DB_PASSWORD);
+        connection = DriverManager.getConnection("jdbc:mysql://39.106.90.206:3306/doctor_pay","doctor_pay","NhBtZy5YfwrJHddp");
     }
     
     public String executeSQL(String sqlString, Object... params) {
