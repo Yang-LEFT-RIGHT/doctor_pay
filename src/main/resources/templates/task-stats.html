@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务统计 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/task-stats.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <!-- 通知内容 -->
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="stats-header">
+                <div class="header-left">
+                    <h1 class="page-title">任务统计报告</h1>
+                    <div class="task-info">
+                        <span class="task-name">《数据结构》课程助教</span>
+                        <span class="task-period">2024-05-15 至 2024-06-15</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="date-range-selector">
+                        <select id="periodSelect" onchange="changePeriod()">
+                            <option value="custom">自定义时间</option>
+                            <option value="7days">最近7天</option>
+                            <option value="30days" selected>最近30天</option>
+                            <option value="all">全部时间</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-outline" onclick="exportReport()">
+                        <i class="fas fa-file-export"></i> 导出报表
+                    </button>
+                    <button class="btn btn-outline" onclick="printReport()">
+                        <i class="fas fa-print"></i> 打印
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 关键指标 -->
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <div class="metric-icon success">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">80%</div>
+                        <div class="metric-label">任务完成进度</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 5% 相比上周
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon primary">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">32</div>
+                        <div class="metric-label">累计工时</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 8小时 相比上周
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon accent">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">2</div>
+                        <div class="metric-label">参与博士生</div>
+                        <div class="metric-change neutral">
+                            <i class="fas fa-minus"></i> 无变化
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon warning">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">¥1,280</div>
+                        <div class="metric-label">累计津贴</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> ¥320 相比上周
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图表区域 -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">工时趋势图</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item">
+                                <span class="legend-dot actual"></span>
+                                <span>实际工时</span>
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot planned"></span>
+                                <span>计划工时</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="chart-simulation">
+                            <!-- 模拟图表 -->
+                            <div class="chart-bars">
+                                <div class="chart-bar" style="height: 60%;" title="第1周: 12小时">
+                                    <span class="bar-label">第1周</span>
+                                </div>
+                                <div class="chart-bar" style="height: 80%;" title="第2周: 16小时">
+                                    <span class="bar-label">第2周</span>
+                                </div>
+                                <div class="chart-bar" style="height: 40%;" title="第3周: 8小时">
+                                    <span class="bar-label">第3周</span>
+                                </div>
+                                <div class="chart-bar" style="height: 100%;" title="第4周: 20小时">
+                                    <span class="bar-label">第4周</span>
+                                </div>
+                            </div>
+                            <div class="chart-line"></div>
+                        </div>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <span>平均每周工时:</span>
+                            <strong>14小时</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>最高周工时:</span>
+                            <strong>20小时 (第4周)</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">人员贡献分布</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item">
+                                <span class="legend-dot contributor1"></span>
+                                <span>张三博士</span>
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot contributor2"></span>
+                                <span>李四博士</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="pie-chart-simulation">
+                            <!-- 模拟饼图 -->
+                            <div class="pie-chart">
+                                <div class="pie-segment" style="--percentage: 60%; --color: #3498db;">
+                                    <div class="segment-label">60%</div>
+                                </div>
+                                <div class="pie-segment" style="--percentage: 40%; --color: #9b59b6; --start: 60%;">
+                                    <div class="segment-label">40%</div>
+                                </div>
+                                <div class="pie-center"></div>
+                            </div>
+                            <div class="pie-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #3498db;"></span>
+                                    <span>张三博士 (12小时)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #9b59b6;"></span>
+                                    <span>李四博士 (8小时)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-summary">
+                        <div class="summary-item">
+                            <span>主要贡献者:</span>
+                            <strong>张三博士</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>人均工时:</span>
+                            <strong>10小时</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 详细数据 -->
+            <div class="detailed-data">
+                <!-- 工时明细 -->
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3 class="section-title">工时明细</h3>
+                        <button class="btn btn-small" onclick="toggleHoursTable()">
+                            <i class="fas fa-list"></i> 切换视图
+                        </button>
+                    </div>
+                    
+                    <div class="data-content">
+                        <div class="hours-detail-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>博士生</th>
+                                        <th>工作时长</th>
+                                        <th>工作内容</th>
+                                        <th>状态</th>
+                                        <th>津贴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-05-20</td>
+                                        <td>
+                                            <div class="student-cell">
+                                                <span class="student-avatar">张</span>
+                                                <span>张三博士</span>
+                                            </div>
+                                        </td>
+                                        <td>4小时</td>
+                                        <td>实验课指导</td>
+                                        <td><span class="status-badge status-confirmed">已确认</span></td>
+                                        <td>¥160</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-21</td>
+                                        <td>
+                                            <div class="student-cell">
+                                                <span class="student-avatar">李</span>
+                                                <span>李四博士</span>
+                                            </div>
+                                        </td>
+                                        <td>4小时</td>
+                                        <td>实验报告批改</td>
+                                        <td><span class="status-badge status-pending">待确认</span></td>
+                                        <td>¥160</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-27</td>
+                                        <td>
+                                            <div class="student-cell">
+                                                <span class="student-avatar">张</span>
+                                                <span>张三博士</span>
+                                            </div>
+                                        </td>
+                                        <td>4小时</td>
+                                        <td>实验课准备</td>
+                                        <td><span class="status-badge status-confirmed">已确认</span></td>
+                                        <td>¥160</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-28</td>
+                                        <td>
+                                            <div class="student-cell">
+                                                <span class="student-avatar">李</span>
+                                                <span>李四博士</span>
+                                            </div>
+                                        </td>
+                                        <td>4小时</td>
+                                        <td>实验数据处理</td>
+                                        <td><span class="status-badge status-confirmed">已确认</span></td>
+                                        <td>¥160</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="summary-row">
+                                        <td colspan="2">总计</td>
+                                        <td><strong>16小时</strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><strong>¥640</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 津贴计算 -->
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3 class="section-title">津贴计算</h3>
+                        <button class="btn btn-small" onclick="recalculateStipend()">
+                            <i class="fas fa-calculator"></i> 重新计算
+                        </button>
+                    </div>
+                    
+                    <div class="data-content">
+                        <div class="stipend-calculation">
+                            <div class="calculation-grid">
+                                <div class="calculation-item">
+                                    <div class="calculation-label">基础标准</div>
+                                    <div class="calculation-value">40元/小时</div>
+                                </div>
+                                <div class="calculation-item">
+                                    <div class="calculation-label">已确认工时</div>
+                                    <div class="calculation-value">16小时</div>
+                                </div>
+                                <div class="calculation-item">
+                                    <div class="calculation-label">待确认工时</div>
+                                    <div class="calculation-value">4小时</div>
+                                </div>
+                                <div class="calculation-item">
+                                    <div class="calculation-label">已发放津贴</div>
+                                    <div class="calculation-value">¥640</div>
+                                </div>
+                                <div class="calculation-item">
+                                    <div class="calculation-label">待发放津贴</div>
+                                    <div class="calculation-value">¥160</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stipend-breakdown">
+                                <h4>人员津贴明细</h4>
+                                <div class="breakdown-list">
+                                    <div class="breakdown-item">
+                                        <div class="student-info">
+                                            <span class="student-avatar small">张</span>
+                                            <span>张三博士</span>
+                                        </div>
+                                        <div class="stipend-details">
+                                            <span>8小时 × 40元 = ¥320</span>
+                                            <span class="status-badge status-paid">已发放</span>
+                                        </div>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <div class="student-info">
+                                            <span class="student-avatar small">李</span>
+                                            <span>李四博士</span>
+                                        </div>
+                                        <div class="stipend-details">
+                                            <span>8小时 × 40元 = ¥320</span>
+                                            <span class="status-badge status-pending">待确认</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 绩效评估 -->
+                <div class="data-section">
+                    <h3 class="section-title">绩效评估</h3>
+                    
+                    <div class="data-content">
+                        <div class="performance-assessment">
+                            <div class="assessment-grid">
+                                <div class="assessment-card">
+                                    <div class="assessment-icon">
+                                        <i class="fas fa-bullseye"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <h4>任务完成度</h4>
+                                        <div class="progress-circle" data-percentage="80">
+                                            <span>80%</span>
+                                        </div>
+                                        <p class="assessment-note">按时完成计划工时的80%</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="assessment-card">
+                                    <div class="assessment-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <h4>工作效率</h4>
+                                        <div class="progress-circle" data-percentage="85">
+                                            <span>85%</span>
+                                        </div>
+                                        <p class="assessment-note">高于平均效率15%</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="assessment-card">
+                                    <div class="assessment-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <h4>团队协作</h4>
+                                        <div class="progress-circle" data-percentage="90">
+                                            <span>90%</span>
+                                        </div>
+                                        <p class="assessment-note">优秀的团队协作能力</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="assessment-card">
+                                    <div class="assessment-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <h4>综合评分</h4>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <p class="assessment-note">4.5/5.0 综合评价</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assessment-summary">
+                                <h4>评估总结</h4>
+                                <p>该任务整体完成情况良好，参与博士生表现出色，工作效率较高。建议继续跟进剩余工时，确保按时完成全部任务。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 导出选项 -->
+            <div class="export-options">
+                <div class="options-header">
+                    <h3><i class="fas fa-download"></i> 导出选项</h3>
+                </div>
+                <div class="options-content">
+                    <div class="format-options">
+                        <label class="radio-label">
+                            <input type="radio" name="exportFormat" value="excel" checked>
+                            <div class="option-card">
+                                <i class="fas fa-file-excel"></i>
+                                <div class="option-info">
+                                    <h4>Excel报表</h4>
+                                    <p>包含完整数据的Excel文件</p>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="exportFormat" value="pdf">
+                            <div class="option-card">
+                                <i class="fas fa-file-pdf"></i>
+                                <div class="option-info">
+                                    <h4>PDF报告</h4>
+                                    <p>格式化好的打印报告</p>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="exportFormat" value="summary">
+                            <div class="option-card">
+                                <i class="fas fa-chart-bar"></i>
+                                <div class="option-info">
+                                    <h4>简报摘要</h4>
+                                    <p>关键指标的摘要报告</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="export-actions">
+                        <button class="btn btn-secondary" onclick="previewReport()">
+                            <i class="fas fa-eye"></i> 预览
+                        </button>
+                        <button class="btn btn-primary" onclick="generateExport()">
+                            <i class="fas fa-download"></i> 生成并下载
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/task-stats.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

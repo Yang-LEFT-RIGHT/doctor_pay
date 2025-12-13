@@ -1,0 +1,891 @@
+/* css/admin-tasks.css - 任务管理样式 */
+
+/* 页面标题区域 */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.page-title-section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* 按钮样式调整 */
+.btn-primary, .btn-secondary, .btn-outline {
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    min-height: 40px;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-tertiary);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* 搜索栏 */
+.search-section {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-light);
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 45px 10px 45px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    background-color: var(--bg-primary);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 14px;
+    transition: color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.search-clear:hover {
+    color: var(--accent-color);
+    background-color: var(--bg-tertiary);
+}
+
+/* 高级筛选区域 */
+.advanced-filters {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-light);
+    display: none;
+}
+
+.advanced-filters.active {
+    display: block;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color var(--transition-fast);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light);
+}
+
+/* 任务列表区域 */
+.tasks-section {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.tasks-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-light);
+    background-color: var(--bg-tertiary);
+}
+
+.section-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.tasks-count {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.tasks-count .highlight {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.table-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-toggle {
+    display: flex;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--bg-primary);
+}
+
+.view-btn {
+    padding: 8px 12px;
+    background-color: var(--bg-primary);
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.view-btn:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.view-btn.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* 表格样式 */
+.tasks-table-view {
+    width: 100%;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0;
+}
+
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.tasks-table thead {
+    background-color: var(--bg-tertiary);
+}
+
+.tasks-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-light);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.tasks-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color var(--transition-fast);
+}
+
+.tasks-table tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.03);
+}
+
+.tasks-table td {
+    padding: 15px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* 各列宽度 */
+.task-title-col {
+    width: 35%;
+    min-width: 250px;
+}
+
+.task-assignee-col {
+    width: 15%;
+    min-width: 120px;
+}
+
+.task-status-col {
+    width: 12%;
+    min-width: 100px;
+}
+
+.task-time-col {
+    width: 12%;
+    min-width: 100px;
+}
+
+.task-deadline-col {
+    width: 16%;
+    min-width: 120px;
+}
+
+.task-actions-col {
+    width: 10%;
+    min-width: 120px;
+}
+
+/* 任务标题单元格 */
+.task-title-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.task-title {
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.task-type {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    align-self: flex-start;
+}
+
+/* 需求人数信息 */
+.requirement-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.requirement-badge {
+    padding: 4px 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+}
+
+.requirement-details {
+    flex: 1;
+}
+
+.requirement-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.requirement-progress .progress-bar {
+    flex: 1;
+    height: 6px;
+    background-color: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.requirement-progress .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    min-width: 40px;
+}
+
+/* 进度条颜色 */
+.progress-0-25 {
+    background-color: var(--accent-color);
+}
+
+.progress-25-50 {
+    background-color: #f39c12;
+}
+
+.progress-50-75 {
+    background-color: var(--secondary-color);
+}
+
+.progress-75-100 {
+    background-color: var(--success-color);
+}
+
+/* 分配博士生信息（用于申请列表） */
+.assignee-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.assignee-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+
+.assignee-name {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* 申请材料徽章 */
+.application-materials {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.material-badge {
+    padding: 2px 6px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* 状态徽章 */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 60px;
+}
+
+.status-pending {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #f1c40f;
+}
+
+.status-confirmed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.status-rejected {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+.status-in-progress {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+}
+
+.status-completed {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+/* 截止时间单元格 */
+.deadline-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.deadline-warning {
+    font-size: 12px;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.deadline-normal {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.deadline-expired {
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.deadline-completed {
+    font-size: 12px;
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+/* 操作按钮 */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-start;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 13px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.edit-btn:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+}
+
+.view-btn:hover {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+.delete-btn:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+.approve-btn:hover {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.reject-btn:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+.undo-btn:hover {
+    background-color: rgba(149, 165, 166, 0.1);
+    color: var(--text-secondary);
+}
+
+/* 分页控制 */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-light);
+    background-color: var(--bg-tertiary);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pagination-info {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pagination-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 12px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-number {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 13px;
+}
+
+.page-number:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.page-number.active {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.page-ellipsis {
+    padding: 0 8px;
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.rows-per-page {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.rows-per-page select {
+    padding: 6px 10px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    min-width: 80px;
+}
+
+/* 错误弹窗样式 */
+.error-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.error-modal-content {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+}
+
+.error-modal-icon {
+    font-size: 48px;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.error-modal-text h3 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.error-modal-text p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.error-modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-actions {
+        justify-content: flex-start;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .section-info {
+        width: 100%;
+    }
+    
+    .table-controls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tasks-table th,
+    .tasks-table td {
+        padding: 10px 8px;
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .pagination-info,
+    .rows-per-page {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .error-modal-actions {
+        flex-direction: column;
+    }
+    
+    .error-modal-actions .btn-primary,
+    .error-modal-actions .btn-secondary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-primary, .btn-secondary, .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .tasks-table th,
+    .tasks-table td {
+        padding: 8px 5px;
+        font-size: 13px;
+    }
+    
+    .task-title {
+        font-size: 13px;
+    }
+    
+    .requirement-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .requirement-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+    
+    .progress-text {
+        font-size: 11px;
+    }
+    
+    .assignee-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .assignee-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .assignee-name {
+        font-size: 13px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .action-btn {
+        width: 28px;
+        height: 28px;
+    }
+}

@@ -1,0 +1,301 @@
+/* css/student-dashboard.css - 修复版（增加通知相关样式） */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* 数据概览卡片 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: var(--bg-primary);
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(52, 152, 219, 0.2);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+}
+
+.stat-card:nth-child(1)::before { background: linear-gradient(90deg, #f39c12, #f1c40f); }
+.stat-card:nth-child(2)::before { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+.stat-card:nth-child(3)::before { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+.stat-card:nth-child(4)::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+.stat-title {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.stat-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+/* 高亮文本 */
+.highlight-text {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* 可点击的数据卡片 */
+.stats-grid .stat-card[data-target] {
+    cursor: pointer;
+}
+
+/* 区块样式 */
+.section {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--secondary-color);
+    border-radius: 2px;
+}
+
+.view-all {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition-normal);
+}
+
+.view-all:hover {
+    gap: 10px;
+    text-decoration: underline;
+}
+
+/* 任务表格 */
+.task-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.task-table th {
+    text-align: left;
+    padding: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border-light);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg-tertiary);
+}
+
+.task-table td {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+}
+
+.task-table tr:hover td {
+    background-color: rgba(52, 152, 219, 0.03);
+}
+
+.task-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    display: inline-block;
+}
+
+.task-link:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* 待处理任务列表 */
+.pending-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pending-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--secondary-color);
+    border: 1px solid var(--border-light);
+}
+
+.pending-item:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* 已确认任务列表 */
+.confirmed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.confirmed-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f9f0;
+    border-radius: var(--radius-md);
+    border-left: 4px solid #2ecc71;
+    border: 1px solid #e0f0e0;
+}
+
+.confirmed-item:hover {
+    background-color: #e8f6e8;
+}
+
+/* 任务信息通用样式 */
+.task-info h4 {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.task-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.task-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-action .btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    font-size: 14px;
+}
+
+.task-action .btn:hover {
+    background-color: #2980b9;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-value {
+        font-size: 28px;
+    }
+    
+    .task-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .pending-item,
+    .confirmed-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .task-action {
+        width: 100%;
+    }
+    
+    .task-action .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/faq_student.css"> <!-- 修改这里 -->
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="student-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="student-dashboard.html" class="nav-item">
+                <i class="fas fa-tasks"></i> 个人首页
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user-circle"></i> 个人信息
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">博士生</span>
+                <span>张三博士</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <!-- 通知内容保持与工作台相同 -->
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-home"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务列表</span>
+                </a>
+                <a href="statistics.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>个人统计</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">3</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <h1 class="page-title">常见问题 (FAQ)</h1>
+            <p class="page-subtitle">遇到问题？先在这里找找答案。</p>
+            
+            <!-- 搜索框 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="faqSearch" placeholder="搜索问题关键词..." class="search-input">
+                    <button class="search-btn" onclick="searchFAQ()">搜索</button>
+                </div>
+                <div class="search-hint">
+                    <i class="fas fa-info-circle"></i>
+                    您可以按问题类别浏览，或使用搜索功能快速查找
+                </div>
+            </div>
+            
+            <!-- 分类导航 -->
+            <div class="category-nav">
+                <button class="category-btn active" data-category="all">全部问题</button>
+                <button class="category-btn" data-category="account">账号与登录</button>
+                <button class="category-btn" data-category="task">任务管理</button>
+                <button class="category-btn" data-category="hours">工时记录</button>
+                <button class="category-btn" data-category="report">报告系统</button>
+                <button class="category-btn" data-category="technical">技术问题</button>
+            </div>
+            
+            <!-- FAQ内容 -->
+            <div class="faq-container">
+                <!-- 账号与登录 -->
+                <div class="faq-category" id="account-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-user-circle"></i> 账号与登录问题</h2>
+                        <span class="question-count">5个问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="account">
+                            <div class="faq-question">
+                                <h3>Q1: 忘记密码怎么办？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如果您忘记了密码，请按照以下步骤操作：</p>
+                                <ol>
+                                    <li>点击登录页面的"忘记密码"链接</li>
+                                    <li>输入您的注册邮箱地址</li>
+                                    <li>查收邮件中的密码重置链接</li>
+                                    <li>点击链接设置新密码</li>
+                                </ol>
+                                <div class="tip-box">
+                                    <i class="fas fa-lightbulb"></i>
+                                    如果未收到重置邮件，请检查垃圾邮件文件夹或联系技术支持
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="account">
+                            <div class="faq-question">
+                                <h3>Q2: 如何修改个人资料？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>修改个人资料的步骤：</p>
+                                <ol>
+                                    <li>登录系统后，点击顶部导航栏的"个人信息"</li>
+                                    <li>在个人信息页面，点击"编辑"按钮</li>
+                                    <li>修改需要更新的信息（如联系方式、专业方向等）</li>
+                                    <li>点击"保存更改"完成更新</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="account">
+                            <div class="faq-question">
+                                <h3>Q3: 账号被锁定怎么办？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如果连续5次输入错误密码，账号将被临时锁定30分钟。</p>
+                                <p>解决方法：</p>
+                                <ol>
+                                    <li>等待30分钟后重试登录</li>
+                                    <li>如急需登录，请联系管理员解锁账号</li>
+                                    <li>通过"忘记密码"功能重置密码</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务管理 -->
+                <div class="faq-category" id="task-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-tasks"></i> 任务管理问题</h2>
+                        <span class="question-count">7个问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="task">
+                            <div class="faq-question">
+                                <h3>Q4: 如何接受新的任务？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>接受任务的完整流程：</p>
+                                <ol>
+                                    <li>登录系统进入个人首页</li>
+                                    <li>查看"待处理任务"区域</li>
+                                    <li>点击任务名称查看详情</li>
+                                    <li>仔细阅读任务要求和截止日期</li>
+                                    <li>确认无误后点击"接受任务"按钮</li>
+                                </ol>
+                                <div class="warning-box">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    注意：接受任务后不可随意取消，请谨慎操作
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="task">
+                            <div class="faq-question">
+                                <h3>Q5: 任务进度如何更新？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>更新任务进度的两种方式：</p>
+                                
+                                <div class="method-section">
+                                    <h4>方式一：通过任务详情页</h4>
+                                    <ol>
+                                        <li>进入"任务列表"页面</li>
+                                        <li>点击需要更新的任务</li>
+                                        <li>在任务详情页找到"更新进度"按钮</li>
+                                        <li>填写当前完成情况和遇到的问题</li>
+                                        <li>提交更新</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="method-section">
+                                    <h4>方式二：通过工时记录</h4>
+                                    <ol>
+                                        <li>每次记录工时后，系统会自动更新任务进度</li>
+                                        <li>完成的工作时长会累计到任务总进度</li>
+                                        <li>当达到预计工时，任务状态自动更新</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="task">
+                            <div class="faq-question">
+                                <h3>Q6: 如何申请任务延期？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如遇特殊情况需要延期，请按以下步骤操作：</p>
+                                <ol>
+                                    <li>在任务到期前至少3天提出申请</li>
+                                    <li>进入任务详情页面</li>
+                                    <li>点击"申请延期"按钮</li>
+                                    <li>填写延期原因和新的预计完成时间</li>
+                                    <li>提交申请，等待管理员审核</li>
+                                </ol>
+                                <div class="note-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    延期申请需要管理员批准，请提供充分的理由
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工时记录 -->
+                <div class="faq-category" id="hours-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-clock"></i> 工时记录问题</h2>
+                        <span class="question-count">4个问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="hours">
+                            <div class="faq-question">
+                                <h3>Q7: 如何记录工作时间？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>记录工作时间的步骤：</p>
+                                <ol>
+                                    <li>进入"任务列表"页面</li>
+                                    <li>找到正在执行的任务</li>
+                                    <li>点击"记录工时"按钮</li>
+                                    <li>填写工作日期、开始时间、结束时间和工作内容</li>
+                                    <li>提交记录</li>
+                                </ol>
+                                <div class="tip-box">
+                                    <i class="fas fa-lightbulb"></i>
+                                    建议每次完成工作后立即记录，避免遗漏
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="hours">
+                            <div class="faq-question">
+                                <h3>Q8: 工时记录可以修改吗？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>工时记录在特定条件下可以修改：</p>
+                                
+                                <div class="rules-section">
+                                    <h4>可以修改的情况：</h4>
+                                    <ul>
+                                        <li>记录时间错误（在24小时内）</li>
+                                        <li>忘记记录需要补记（在3天内）</li>
+                                        <li>工作内容描述不准确需要修改</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rules-section">
+                                    <h4>不可修改的情况：</h4>
+                                    <ul>
+                                        <li>记录已超过24小时</li>
+                                        <li>记录已被管理员审核通过</li>
+                                        <li>任务已结束并结算</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="tip-box">
+                                    <i class="fas fa-lightbulb"></i>
+                                    如需修改已超过期限的记录，请联系管理员申请修改
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 报告系统 -->
+                <div class="faq-category" id="report-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-file-alt"></i> 报告系统问题</h2>
+                        <span class="question-count">3个问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="report">
+                            <div class="faq-question">
+                                <h3>Q9: 如何生成月度工作报告？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>生成月度报告的步骤：</p>
+                                <ol>
+                                    <li>进入"个人统计"页面</li>
+                                    <li>选择需要生成报告的月份</li>
+                                    <li>点击"生成月度报告"按钮</li>
+                                    <li>系统会自动生成包含以下内容的报告：
+                                        <ul>
+                                            <li>本月完成的任务清单</li>
+                                            <li>工时统计和图表</li>
+                                            <li>工作内容总结</li>
+                                            <li>绩效评估</li>
+                                        </ul>
+                                    </li>
+                                    <li>预览报告内容，确认无误后下载</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="report">
+                            <div class="faq-question">
+                                <h3>Q10: 报告格式有哪些？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>系统支持多种报告格式：</p>
+                                
+                                <div class="format-grid">
+                                    <div class="format-card">
+                                        <h4><i class="fas fa-file-pdf"></i> PDF格式</h4>
+                                        <p>适合打印和正式提交，格式固定</p>
+                                    </div>
+                                    <div class="format-card">
+                                        <h4><i class="fas fa-file-excel"></i> Excel格式</h4>
+                                        <p>包含详细数据，适合进一步分析</p>
+                                    </div>
+                                    <div class="format-card">
+                                        <h4><i class="fas fa-file-word"></i> Word格式</h4>
+                                        <p>可编辑，适合添加额外说明</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="tip-box">
+                                    <i class="fas fa-lightbulb"></i>
+                                    建议使用PDF格式进行正式提交，Excel格式用于数据分析
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 技术支持 -->
+                <div class="faq-category" id="technical-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-wrench"></i> 技术问题</h2>
+                        <span class="question-count">6个问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="technical">
+                            <div class="faq-question">
+                                <h3>Q11: 系统无法登录怎么办？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如果遇到登录问题，请按以下顺序排查：</p>
+                                <ol>
+                                    <li>检查网络连接是否正常</li>
+                                    <li>确认网址是否正确（https://docim.your-university.edu）</li>
+                                    <li>清除浏览器缓存和Cookie</li>
+                                    <li>尝试使用其他浏览器（推荐Chrome或Firefox）</li>
+                                    <li>检查账号是否被锁定（连续输错密码）</li>
+                                </ol>
+                                
+                                <div class="contact-info">
+                                    <h4>如仍无法解决，请联系技术支持：</h4>
+                                    <ul>
+                                        <li><i class="fas fa-envelope"></i> 邮箱：support@docim.edu</li>
+                                        <li><i class="fas fa-phone"></i> 电话：010-12345678</li>
+                                        <li><i class="fas fa-clock"></i> 工作时间：工作日 9:00-17:00</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item" data-category="technical">
+                            <div class="faq-question">
+                                <h3>Q12: 页面加载缓慢怎么办？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>优化页面加载速度的方法：</p>
+                                
+                                <div class="optimization-section">
+                                    <h4>用户端优化：</h4>
+                                    <ul>
+                                        <li>清除浏览器缓存和临时文件</li>
+                                        <li>关闭其他占用带宽的程序</li>
+                                        <li>使用最新版本的浏览器</li>
+                                        <li>检查网络连接质量</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="optimization-section">
+                                    <h4>如果问题持续存在：</h4>
+                                    <ul>
+                                        <li>可能是服务器维护或高峰期</li>
+                                        <li>请稍后重试或联系技术支持</li>
+                                        <li>报告问题时提供以下信息：
+                                            <ul>
+                                                <li>浏览器类型和版本</li>
+                                                <li>具体的错误信息</li>
+                                                <li>出现问题的页面和操作</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 更多问题 -->
+                <div class="faq-category">
+                    <div class="category-header">
+                        <h2><i class="fas fa-ellipsis-h"></i> 更多问题</h2>
+                        <span class="question-count">其他常见问题</span>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Q13: 如何获得更多帮助？</h3>
+                                <button class="faq-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如果您的问题在这里找不到答案，可以通过以下方式获取帮助：</p>
+                                
+                                <div class="help-options">
+                                    <div class="help-option">
+                                        <h4><i class="fas fa-book"></i> 查看用户手册</h4>
+                                        <p>详细的操作指南和功能介绍</p>
+                                        <a href="manual.html" class="help-link">前往用户手册 →</a>
+                                    </div>
+                                    
+                                    <div class="help-option">
+                                        <h4><i class="fas fa-comments"></i> 联系技术支持</h4>
+                                        <p>直接联系我们的技术支持团队</p>
+                                        <a href="contact.html" class="help-link">联系技术支持 →</a>
+                                    </div>
+                                    
+                                    <div class="help-option">
+                                        <h4><i class="fas fa-video"></i> 观看视频教程</h4>
+                                        <p>观看系统操作演示视频</p>
+                                        <a href="tutorials.html" class="help-link">观看教程 →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="guide-tutorial.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 使用指南</h4>
+                    <p>了解系统基本操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 用户手册</h4>
+                    <p>详细功能说明文档，包含所有操作步骤和注意事项</p>
+                </a>
+                
+                <a href="faq.html" class="footer-card active">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决常见问题，包含故障排除方法</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/faq_student.js"></script> <!-- 修改这里 -->
+    <script src="js/notification.js"></script>
+</body>
+</html>

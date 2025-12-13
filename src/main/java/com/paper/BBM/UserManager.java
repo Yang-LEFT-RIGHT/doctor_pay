@@ -10,7 +10,7 @@ import java.util.Random; // 关键：导入 Jakarta Mail 的 Authenticator
 import org.mindrot.jbcrypt.BCrypt; // 若未导入，也需添加（PasswordAuthentication 属于 jakarta.mail）
 
 import com.paper.DBM.MySQLHelper;
-import com.paper.Entity.User;
+import com.paper.Entity.Students;
 
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
@@ -37,11 +37,11 @@ public class UserManager {
     }
     
     // 登录功能
-    public boolean login(User user) throws SQLException{
+    public boolean login_Stu(Students student) throws SQLException{
         boolean f = false;
         // 使用参数化查询，修复原SQL语句的语法错误和注入风险
         String sqlString = "SELECT PASSWORD FROM USER WHERE uname = ?";
-        Map<String,Object> map = mysqlhelper.executeSQLWithSelect(sqlString, user.getUname());
+        Map<String,Object> map = mysqlhelper.executeSQLWithSelect(sqlString, student.getName());
         
         ResultSet set = null;
         try {
@@ -50,7 +50,7 @@ public class UserManager {
                 // 检查是否有结果
                 if(set.next()){
                     String storedHashedPassword = set.getString("password");
-                    if (BCrypt.checkpw(user.getPassword(), storedHashedPassword)) {
+                    if (BCrypt.checkpw(student.getPassword(), storedHashedPassword)) {
                         f = true;
                     }
                 }
@@ -68,11 +68,11 @@ public class UserManager {
         return f;
     }
 
-    // 修改密码
-    public String updatePassword(User user){
+    // 修改密码(未完成)
+    public String updatePassword_Stu(Students student){
         // 使用参数化查询
         String sqlString = "UPDATE USER SET password = ? WHERE uname = ?";
-        return mysqlhelper.executeSQL(sqlString, user.getPassword(), user.getUname());
+        return mysqlhelper.executeSQL(sqlString, student.getPassword(), student.getName());
     }
     
     // 发送注册验证码到邮箱
@@ -126,7 +126,8 @@ public class UserManager {
     }
     
     // 通过邮箱和验证码完成注册
-    public String registerByEmail(User user, String code) throws SQLException {
+    /*
+    public String registerByEmail(Students user, String code) throws SQLException {
         // 验证邮箱是否已被注册
         if (isEmailExists(user.getEmail())) {
             return "该邮箱已被注册";
@@ -167,6 +168,7 @@ public class UserManager {
         
         return result;
     }
+    */
     
     // 生成6位随机验证码
     private String generateRandomCode() {
@@ -176,6 +178,7 @@ public class UserManager {
     }
     
     // 检查邮箱是否已存在
+    /*
     private boolean isEmailExists(String email) throws SQLException {
         String sql = "SELECT * FROM USER WHERE email = ?";
         Map<String, Object> map = mysqlhelper.executeSQLWithSelect(sql, email);
@@ -197,8 +200,10 @@ public class UserManager {
         }
         return false;
     }
+         */
     
     // 检查用户名是否已存在
+    /*
     private boolean isUsernameExists(String username) throws SQLException {
         String sql = "SELECT * FROM USER WHERE uname = ?";
         Map<String, Object> map = mysqlhelper.executeSQLWithSelect(sql, username);
@@ -220,4 +225,5 @@ public class UserManager {
         }
         return false;
     }
+         */
 }

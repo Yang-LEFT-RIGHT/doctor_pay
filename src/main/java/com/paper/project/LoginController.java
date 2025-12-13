@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.paper.BBM.UserManager;
-import com.paper.Entity.User;
+import com.paper.Entity.Students;
 
 @Controller
 public class LoginController {
     @RequestMapping("/login")
     @ResponseBody
     public String login(String uname,String password) throws ClassNotFoundException, SQLException{
-        User user=new User();
+        Students student=new Students();
         UserManager usermanager=new UserManager();
-        user.setUname(uname);
-        user.setPassword(password);
-        if(usermanager.login(user)){
+        student.setName(uname);
+        student.setPassword(password);
+        if(usermanager.login_Stu(student)){
             return "登录成功";
         }
         else{

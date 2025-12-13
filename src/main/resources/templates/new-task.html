@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布新任务 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/admin-forms.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="form-header">
+                <h1 class="page-title">发布新任务</h1>
+                <p class="page-subtitle">创建新的代偿/助教任务，系统会自动通知相关博士生</p>
+            </div>
+            
+            <!-- 任务发布表单 -->
+            <div class="form-container">
+                <form id="newTaskForm" class="task-form">
+                    <!-- 基本信息 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-info-circle"></i> 基本信息</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskTitle">任务标题 <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" name="taskTitle" 
+                                       placeholder="例如：《数据结构》课程助教 - 实验课指导" 
+                                       required maxlength="100">
+                                <div class="form-hint">简明扼要的任务标题，不超过100字</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="taskType">任务类型 <span class="required">*</span></label>
+                                <select id="taskType" name="taskType" required>
+                                    <option value="">请选择任务类型</option>
+                                    <option value="course">课程助教</option>
+                                    <option value="thesis">论文指导</option>
+                                    <option value="lab">实验室工作</option>
+                                    <option value="admin">行政协助</option>
+                                    <option value="research">科研助理</option>
+                                    <option value="other">其他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="department">所属院系 <span class="required">*</span></label>
+                                <select id="department" name="department" required>
+                                    <option value="">请选择院系</option>
+                                    <option value="cs">计算机科学与技术学院</option>
+                                    <option value="ee">电子信息工程学院</option>
+                                    <option value="math">数学科学学院</option>
+                                    <option value="physics">物理学院</option>
+                                    <option value="chem">化学学院</option>
+                                    <option value="bio">生命科学学院</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 人员与时间 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-users"></i> 人员与时间要求</h3>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="requiredPeople">需求人数 <span class="required">*</span></label>
+                                <input type="number" id="requiredPeople" name="requiredPeople" 
+                                       min="1" max="10" value="1" required>
+                                <div class="form-hint">需要多少名博士生参与此任务</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="workHours">预计总工时 <span class="required">*</span></label>
+                                <input type="number" id="workHours" name="workHours" 
+                                       min="1" max="200" value="20" required>
+                                <div class="form-hint">任务完成预计需要的小时数</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="publishDate">发布日期 <span class="required">*</span></label>
+                                <input type="date" id="publishDate" name="publishDate" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deadline">截止日期 <span class="required">*</span></label>
+                                <input type="date" id="deadline" name="deadline" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 任务详情 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-clipboard-list"></i> 任务详情</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskDescription">任务描述 <span class="required">*</span></label>
+                                <textarea id="taskDescription" name="taskDescription" 
+                                          rows="6" placeholder="详细描述工作任务内容、要求、职责等..." required></textarea>
+                                <div class="form-hint">请清晰描述工作内容，这将帮助博士生了解任务要求</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="requirements">具体要求</label>
+                                <textarea id="requirements" name="requirements" 
+                                          rows="4" placeholder="列出完成任务所需的具体技能、知识要求..."></textarea>
+                                <div class="form-hint">如：需要熟悉Python编程、了解机器学习基础等</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 津贴标准 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-money-bill-wave"></i> 津贴标准</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stipendRate">津贴标准 <span class="required">*</span></label>
+                                <div class="stipend-input-group">
+                                    <input type="number" id="stipendRate" name="stipendRate" 
+                                           min="20" max="100" step="5" value="40" required>
+                                    <span class="input-suffix">元/小时</span>
+                                </div>
+                                <div class="form-hint">根据学校规定，博士生助教津贴标准为40-80元/小时</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="totalStipend">预计总津贴</label>
+                                <div class="total-stipend">
+                                    <span id="totalStipendDisplay">800</span> 元
+                                </div>
+                                <div class="form-hint">根据需求人数、预计工时和津贴标准自动计算</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 发布选项 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-paper-plane"></i> 发布选项</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notifyAll" name="notifyAll" checked>
+                                    <span>发布后立即通知所有博士生</span>
+                                </label>
+                                <div class="form-hint">系统将向所有符合条件的博士生发送任务通知</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="autoAssign" name="autoAssign">
+                                    <span>允许系统自动分配</span>
+                                </label>
+                                <div class="form-hint">系统将根据博士生专业和空闲时间自动分配任务</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="allowMultiple" name="allowMultiple" checked>
+                                    <span>允许多名博士生同时申请</span>
+                                </label>
+                                <div class="form-hint">多名博士生可以同时申请此任务，直到满足需求人数</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 表单操作 -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="saveDraft()">
+                            <i class="far fa-save"></i> 保存草稿
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> 发布任务
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/new-task.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

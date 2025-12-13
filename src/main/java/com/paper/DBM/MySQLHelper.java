@@ -11,7 +11,7 @@ import java.util.Map;
 public class MySQLHelper {
     private Connection connection;
     
-    private static final String DB_PASSWORD = System.getenv("JAVA_DB_PASSWORD");
+    //private static final String DB_PASSWORD = System.getenv("JAVA_DB_PASSWORD");
     
 
     public MySQLHelper() throws ClassNotFoundException, SQLException{

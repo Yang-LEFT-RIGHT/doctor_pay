@@ -1,0 +1,456 @@
+/* css/notification-detail.css - 通知详情页面样式 */
+
+/* 返回导航 */
+.back-nav {
+    margin-bottom: 25px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all var(--transition-fast);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+}
+
+.back-link:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    transform: translateX(-5px);
+}
+
+/* 通知详情容器 */
+.notification-detail {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+}
+
+.notification-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.notification-type-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.notification-type-badge.task {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+}
+
+.notification-type-badge.system {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+.notification-type-badge.alert {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+.notification-type-badge.success {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.notification-type-badge i {
+    font-size: 16px;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-badge.unread {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.status-badge.read {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+/* 通知标题 */
+.notification-detail-title {
+    margin-bottom: 30px;
+}
+
+.notification-detail-title h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.notification-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.notification-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.notification-time i {
+    font-size: 12px;
+}
+
+.notification-id {
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+/* 通知内容 */
+.notification-detail-content {
+    margin-bottom: 40px;
+}
+
+.notification-message {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+    padding: 30px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--secondary-color);
+}
+
+/* 详情信息 */
+.notification-details {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    border: 1px solid var(--border-light);
+}
+
+.detail-section {
+    margin-bottom: 25px;
+}
+
+.detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.detail-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detail-section h3 i {
+    color: var(--secondary-color);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-label i {
+    width: 16px;
+    color: var(--text-light);
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-left: 24px;
+}
+
+/* 操作按钮 */
+.notification-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+}
+
+/* 相关通知 */
+.related-notifications {
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+}
+
+.related-notifications h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.related-notifications h3 i {
+    color: var(--secondary-color);
+}
+
+.related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.related-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    transition: all var(--transition-fast);
+}
+
+.related-item:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+    transform: translateX(5px);
+}
+
+.related-item-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.related-item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.related-item-icon.task {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+}
+
+.related-item-icon.system {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+.related-item-icon.alert {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+.related-item-icon.success {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.related-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.related-item-time {
+    font-size: 12px;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+.related-item-action {
+    padding: 8px 16px;
+    background-color: var(--bg-primary);
+    color: var(--secondary-color);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.related-item-action:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.related-empty {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 按钮样式 */
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all var(--transition-normal);
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    padding: 12px 28px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all var(--transition-normal);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .notification-detail {
+        padding: 25px;
+    }
+    
+    .notification-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .notification-detail-title h1 {
+        font-size: 24px;
+    }
+    
+    .notification-message {
+        padding: 20px;
+        font-size: 15px;
+    }
+    
+    .notification-details {
+        padding: 20px;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .notification-detail-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .related-item {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .related-item-content {
+        width: 100%;
+    }
+    
+    .related-item-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-detail {
+        padding: 20px;
+    }
+    
+    .notification-detail-title h1 {
+        font-size: 20px;
+    }
+    
+    .notification-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

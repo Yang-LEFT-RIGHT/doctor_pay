@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员管理 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/admin-management.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item active">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">超级管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">管理员管理</h1>
+                    <p class="page-subtitle">管理系统管理员账户、权限和访问控制</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="exportAdminData()">
+                        <i class="fas fa-file-export"></i>
+                        导出数据
+                    </button>
+                    <button class="btn-primary" onclick="openAddAdminModal()">
+                        <i class="fas fa-user-plus"></i>
+                        添加管理员
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalAdmins">8</div>
+                        <div class="stat-label">总管理员数</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="activeAdmins">6</div>
+                        <div class="stat-label">活跃管理员</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="inactiveAdmins">2</div>
+                        <div class="stat-label">未激活</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon accent">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="superAdmins">2</div>
+                        <div class="stat-label">超级管理员</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 管理员列表 -->
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">管理员列表</h3>
+                    
+                    <div class="section-filters">
+                        <div class="filter-group">
+                            <label for="roleFilter">角色筛选:</label>
+                            <select id="roleFilter" class="filter-select" onchange="filterAdmins()">
+                                <option value="all">全部角色</option>
+                                <option value="super">超级管理员</option>
+                                <option value="admin">系统管理员</option>
+                                <option value="task">任务管理员</option>
+                                <option value="viewer">查看者</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="statusFilter">状态筛选:</label>
+                            <select id="statusFilter" class="filter-select" onchange="filterAdmins()">
+                                <option value="all">全部状态</option>
+                                <option value="active">活跃</option>
+                                <option value="inactive">未激活</option>
+                                <option value="suspended">已停用</option>
+                            </select>
+                        </div>
+                        
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="adminSearch" placeholder="搜索管理员..." oninput="filterAdmins()">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="checkbox-cell">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>管理员信息</th>
+                                <th>角色权限</th>
+                                <th>最后登录</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <!-- 管理员数据将通过JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-footer">
+                    <div class="selected-info" id="selectedInfo">
+                        已选择 <span id="selectedCount">0</span> 个管理员
+                    </div>
+                    
+                    <div class="table-actions">
+                        <button class="btn-secondary btn-sm" onclick="bulkActivate()" id="bulkActivateBtn">
+                            <i class="fas fa-user-check"></i> 批量激活
+                        </button>
+                        <button class="btn-secondary btn-sm" onclick="bulkDeactivate()" id="bulkDeactivateBtn">
+                            <i class="fas fa-user-slash"></i> 批量停用
+                        </button>
+                        <button class="btn-danger btn-sm" onclick="bulkDelete()" id="bulkDeleteBtn">
+                            <i class="fas fa-trash"></i> 批量删除
+                        </button>
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="pagination-btn" onclick="prevPage()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="page-info">
+                            第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">1</span> 页
+                        </span>
+                        <button class="pagination-btn" onclick="nextPage()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 权限矩阵 -->
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">权限矩阵</h3>
+                    <button class="btn-secondary btn-sm" onclick="exportPermissions()">
+                        <i class="fas fa-download"></i> 导出权限表
+                    </button>
+                </div>
+                
+                <div class="permissions-matrix">
+                    <div class="matrix-container">
+                        <table class="permissions-table">
+                            <thead>
+                                <tr>
+                                    <th>功能模块</th>
+                                    <th>超级管理员</th>
+                                    <th>系统管理员</th>
+                                    <th>任务管理员</th>
+                                    <th>查看者</th>
+                                </tr>
+                            </thead>
+                            <tbody id="permissionsMatrix">
+                                <!-- 权限矩阵将通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 最近活动 -->
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">管理员活动记录</h3>
+                    <button class="btn-secondary btn-sm" onclick="refreshActivities()">
+                        <i class="fas fa-sync-alt"></i> 刷新
+                    </button>
+                </div>
+                
+                <div class="activities-list" id="activitiesList">
+                    <!-- 活动记录将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加管理员弹窗 -->
+    <div class="modal-overlay" id="addAdminModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">添加管理员</h3>
+                <button class="modal-close" onclick="closeAddAdminModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="addAdminForm">
+                    <div class="form-section">
+                        <h4 class="form-section-title">基本信息</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="adminName">姓名 *</label>
+                                <input type="text" id="adminName" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminEmail">邮箱 *</label>
+                                <input type="email" id="adminEmail" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminPhone">手机号码 *</label>
+                                <input type="tel" id="adminPhone" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminDepartment">部门</label>
+                                <input type="text" id="adminDepartment" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">账户设置</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="adminUsername">用户名 *</label>
+                                <input type="text" id="adminUsername" class="form-input" required>
+                                <div class="form-hint">用于登录系统的用户名</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminPassword">初始密码 *</label>
+                                <div class="password-input">
+                                    <input type="password" id="adminPassword" class="form-input" required>
+                                    <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-hint">建议使用强密码，至少8位包含大小写字母和数字</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminRole">角色 *</label>
+                                <select id="adminRole" class="form-select" required>
+                                    <option value="">选择角色</option>
+                                    <option value="super">超级管理员</option>
+                                    <option value="admin">系统管理员</option>
+                                    <option value="task">任务管理员</option>
+                                    <option value="viewer">查看者</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminStatus">初始状态</label>
+                                <select id="adminStatus" class="form-select">
+                                    <option value="active">激活</option>
+                                    <option value="inactive">未激活</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">权限设置</h4>
+                        <div class="permissions-checkboxes">
+                            <div class="permission-group">
+                                <h5>任务管理权限</h5>
+                                <div class="checkbox-group">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="task_view" checked>
+                                        <span class="checkmark"></span>
+                                        <span>查看任务</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="task_create">
+                                        <span class="checkmark"></span>
+                                        <span>创建任务</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="task_edit">
+                                        <span class="checkmark"></span>
+                                        <span>编辑任务</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="task_delete">
+                                        <span class="checkmark"></span>
+                                        <span>删除任务</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="permission-group">
+                                <h5>学生管理权限</h5>
+                                <div class="checkbox-group">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="student_view">
+                                        <span class="checkmark"></span>
+                                        <span>查看学生</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="student_create">
+                                        <span class="checkmark"></span>
+                                        <span>添加学生</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="student_edit">
+                                        <span class="checkmark"></span>
+                                        <span>编辑学生信息</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="permission-group">
+                                <h5>系统管理权限</h5>
+                                <div class="checkbox-group">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="system_settings">
+                                        <span class="checkmark"></span>
+                                        <span>系统设置</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="admin_manage">
+                                        <span class="checkmark"></span>
+                                        <span>管理员管理</span>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="permissions" value="logs_view">
+                                        <span class="checkmark"></span>
+                                        <span>查看系统日志</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeAddAdminModal()">
+                    取消
+                </button>
+                <button class="btn-primary" onclick="addAdmin()">
+                    添加管理员
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑管理员弹窗 -->
+    <div class="modal-overlay" id="editAdminModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">编辑管理员</h3>
+                <button class="modal-close" onclick="closeEditAdminModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="editAdminForm">
+                    <input type="hidden" id="editAdminId">
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">基本信息</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="editAdminName">姓名 *</label>
+                                <input type="text" id="editAdminName" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminEmail">邮箱 *</label>
+                                <input type="email" id="editAdminEmail" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminPhone">手机号码 *</label>
+                                <input type="tel" id="editAdminPhone" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminDepartment">部门</label>
+                                <input type="text" id="editAdminDepartment" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">账户设置</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="editAdminUsername">用户名 *</label>
+                                <input type="text" id="editAdminUsername" class="form-input" required readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminRole">角色 *</label>
+                                <select id="editAdminRole" class="form-select" required>
+                                    <option value="">选择角色</option>
+                                    <option value="super">超级管理员</option>
+                                    <option value="admin">系统管理员</option>
+                                    <option value="task">任务管理员</option>
+                                    <option value="viewer">查看者</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminStatus">状态</label>
+                                <select id="editAdminStatus" class="form-select">
+                                    <option value="active">激活</option>
+                                    <option value="inactive">未激活</option>
+                                    <option value="suspended">已停用</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editAdminPassword">重置密码</label>
+                                <div class="password-input">
+                                    <input type="password" id="editAdminPassword" class="form-input" placeholder="留空则不修改">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('editAdminPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeEditAdminModal()">
+                    取消
+                </button>
+                <button class="btn-primary" onclick="saveAdminChanges()">
+                    保存更改
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/admin-management.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

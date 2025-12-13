@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户手册 - 博士生管理系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #4caf50;
+            --accent-color: #3498db;
+            --light-bg: #f5f5f5;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', '思源黑体', sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 侧边栏导航 */
+        .manual-sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .sidebar-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 25px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .sidebar-nav {
+            background: white;
+            border-radius: 0 0 12px 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .nav-section {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-section:last-child {
+            border-bottom: none;
+        }
+
+        .nav-title {
+            padding: 18px 25px;
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: rgba(44, 62, 80, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-title:hover {
+            background-color: rgba(44, 62, 80, 0.1);
+        }
+
+        .nav-title.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-items {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .nav-items.expanded {
+            max-height: 500px;
+        }
+
+        .nav-item {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 15px 25px 15px 40px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(44, 62, 80, 0.05);
+            color: var(--primary-color);
+            padding-left: 45px;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(44, 62, 80, 0.05);
+            font-weight: 600;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        /* 主内容区域 */
+        .manual-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .content-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* 内容样式 */
+        .content-body {
+            line-height: 1.8;
+        }
+
+        .content-body h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .content-body h4 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin: 20px 0 10px 0;
+        }
+
+        .content-body p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .content-body ul, .content-body ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .content-body li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .highlight-box {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            margin: 25px 0;
+        }
+
+        .step-item {
+            counter-increment: step-counter;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px 20px 20px 70px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .manual-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .image-caption {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        .manual-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .manual-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .manual-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .manual-table tr:hover {
+            background-color: rgba(44, 62, 80, 0.05);
+        }
+
+        .manual-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 页脚导航 */
+        .content-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: var(--light-bg);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .manual-sidebar {
+                width: 100%;
+                position: static;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                border-radius: 12px;
+            }
+
+            .nav-section {
+                flex: 1 1 300px;
+                border-right: 1px solid var(--border-color);
+                border-bottom: none;
+            }
+
+            .nav-section:nth-child(2n) {
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .content-header h1 {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .sidebar-header, .nav-title {
+                padding: 20px;
+            }
+
+            .nav-link {
+                padding: 12px 20px 12px 35px;
+            }
+
+            .nav-section {
+                flex: 1 1 100%;
+                border-right: none;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* 打印样式 */
+        @media print {
+            .manual-sidebar, .content-footer {
+                display: none;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .content-section {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边栏导航 -->
+        <aside class="manual-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-book"></i> 用户手册</h2>
+                <p>系统使用完整指南</p>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- 入门指南部分 -->
+                <div class="nav-section">
+                    <div class="nav-title" onclick="toggleSection(this)">
+                        <i class="fas fa-graduation-cap"></i>
+                        入门指南
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#getting-started" class="nav-link active" data-section="getting-started">
+                                系统简介
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#system-requirements" class="nav-link" data-section="system-requirements">
+                                系统要求
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#first-login" class="nav-link" data-section="first-login">
+                                首次登录
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 博士生操作部分 -->
+                <div class="nav-section">
+                    <div class="nav-title" onclick="toggleSection(this)">
+                        <i class="fas fa-user-graduate"></i>
+                        博士生操作指南
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#task-management" class="nav-link" data-section="task-management">
+                                任务管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#profile-management" class="nav-link" data-section="profile-management">
+                                个人资料管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#statistics-view" class="nav-link" data-section="statistics-view">
+                                统计报表查看
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 管理员操作部分 -->
+                <div class="nav-section">
+                    <div class="nav-title" onclick="toggleSection(this)">
+                        <i class="fas fa-user-tie"></i>
+                        管理员操作指南
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#task-publishing" class="nav-link" data-section="task-publishing">
+                                任务发布管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#user-management" class="nav-link" data-section="user-management">
+                                用户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#admin-statistics" class="nav-link" data-section="admin-statistics">
+                                统计报表管理
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 常见问题部分 -->
+                <div class="nav-section">
+                    <div class="nav-title" onclick="toggleSection(this)">
+                        <i class="fas fa-question-circle"></i>
+                        常见问题
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#faq-general" class="nav-link" data-section="faq-general">
+                                一般问题
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#faq-technical" class="nav-link" data-section="faq-technical">
+                                技术问题
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact-support" class="nav-link" data-section="contact-support">
+                                联系支持
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="manual-content">
+            <header class="content-header">
+                <h1><i class="fas fa-book-open"></i> 博士生管理系统用户手册</h1>
+                <p>全面详细的系统使用指南，帮助您快速掌握系统操作流程</p>
+            </header>
+
+            <!-- 系统简介部分 -->
+            <section id="getting-started" class="content-section active">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2>系统简介</h2>
+                </div>
+                <div class="content-body">
+                    <p>欢迎使用博士生管理系统！本系统旨在为博士生和管理者提供一个高效、便捷的任务管理和津贴发放平台。</p>
+                    
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-lightbulb"></i> 核心功能</h4>
+                        <ul>
+                            <li><strong>任务管理</strong>：发布、确认、跟踪和管理各类任务</li>
+                            <li><strong>津贴管理</strong>：自动计算和发放博士生津贴</li>
+                            <li><strong>统计分析</strong>：提供详细的数据报表和可视化图表</li>
+                            <li><strong>个人中心</strong>：统一管理个人信息和安全设置</li>
+                        </ul>
+                    </div>
+
+                    <h3>系统角色说明</h3>
+                    <div class="table-container">
+                        <table class="manual-table">
+                            <thead>
+                                <tr>
+                                    <th>角色</th>
+                                    <th>主要功能</th>
+                                    <th>权限说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>博士生</strong></td>
+                                    <td>任务确认、个人资料管理、报表查看</td>
+                                    <td>查看和确认分配给自己的任务，管理个人信息</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>管理员</strong></td>
+                                    <td>任务发布、用户管理、统计分析</td>
+                                    <td>发布和管理任务，查看全局统计，管理用户信息</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <span></span>
+                    <a href="#system-requirements" class="nav-btn next-section">
+                        下一步：系统要求 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 系统要求部分 -->
+            <section id="system-requirements" class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h2>系统要求</h2>
+                </div>
+                <div class="content-body">
+                    <h3>浏览器兼容性</h3>
+                    <p>为确保最佳使用体验，建议使用以下浏览器的最新版本：</p>
+                    
+                    <div class="table-container">
+                        <table class="manual-table">
+                            <thead>
+                                <tr>
+                                    <th>浏览器</th>
+                                    <th>推荐版本</th>
+                                    <th>支持状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fab fa-chrome"></i> Google Chrome</td>
+                                    <td>90+</td>
+                                    <td><span class="success-box" style="display: inline-block; padding: 2px 8px; background: #2ecc71; color: white; border-radius: 4px;">完全支持</span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fab fa-firefox"></i> Mozilla Firefox</td>
+                                    <td>88+</td>
+                                    <td><span class="success-box" style="display: inline-block; padding: 2px 8px; background: #2ecc71; color: white; border-radius: 4px;">完全支持</span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fab fa-safari"></i> Safari</td>
+                                    <td>14+</td>
+                                    <td><span class="success-box" style="display: inline-block; padding: 2px 8px; background: #2ecc71; color: white; border-radius: 4px;">完全支持</span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fab fa-edge"></i> Microsoft Edge</td>
+                                    <td>90+</td>
+                                    <td><span class="success-box" style="display: inline-block; padding: 2px 8px; background: #2ecc71; color: white; border-radius: 4px;">完全支持</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> 重要提示</h4>
+                        <p>Internet Explorer 浏览器已不再支持，请使用其他现代浏览器访问系统。</p>
+                    </div>
+
+                    <h3>网络要求</h3>
+                    <ul>
+                        <li>稳定的互联网连接</li>
+                        <li>建议使用校园网或高速网络环境</li>
+                        <li>系统支持移动设备访问，但部分功能在桌面端体验更佳</li>
+                    </ul>
+                </div>
+                <div class="content-footer">
+                    <a href="#getting-started" class="nav-btn prev-section">
+                        <i class="fas fa-arrow-left"></i> 上一步：系统简介
+                    </a>
+                    <a href="#first-login" class="nav-btn next-section">
+                        下一步：首次登录 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 首次登录部分 -->
+            <section id="first-login" class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <h2>首次登录</h2>
+                </div>
+                <div class="content-body">
+                    <h3>登录流程</h3>
+                    <div class="step-list">
+                        <div class="step-item">
+                            <h4>访问系统</h4>
+                            <p>通过系统提供的网址访问登录页面，输入您的账号和初始密码。</p>
+                        </div>
+                        <div class="step-item">
+                            <h4>修改密码</h4>
+                            <p>首次登录后，系统会提示您修改初始密码。新密码需包含字母、数字和特殊字符，长度至少8位。</p>
+                        </div>
+                        <div class="step-item">
+                            <h4>完善个人信息</h4>
+                            <p>登录后请立即完善个人资料，特别是银行账户信息，以确保津贴正常发放。</p>
+                        </div>
+                        <div class="step-item">
+                            <h4>确认邮箱和手机</h4>
+                            <p>验证您的邮箱和手机号码，以便接收重要通知。</p>
+                        </div>
+                    </div>
+
+                    <div class="success-box">
+                        <h4><i class="fas fa-check-circle"></i> 安全提示</h4>
+                        <ul>
+                            <li>请勿将密码告知他人</li>
+                            <li>定期更换密码</li>
+                            <li>使用后及时退出系统</li>
+                            <li>不要在公共电脑上保存登录信息</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <a href="#system-requirements" class="nav-btn prev-section">
+                        <i class="fas fa-arrow-left"></i> 上一步：系统要求
+                    </a>
+                    <a href="#task-management" class="nav-btn next-section">
+                        下一步：任务管理 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 任务管理部分 -->
+            <section id="task-management" class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h2>任务管理（博士生）</h2>
+                </div>
+                <div class="content-body">
+                    <h3>任务处理流程</h3>
+                    <div class="image-container">
+                        <div class="manual-image" style="max-width: 800px; margin: 0 auto; background: #f0f0f0; padding: 20px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+                                <div style="text-align: center;">
+                                    <div style="width: 60px; height: 60px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 10px;">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div>收到任务通知</div>
+                                </div>
+                                <div style="font-size: 24px; color: #ccc;">→</div>
+                                <div style="text-align: center;">
+                                    <div style="width: 60px; height: 60px; background: #f39c12; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 10px;">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div>查看任务详情</div>
+                                </div>
+                                <div style="font-size: 24px; color: #ccc;">→</div>
+                                <div style="text-align: center;">
+                                    <div style="width: 60px; height: 60px; background: #2ecc71; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 10px;">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div>确认或拒绝任务</div>
+                                </div>
+                                <div style="font-size: 24px; color: #ccc;">→</div>
+                                <div style="text-align: center;">
+                                    <div style="width: 60px; height: 60px; background: #9b59b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 10px;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div>计入统计报表</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="image-caption">图：任务处理流程图</p>
+                    </div>
+
+                    <h4>操作步骤详解</h4>
+                    <ol>
+                        <li>
+                            <strong>查看任务</strong>
+                            <p>登录系统后，在"我的任务"页面查看待处理的任务列表。任务会显示标题、发布时间、截止时间和状态。</p>
+                        </li>
+                        <li>
+                            <strong>查看详情</strong>
+                            <p>点击任务标题或"查看详情"按钮，进入任务详情页面。仔细阅读任务描述、要求和相关附件。</p>
+                        </li>
+                        <li>
+                            <strong>确认任务</strong>
+                            <p>如果接受任务，点击"确认"按钮。系统会记录您的接受时间，并开始计入工时统计。</p>
+                        </li>
+                        <li>
+                            <strong>拒绝任务</strong>
+                            <p>如果因故无法接受任务，点击"拒绝"按钮并填写拒绝原因。拒绝的任务不会计入统计。</p>
+                        </li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-clock"></i> 重要提醒</h4>
+                        <p>请在任务截止时间前完成确认或拒绝操作，逾期未处理的任务将自动标记为"已过期"。</p>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <a href="#first-login" class="nav-btn prev-section">
+                        <i class="fas fa-arrow-left"></i> 上一步：首次登录
+                    </a>
+                    <a href="#profile-management" class="nav-btn next-section">
+                        下一步：个人资料管理 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 后续其他部分的内容结构类似，这里省略以保持代码简洁 -->
+            <!-- 实际应用中应补充完整所有部分 -->
+
+        </main>
+    </div>
+
+    <script>
+        // 页面功能脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有导航链接
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const nextButtons = document.querySelectorAll('.next-section');
+            const prevButtons = document.querySelectorAll('.prev-section');
+
+            // 初始化：展开第一个导航部分
+            const firstSection = document.querySelector('.nav-section');
+            toggleSection(firstSection.querySelector('.nav-title'), true);
+
+            // 导航链接点击事件
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // 更新激活状态
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应内容区域
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetSection) {
+                            section.classList.add('active');
+                            
+                            // 滚动到顶部
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            });
+
+            // 下一步按钮点击事件
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const targetId = href.substring(1);
+                        const targetLink = document.querySelector(`.nav-link[data-section="${targetId}"]`);
+                        if (targetLink) {
+                            targetLink.click();
+                        }
+                    }
+                });
+            });
+
+            // 上一步按钮点击事件
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const targetId = href.substring(1);
+                        const targetLink = document.querySelector(`.nav-link[data-section="${targetId}"]`);
+                        if (targetLink) {
+                            targetLink.click();
+                        }
+                    }
+                });
+            });
+
+            // URL hash 变化时跳转到对应部分
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetLink = document.querySelector(`.nav-link[data-section="${targetId}"]`);
+                if (targetLink) {
+                    setTimeout(() => targetLink.click(), 100);
+                }
+            }
+        });
+
+        // 导航部分展开/收起功能
+        function toggleSection(titleElement, forceExpand = false) {
+            const section = titleElement.closest('.nav-section');
+            const navItems = section.querySelector('.nav-items');
+            const chevron = titleElement.querySelector('.fa-chevron-down');
+            
+            // 如果是强制展开，直接展开并返回
+            if (forceExpand) {
+                navItems.classList.add('expanded');
+                chevron.style.transform = 'rotate(180deg)';
+                titleElement.classList.add('active');
+                return;
+            }
+            
+            // 切换展开状态
+            const isExpanded = navItems.classList.contains('expanded');
+            
+            // 更新当前部分
+            if (isExpanded) {
+                navItems.classList.remove('expanded');
+                chevron.style.transform = 'rotate(0deg)';
+                titleElement.classList.remove('active');
+            } else {
+                navItems.classList.add('expanded');
+                chevron.style.transform = 'rotate(180deg)';
+                titleElement.classList.add('active');
+            }
+            
+            // 可选：关闭其他展开的部分
+            /*
+            document.querySelectorAll('.nav-section').forEach(otherSection => {
+                if (otherSection !== section) {
+                    otherSection.querySelector('.nav-items').classList.remove('expanded');
+                    otherSection.querySelector('.nav-title').classList.remove('active');
+                    otherSection.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                }
+            });
+            */
+        }
+
+        // 打印功能
+        function printManual() {
+            window.print();
+        }
+
+        // 搜索功能
+        function searchInManual() {
+            const searchTerm = prompt('请输入搜索关键词：');
+            if (searchTerm) {
+                // 这里可以实现搜索功能，跳转到相关部分
+                alert(`搜索关键词: ${searchTerm}\n\n此功能将在后续版本中实现。`);
+            }
+        }
+    </script>
+</body>
+</html>

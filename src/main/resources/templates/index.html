@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础变量 */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-tertiary: #f8f9fa;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-light: #dee2e6;
+            --radius-md: 8px;
+            --radius-xl: 16px;
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --transition-normal: 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+        
+        /* 登录页面容器 */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 登录头部 - 减少顶部空白 */
+        .login-header {
+            background: var(--primary-color);
+            padding: 25px 30px 20px; /* 顶部内边距减少为25px */
+            text-align: center;
+        }
+        
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .login-logo i {
+            font-size: 30px;
+            background: var(--secondary-color);
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+        
+        /* 登录表单 */
+        .login-form {
+            padding: 35px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px 14px 50px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: all var(--transition-normal);
+            background: var(--bg-tertiary);
+            outline: none;
+        }
+        
+        .form-input:focus {
+            border-color: var(--secondary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        /* 角色选择 - 居中显示 */
+        .role-selection {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .role-btn {
+            flex: 0 1 140px; /* 固定宽度 */
+            padding: 14px 12px;
+            border: 2px solid var(--border-light);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .role-btn:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .role-btn.active {
+            border-color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .role-btn i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        /* 登录按钮 - 确保图标始终显示 */
+        .login-btn {
+            width: 100%;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+            position: relative;
+        }
+        
+        /* 确保登录图标始终显示 */
+        .login-btn i {
+            display: inline-block !important;
+            font-size: 18px;
+        }
+        
+        .login-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* 加载动画 */
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .login-btn.loading .btn-text {
+            opacity: 0;
+        }
+        
+        .login-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 演示账号区域 */
+        .demo-credentials {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-top: 25px;
+            font-size: 13px;
+        }
+        
+        .demo-credentials h4 {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .demo-credentials p {
+            margin: 8px 0;
+            color: var(--text-secondary);
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .demo-credentials p:hover {
+            background: rgba(52, 152, 219, 0.08);
+        }
+        
+        .demo-credentials p i {
+            margin-right: 8px;
+            width: 16px;
+        }
+        
+        /* 登录页脚 */
+        .login-footer {
+            text-align: center;
+            padding: 18px;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            font-size: 13px;
+            background: var(--bg-tertiary);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 20px 20px 15px;
+            }
+            
+            .login-form {
+                padding: 25px 20px;
+            }
+            
+            .role-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .role-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>DocIM</span> Stipend
+                </div>
+                <p class="login-subtitle">博士生津贴管理系统</p>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label">选择登录角色</label>
+                    <div class="role-selection">
+                        <div class="role-btn active" data-role="student">
+                            <i class="fas fa-user-graduate"></i>
+                            <div>博士生</div>
+                        </div>
+                        <div class="role-btn" data-role="admin">
+                            <i class="fas fa-user-cog"></i>
+                            <div>管理员</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">学号/账号</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" class="form-input" id="username" placeholder="请输入学号或账号">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-input" id="password" placeholder="请输入密码">
+                    </div>
+                </div>
+                
+                <button class="login-btn" id="loginButton" onclick="login()">
+                    <span class="btn-text">
+                        <i class="fas fa-sign-in-alt"></i>
+                        登录系统
+                    </span>
+                </button>
+                
+                <div class="demo-credentials">
+                    <h4>演示账号（点击快速填充）</h4>
+                    <p onclick="fillDemoCredentials('student')">
+                        <i class="fas fa-user-graduate"></i> 博士生：2401111713 / 123456
+                    </p>
+                    <p onclick="fillDemoCredentials('admin')">
+                        <i class="fas fa-user-cog"></i> 管理员：A2023001 / 123456
+                    </p>
+                </div>
+            </div>
+            
+            <div class="login-footer">
+                <p>© 2024 DocIM Stipend 系统 | 技术支持电话：400-123-4567</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 角色选择功能
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除所有按钮的active类
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                // 给当前点击的按钮添加active类
+                this.classList.add('active');
+                // 更新输入框提示语
+                updateFormPlaceholder(this.dataset.role);
+            });
+        });
+        
+        // 根据角色更新输入框提示语
+        function updateFormPlaceholder(role) {
+            const usernameInput = document.getElementById('username');
+            if (role === 'student') {
+                usernameInput.placeholder = '请输入学号（如：2401111713）';
+            } else {
+                usernameInput.placeholder = '请输入账号（如：A2023001）';
+            }
+        }
+        
+        // 填充演示账号
+        function fillDemoCredentials(role) {
+            // 激活对应的角色按钮
+            const roleBtns = document.querySelectorAll('.role-btn');
+            roleBtns.forEach(btn => {
+                if (btn.dataset.role === role) {
+                    btn.classList.add('active');
+                    updateFormPlaceholder(role);
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // 填充账号密码
+            if (role === 'student') {
+                document.getElementById('username').value = '2401111713';
+                document.getElementById('password').value = '123456';
+            } else {
+                document.getElementById('username').value = 'A2023001';
+                document.getElementById('password').value = '123456';
+            }
+        }
+        
+        // 模拟跳转延迟
+        function simulateRedirect(url, message) {
+            const loginBtn = document.getElementById('loginButton');
+            const btnText = loginBtn.querySelector('.btn-text');
+            
+            // 保存原始文本
+            const originalText = btnText.innerHTML;
+            
+            // 显示加载状态
+            loginBtn.classList.add('loading');
+            
+            // 显示成功消息
+            setTimeout(() => {
+                alert(message);
+                // 实际跳转到对应页面
+                window.location.href = url;
+            }, 800);
+        }
+        
+        // 登录功能
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('.role-btn.active').dataset.role;
+            
+            // 验证输入
+            if (!username) {
+                alert('请输入学号/账号');
+                document.getElementById('username').focus();
+                return;
+            }
+            
+            if (!password) {
+                alert('请输入密码');
+                document.getElementById('password').focus();
+                return;
+            }
+            
+            // 演示用验证逻辑
+            if (role === 'student' && username === '2401111713' && password === '123456') {
+                const userData = {
+                    id: username,
+                    name: '张三',
+                    role: '博士生',
+                    email: 'zhangsan@university.edu.cn',
+                    department: '计算机科学与技术学院',
+                    phone: '13800138000'
+                };
+                localStorage.setItem('docim_user', JSON.stringify(userData));
+                
+                // 显示加载动画并跳转到博士生面板
+                simulateRedirect('student-dashboard.html', '登录成功！正在跳转到博士生面板...');
+                
+            } else if (role === 'admin' && username === 'A2023001' && password === '123456') {
+                const userData = {
+                    id: username,
+                    name: '王管理员',
+                    role: '系统管理员',
+                    email: 'admin@university.edu.cn'
+                };
+                localStorage.setItem('docim_user', JSON.stringify(userData));
+                
+                // 显示加载动画并跳转到管理员面板
+                simulateRedirect('admin-dashboard.html', '登录成功！正在跳转到管理员面板...');
+                
+            } else {
+                alert('用户名或密码错误，请使用演示账号登录\n\n博士生账号：2401111713 / 123456\n管理员账号：A2023001 / 123456');
+            }
+        }
+        
+        // 回车键登录
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置初始提示语
+            updateFormPlaceholder('student');
+            
+            // 给演示账号添加点击效果
+            document.querySelectorAll('.demo-credentials p').forEach(p => {
+                p.addEventListener('click', function() {
+                    const role = this.innerText.includes('博士生') ? 'student' : 'admin';
+                    fillDemoCredentials(role);
+                });
+            });
+            
+            // 检查是否已经有登录信息，如果有则直接跳转
+            const userData = localStorage.getItem('docim_user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                const confirmRedirect = confirm(`检测到您已登录为：${user.name} (${user.role})\n是否直接跳转到${user.role === '博士生' ? '学生' : '管理员'}面板？`);
+                if (confirmRedirect) {
+                    if (user.role === '博士生') {
+                        window.location.href = 'student-dashboard.html';
+                    } else {
+                        window.location.href = 'admin-dashboard.html';
+                    }
+                } else {
+                    // 清除登录信息
+                    localStorage.removeItem('docim_user');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

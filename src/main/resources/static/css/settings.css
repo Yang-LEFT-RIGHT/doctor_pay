@@ -1,0 +1,654 @@
+/* css/settings.css - 系统设置页面样式 */
+
+/* 页面标题区域 */
+.page-header {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.page-title-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* 设置选项卡样式 */
+.settings-tabs {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.tabs-header {
+    display: flex;
+    border-bottom: 1px solid var(--border-light);
+    background-color: var(--bg-tertiary);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tabs-header::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    padding: 20px 25px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tab-btn:hover {
+    color: var(--secondary-color);
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.tab-btn.active {
+    color: var(--secondary-color);
+    border-bottom-color: var(--secondary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 设置部分样式 */
+.settings-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.settings-section .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* 设置网格布局 */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    transition: border-color var(--transition-fast);
+}
+
+.setting-item:hover {
+    border-color: var(--secondary-color);
+}
+
+.setting-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.setting-info {
+    flex: 1;
+    min-width: 200px;
+    margin-right: 20px;
+}
+
+.setting-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.setting-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.setting-control {
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 开关样式 */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--secondary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* 表单控件样式 */
+.setting-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: border-color var(--transition-fast);
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.setting-unit {
+    color: var(--text-secondary);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.setting-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.setting-select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.setting-display {
+    padding: 10px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.setting-textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+    transition: border-color var(--transition-fast);
+}
+
+.setting-textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+/* 权限管理表格 */
+.permissions-table {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.settings-table thead {
+    background-color: var(--bg-tertiary);
+}
+
+.settings-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-light);
+    white-space: nowrap;
+}
+
+.settings-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+}
+
+.settings-table tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+.settings-table tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* 危险区域样式 */
+.warning-section {
+    background-color: rgba(241, 196, 15, 0.05);
+    border: 1px solid rgba(241, 196, 15, 0.3);
+    border-radius: var(--radius-md);
+    padding: 25px;
+}
+
+.warning-section .section-title {
+    color: #f1c40f;
+}
+
+.danger-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.danger-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(231, 76, 60, 0.05);
+    border: 1px solid rgba(231, 76, 60, 0.2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.danger-item:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-color: rgba(231, 76, 60, 0.4);
+}
+
+.danger-info {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.danger-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+}
+
+.danger-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.btn-danger {
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* 关于系统样式 */
+.about-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.system-logo {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.system-logo i {
+    font-size: 32px;
+}
+
+.system-version {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.about-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 25px;
+    border: 1px solid var(--border-light);
+}
+
+.info-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-list li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.features-list li i {
+    color: var(--success-color);
+    font-size: 14px;
+}
+
+.system-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.detail-label {
+    min-width: 80px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    flex: 1;
+    color: var(--text-primary);
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.status-item {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-sm);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
+
+.status-icon.running {
+    background-color: var(--secondary-color);
+}
+
+.status-icon.good {
+    background-color: var(--success-color);
+}
+
+.status-icon.warning {
+    background-color: #f1c40f;
+}
+
+.status-icon.error {
+    background-color: var(--accent-color);
+}
+
+.status-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.status-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.about-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .setting-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .setting-info {
+        margin-right: 0;
+    }
+    
+    .setting-control {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .header-actions {
+        justify-content: center;
+    }
+    
+    .tabs-header {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        padding: 15px;
+    }
+    
+    .about-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .danger-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .btn-danger {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-content {
+        padding: 20px;
+    }
+    
+    .settings-section .section-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .about-actions {
+        flex-direction: column;
+    }
+    
+    .about-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+}

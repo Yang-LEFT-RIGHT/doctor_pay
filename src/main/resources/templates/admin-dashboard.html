@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员工作台 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item active">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <h1 class="page-title">管理员工作台</h1>
+            <p class="page-subtitle">欢迎回来，李老师。您有 <span class="highlight-text" id="unreadCount">5</span> 条未读通知。</p>
+            
+            <!-- 快速操作 -->
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">快速操作</h3>
+                </div>
+                
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" onclick="window.location.href='new-task.html'">
+                        <div class="action-icon primary">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>发布新任务</h4>
+                            <p>创建新的代偿/助教任务</p>
+                        </div>
+                    </button>
+                    
+                    <button class="quick-action-btn" onclick="window.location.href='batch-publish.html'">
+                        <div class="action-icon accent">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>批量发布</h4>
+                            <p>批量发布多个发布任务</p>
+                        </div>
+                    </button>
+                    
+                    <button class="quick-action-btn" onclick="window.location.href='export-data.html'">
+                        <div class="action-icon success">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>导出数据</h4>
+                            <p>导出任务和学生数据</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 近期发布任务 -->
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">近期发布的任务</h3>
+                    <a href="task-list-admin.html" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="task-list-admin">
+                    <div class="task-card" data-task-id="1">
+                        <div class="task-header">
+                            <div class="task-title-row">
+                                <h4>《计算机视觉》课程助教 - 实验课指导</h4>
+                                <span class="task-type-badge course">课程助教</span>
+                            </div>
+                            <span class="task-status pending">待确认</span>
+                        </div>
+                        
+                        <div class="task-content">
+                            <p class="task-description">负责每周二下午的实验课指导，协助学生完成图像处理实验，批改实验报告。</p>
+                            
+                            <div class="task-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>2人</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>2023-11-15</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>2023-11-30</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-money-bill"></i>
+                                    <span>40h</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="task-actions">
+                            <button class="btn btn-small btn-edit">编辑</button>
+                            <button class="btn btn-small btn-view">查看</button>
+                            <button class="btn btn-small btn-stats">统计</button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card" data-task-id="2">
+                        <div class="task-header">
+                            <div class="task-title-row">
+                                <h4>本科生毕业论文指导 - 每周例会</h4>
+                                <span class="task-type-badge thesis">论文指导</span>
+                            </div>
+                            <span class="task-status pending">待确认</span>
+                        </div>
+                        
+                        <div class="task-content">
+                            <p class="task-description">指导3名本科生的毕业论文，每周举行一次例会，提供研究方向和写作指导。</p>
+                            
+                            <div class="task-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>5人</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>2023-11-10</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>2023-12-05</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-money-bill"></i>
+                                    <span>8h</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="task-actions">
+                            <button class="btn btn-small btn-edit">编辑</button>
+                            <button class="btn btn-small btn-view">查看</button>
+                            <button class="btn btn-small btn-stats">统计</button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card" data-task-id="3">
+                        <div class="task-header">
+                            <div class="task-title-row">
+                                <h4>学院学术会议组织协助</h4>
+                                <span class="task-type-badge admin">行政协助</span>
+                            </div>
+                            <span class="task-status confirmed">已确认</span>
+                        </div>
+                        
+                        <div class="task-content">
+                            <p class="task-description">协助学院组织年度学术会议，负责参会人员登记、会场布置和设备调试。</p>
+                            
+                            <div class="task-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>6人</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>2023-11-05</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>2023-12-10</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-money-bill"></i>
+                                    <span>8h</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="task-actions">
+                            <button class="btn btn-small btn-edit">编辑</button>
+                            <button class="btn btn-small btn-view">查看</button>
+                            <button class="btn btn-small btn-stats">统计</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 待处理任务 -->
+            <div class="section" id="pending-tasks">
+                <div class="section-header">
+                    <h3 class="section-title">待处理任务</h3>
+                    <a href="task-list-admin.html?filter=pending" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="pending-list">
+                    <div class="pending-item" data-task-id="1">
+                        <div class="task-info">
+                            <h4>《数据结构》课程助教</h4>
+                            <div class="task-meta">
+                                <span><i class="fas fa-user-graduate"></i> 张三博士</span>
+                                <span><i class="far fa-calendar-alt"></i> 截止：2024-06-15</span>
+                                <span><i class="fas fa-money-bill"></i> 工作时长：40h</span>
+                            </div>
+                        </div>
+                        <div class="task-action">
+                            <span class="days-left warning">3天过期</span>
+                            <button class="btn btn-view-detail">处理</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pending-item" data-task-id="2">
+                        <div class="task-info">
+                            <h4>实验室设备维护</h4>
+                            <div class="task-meta">
+                                <span><i class="fas fa-user-graduate"></i> 李四博士</span>
+                                <span><i class="far fa-calendar-alt"></i> 截止：2024-06-10</span>
+                                <span><i class="fas fa-money-bill"></i> 工作时长：10h</span>
+                            </div>
+                        </div>
+                        <div class="task-action">
+                            <span class="days-left danger">今天过期</span>
+                            <button class="btn btn-view-detail">紧急处理</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pending-item" data-task-id="3">
+                        <div class="task-info">
+                            <h4>学术会议组织协助</h4>
+                            <div class="task-meta">
+                                <span><i class="fas fa-user-graduate"></i> 王五博士</span>
+                                <span><i class="far fa-calendar-alt"></i> 截止：2024-06-20</span>
+                                <span><i class="fas fa-money-bill"></i> 工作时长：8h</span>
+                            </div>
+                        </div>
+                        <div class="task-action">
+                            <span class="days-left">8天过期</span>
+                            <button class="btn btn-view-detail">处理</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

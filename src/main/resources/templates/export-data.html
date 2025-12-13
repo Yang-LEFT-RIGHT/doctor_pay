@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导出数据 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/admin-forms.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <!-- 侧边栏导航 -->
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="form-header">
+                <h1 class="page-title">导出数据</h1>
+                <p class="page-subtitle">导出系统数据用于报表生成或数据分析</p>
+            </div>
+            
+            <div class="export-container">
+                <!-- 数据选择 -->
+                <div class="data-selection">
+                    <h3 class="section-title">选择数据类型</h3>
+                    
+                    <div class="selection-grid">
+                        <div class="data-type-card" data-type="tasks">
+                            <div class="type-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="type-content">
+                                <h4>任务数据</h4>
+                                <p>包含所有任务信息、状态和完成情况</p>
+                                <span class="count-badge">23个任务</span>
+                            </div>
+                        </div>
+                        
+                        <div class="data-type-card" data-type="students">
+                            <div class="type-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="type-content">
+                                <h4>博士生数据</h4>
+                                <p>博士生基本信息、任务参与情况</p>
+                                <span class="count-badge">15名博士生</span>
+                            </div>
+                        </div>
+                        
+                        <div class="data-type-card" data-type="hours">
+                            <div class="type-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="type-content">
+                                <h4>工时记录</h4>
+                                <p>详细的工时记录和工作内容</p>
+                                <span class="count-badge">156条记录</span>
+                            </div>
+                        </div>
+                        
+                        <div class="data-type-card" data-type="stipend">
+                            <div class="type-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="type-content">
+                                <h4>津贴数据</h4>
+                                <p>津贴计算、发放记录和统计</p>
+                                <span class="count-badge">¥32,400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 筛选条件 -->
+                <div class="filter-section">
+                    <h3 class="section-title">筛选条件</h3>
+                    
+                    <div class="filter-options">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label>时间范围</label>
+                                <div class="date-range">
+                                    <input type="date" id="startDate" class="date-input">
+                                    <span>至</span>
+                                    <input type="date" id="endDate" class="date-input">
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label>院系筛选</label>
+                                <select id="departmentFilter" class="filter-select">
+                                    <option value="">全部院系</option>
+                                    <option value="cs">计算机学院</option>
+                                    <option value="ee">电子学院</option>
+                                    <option value="math">数学学院</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label>任务状态</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label small">
+                                        <input type="checkbox" name="status" value="pending" checked>
+                                        <span>待处理</span>
+                                    </label>
+                                    <label class="checkbox-label small">
+                                        <input type="checkbox" name="status" value="confirmed" checked>
+                                        <span>进行中</span>
+                                    </label>
+                                    <label class="checkbox-label small">
+                                        <input type="checkbox" name="status" value="completed" checked>
+                                        <span>已完成</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 导出格式 -->
+                <div class="format-section">
+                    <h3 class="section-title">导出格式</h3>
+                    
+                    <div class="format-options">
+                        <label class="radio-label">
+                            <input type="radio" name="format" value="excel" checked>
+                            <div class="format-card">
+                                <i class="fas fa-file-excel"></i>
+                                <div class="format-info">
+                                    <h4>Excel格式 (.xlsx)</h4>
+                                    <p>适合数据分析和进一步处理</p>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="format" value="csv">
+                            <div class="format-card">
+                                <i class="fas fa-file-csv"></i>
+                                <div class="format-info">
+                                    <h4>CSV格式 (.csv)</h4>
+                                    <p>通用格式，适合导入其他系统</p>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="format" value="pdf">
+                            <div class="format-card">
+                                <i class="fas fa-file-pdf"></i>
+                                <div class="format-info">
+                                    <h4>PDF格式 (.pdf)</h4>
+                                    <p>适合打印和正式提交</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 导出操作 -->
+                <div class="export-actions">
+                    <div class="action-summary">
+                        <div class="summary-item">
+                            <span>已选数据类型:</span>
+                            <span id="selectedTypes">0种</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>预计数据量:</span>
+                            <span id="estimatedCount">0条记录</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i> 返回
+                        </button>
+                        <button class="btn btn-primary" onclick="startExport()">
+                            <i class="fas fa-download"></i> 开始导出
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 导出历史 -->
+                <div class="export-history">
+                    <h3 class="section-title">最近导出记录</h3>
+                    <div class="history-list">
+                        <!-- 历史记录将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/export-data.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

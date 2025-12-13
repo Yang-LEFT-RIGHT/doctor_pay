@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博士生管理 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/student-list.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item active">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item active">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">博士生管理</h1>
+                    <p class="page-subtitle">管理博士生账户信息，查看统计数据和分配任务</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="importStudents()">
+                        <i class="fas fa-file-import"></i>
+                        批量导入
+                    </button>
+                    <button class="btn-primary" onclick="addStudent()">
+                        <i class="fas fa-user-plus"></i>
+                        添加博士生
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 博士生统计 -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalStudents">15</div>
+                        <div class="stat-label">博士生总数</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalTasks">45</div>
+                        <div class="stat-label">总任务数</div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- 搜索和筛选 -->
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="studentSearch" placeholder="搜索博士生姓名、学号或专业...">
+                    <button class="search-clear" id="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn-secondary" onclick="toggleFilters()">
+                        <i class="fas fa-filter"></i>
+                        筛选
+                    </button>
+                    <button class="btn-secondary" onclick="exportData()">
+                        <i class="fas fa-file-export"></i>
+                        导出数据
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 筛选条件 -->
+            <div class="filter-section" id="filterSection">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">学生状态</label>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="">全部状态</option>
+                            <option value="active">未完成任务</option>
+                            <option value="graduated">已毕业</option>
+                            <option value="suspended">休学</option>
+                            <option value="inactive">已完成任务</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">学院/专业</label>
+                        <select class="filter-select" id="departmentFilter">
+                            <option value="">全部学院</option>
+                            <option value="computer">计算机学院</option>
+                            <option value="electronic">电子信息学院</option>
+                            <option value="automation">自动化学院</option>
+                            <option value="management">管理学院</option>
+                            <option value="ai">人工智能学院</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">入学年份</label>
+                        <select class="filter-select" id="yearFilter">
+                            <option value="">全部年份</option>
+                            <option value="2023">2023级</option>
+                            <option value="2022">2022级</option>
+                            <option value="2021">2021级</option>
+                            <option value="2020">2020级</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">排序方式</label>
+                        <select class="filter-select" id="sortFilter">
+                            <option value="name">按姓名排序</option>
+                            <option value="tasks">按任务数排序</option>
+                            <option value="stipend">按津贴总额排序</option>
+                            <option value="year">按入学年份排序</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn-outline" onclick="clearFilters()">
+                        <i class="fas fa-times"></i>
+                        清除筛选
+                    </button>
+                    <button class="btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-check"></i>
+                        应用筛选
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 博士生列表 -->
+            <div class="students-section">
+                <div class="section-header">
+                    <div class="section-info">
+                        <h3 class="section-title">博士生列表</h3>
+                        <div class="students-count">
+                            共 <span id="filteredCount">15</span> 名博士生
+                        </div>
+                    </div>
+                    <div class="view-controls">
+                        <div class="view-toggle">
+                            <button class="view-btn active" onclick="switchView('table')">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="view-btn" onclick="switchView('card')">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 表格视图 -->
+                <div class="students-table-view" id="tableView">
+                    <div class="table-container">
+                        <table class="students-table">
+                            <thead>
+                                <tr>
+                                    <th class="student-info-col">博士生信息</th>
+                                    <th class="student-contact-col">联系方式</th>
+                                    <th class="student-status-col">状态</th>
+                                    <th class="student-tasks-col">任务统计</th>
+                                    <th class="student-actions-col">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <!-- 博士生数据将通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 分页控制 -->
+                    <div class="pagination-controls">
+                        <div class="pagination-info">
+                            <span id="paginationInfo">显示 1-6 条，共 15 条记录</span>
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="pagination-btn" id="prevPageBtn" onclick="prevPage()" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="page-numbers" id="pageNumbers">
+                                <button class="page-number active">1</button>
+                                <button class="page-number">2</button>
+                                <button class="page-number">3</button>
+                            </div>
+                            <button class="pagination-btn" id="nextPageBtn" onclick="nextPage()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="rows-per-page">
+                            <select id="rowsPerPage" onchange="changeRowsPerPage()">
+                                <option value="10">10条/页</option>
+                                <option value="20" selected>20条/页</option>
+                                <option value="50">50条/页</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 卡片视图 -->
+                <div class="students-card-view" id="cardView" style="display: none;">
+                    <div class="students-grid" id="studentsGrid">
+                        <!-- 博士生卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 空状态 -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>暂无博士生数据</h3>
+                    <p>当前筛选条件下没有找到博士生，尝试调整筛选条件或添加新博士生</p>
+                    <button class="btn-primary" onclick="addStudent()">
+                        <i class="fas fa-user-plus"></i>
+                        添加博士生
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加博士生模态框 -->
+    <div class="modal-overlay" id="addStudentModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">添加博士生</h3>
+                <button class="modal-close" onclick="closeAddStudentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="addStudentForm" onsubmit="return handleAddStudent(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentName">姓名 *</label>
+                            <input type="text" id="studentName" name="name" required placeholder="请输入博士生姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentNumber">学号 *</label>
+                            <input type="text" id="studentNumber" name="number" required placeholder="请输入学号">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentEmail">邮箱 *</label>
+                            <input type="email" id="studentEmail" name="email" required placeholder="请输入邮箱地址">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentPhone">手机号</label>
+                            <input type="tel" id="studentPhone" name="phone" placeholder="请输入手机号">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentDepartment">学院 *</label>
+                            <select id="studentDepartment" name="department" required>
+                                <option value="">请选择学院</option>
+                                <option value="computer">计算机学院</option>
+                                <option value="electronic">电子信息学院</option>
+                                <option value="automation">自动化学院</option>
+                                <option value="management">管理学院</option>
+                                <option value="ai">人工智能学院</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentMajor">专业方向</label>
+                            <input type="text" id="studentMajor" name="major" placeholder="请输入专业方向">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentAdvisor">导师</label>
+                            <input type="text" id="studentAdvisor" name="advisor" placeholder="请输入导师姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentYear">入学年份 *</label>
+                            <select id="studentYear" name="year" required>
+                                <option value="">请选择年份</option>
+                                <option value="2023">2023级</option>
+                                <option value="2022">2022级</option>
+                                <option value="2021">2021级</option>
+                                <option value="2020">2020级</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeAddStudentModal()">
+                            取消
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            添加博士生
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/student-list.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

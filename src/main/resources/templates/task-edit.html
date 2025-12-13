@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑任务 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/task-detail-admin.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <!-- 通知内容 -->
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="task-detail-header">
+                <div class="header-left">
+                    <h1 class="page-title">编辑任务</h1>
+                    <div class="task-meta-info">
+                        <span class="task-type-badge course">课程助教</span>
+                        <span class="task-id">任务ID: TA-2024-006</span>
+                        <span class="publish-date">发布时间: 2024-05-15</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="window.location.href='task-detail-admin.html?id=1'">
+                        <i class="fas fa-eye"></i> 查看
+                    </button>
+                    <button class="btn btn-outline" onclick="window.location.href='task-stats.html?id=1'">
+                        <i class="fas fa-chart-bar"></i> 统计
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 编辑表单 -->
+            <div class="edit-form-container">
+                <form id="editTaskForm" class="task-form">
+                    <!-- 基本信息 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-info-circle"></i> 基本信息</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskTitle">任务标题 <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" name="taskTitle" 
+                                       value="《数据结构》课程助教 - 实验课指导" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="taskType">任务类型 <span class="required">*</span></label>
+                                <select id="taskType" name="taskType" required>
+                                    <option value="">请选择任务类型</option>
+                                    <option value="course" selected>课程助教</option>
+                                    <option value="thesis">论文指导</option>
+                                    <option value="lab">实验室工作</option>
+                                    <option value="admin">行政协助</option>
+                                    <option value="research">科研助理</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="department">所属院系 <span class="required">*</span></label>
+                                <select id="department" name="department" required>
+                                    <option value="">请选择院系</option>
+                                    <option value="cs" selected>计算机科学与技术学院</option>
+                                    <option value="ee">电子信息工程学院</option>
+                                    <option value="math">数学科学学院</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 人员与时间 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-users"></i> 人员与时间要求</h3>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="requiredPeople">需求人数 <span class="required">*</span></label>
+                                <input type="number" id="requiredPeople" name="requiredPeople" 
+                                       value="2" min="1" max="10" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="workHours">预计总工时 <span class="required">*</span></label>
+                                <input type="number" id="workHours" name="workHours" 
+                                       value="40" min="1" max="200" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="publishDate">发布日期</label>
+                                <input type="date" id="publishDate" name="publishDate" 
+                                       value="2024-05-15" disabled>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deadline">截止日期 <span class="required">*</span></label>
+                                <input type="date" id="deadline" name="deadline" 
+                                       value="2024-06-15" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 任务详情 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-clipboard-list"></i> 任务详情</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskDescription">任务描述 <span class="required">*</span></label>
+                                <textarea id="taskDescription" name="taskDescription" rows="6" required>
+负责每周二下午的实验课指导，协助学生完成图像处理实验，批改实验报告。需要熟悉Python编程和数据结构相关知识。
+                                </textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="requirements">具体要求</label>
+                                <textarea id="requirements" name="requirements" rows="4">
+1. 熟悉Python编程语言
+2. 了解数据结构与算法
+3. 具有良好的沟通能力
+4. 每周至少能保证4小时工作时间
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 津贴标准 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-money-bill-wave"></i> 津贴标准</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stipendRate">津贴标准 <span class="required">*</span></label>
+                                <div class="stipend-input-group">
+                                    <input type="number" id="stipendRate" name="stipendRate" 
+                                           value="40" min="20" max="100" step="5" required>
+                                    <span class="input-suffix">元/小时</span>
+                                </div>
+                                <div class="total-stipend-display">
+                                    预计总津贴: <span id="totalStipend">1,600</span> 元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 任务状态 -->
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-tasks"></i> 任务状态</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskStatus">当前状态</label>
+                                <select id="taskStatus" name="taskStatus">
+                                    <option value="pending" selected>待确认</option>
+                                    <option value="confirmed">已确认</option>
+                                    <option value="in_progress">进行中</option>
+                                    <option value="completed">已完成</option>
+                                    <option value="cancelled">已取消</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="statusReason">状态说明</label>
+                                <textarea id="statusReason" name="statusReason" rows="3" 
+                                          placeholder="如有状态变更，请说明原因..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 表单操作 -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-danger" onclick="showDeleteConfirm()">
+                            <i class="fas fa-trash"></i> 删除任务
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存修改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 删除确认模态框 -->
+    <div class="modal-overlay" id="deleteModal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 确认删除</h3>
+                <button class="modal-close" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p>确定要删除任务 "<strong>《数据结构》课程助教 - 实验课指导</strong>" 吗？</p>
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>删除后将无法恢复，所有相关数据都将被清除。</span>
+                </div>
+                <div class="form-group">
+                    <label for="deleteReason">删除原因 <span class="required">*</span></label>
+                    <select id="deleteReason" required>
+                        <option value="">请选择删除原因</option>
+                        <option value="duplicate">重复发布</option>
+                        <option value="error">信息错误</option>
+                        <option value="cancelled">任务取消</option>
+                        <option value="other">其他原因</option>
+                    </select>
+                    <textarea id="deleteReasonDetail" rows="3" placeholder="请详细说明删除原因..." 
+                              style="display: none; margin-top: 10px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">
+                    取消
+                </button>
+                <button class="btn btn-danger" onclick="confirmDelete()">
+                    确认删除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/task-edit.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速检索 - 博士生管理系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #4caf50;
+            --light-bg: #f5f5f5;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', '思源黑体', sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部样式 */
+        .search-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .search-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .search-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 搜索框样式 */
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 热门搜索标签 */
+        .popular-searches {
+            margin-top: 25px;
+        }
+
+        .tag-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-tag {
+            padding: 8px 16px;
+            background-color: var(--light-bg);
+            border-radius: 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 搜索结果区域 */
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        /* 常见问题区域 */
+        .faq-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .faq-category {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-list {
+            list-style: none;
+        }
+
+        .faq-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background-color: rgba(44, 62, 80, 0.05);
+            color: var(--primary-color);
+        }
+
+        /* 结果卡片 */
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .result-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #e8f5e9;
+            color: var(--secondary-color);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .result-content {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .result-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .result-link:hover {
+            color: #1a252f;
+            gap: 8px;
+        }
+
+        /* 无结果状态 */
+        .no-results {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .search-header h1 {
+                font-size: 2rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .faq-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .search-tags {
+                justify-content: center;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 页面头部 -->
+        <header class="search-header">
+            <h1>
+                <i class="fas fa-search"></i>
+                快速检索
+            </h1>
+            <p>输入关键词查找相关问题与答案，快速获取帮助信息</p>
+        </header>
+
+        <!-- 搜索区域 -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" 
+                           id="search-input" 
+                           placeholder="请输入关键词，如：津贴发放、任务确认、账户设置、系统操作..." 
+                           autocomplete="off">
+                    <button id="search-btn" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        搜索
+                    </button>
+                </div>
+                
+                <!-- 热门搜索标签 -->
+                <div class="popular-searches">
+                    <span class="tag-label">热门搜索：</span>
+                    <div class="search-tags">
+                        <a href="#" class="search-tag" data-keyword="津贴发放">津贴发放时间</a>
+                        <a href="#" class="search-tag" data-keyword="任务确认">如何确认任务</a>
+                        <a href="#" class="search-tag" data-keyword="银行账户">修改银行账户</a>
+                        <a href="#" class="search-tag" data-keyword="任务状态">任务状态说明</a>
+                        <a href="#" class="search-tag" data-keyword="系统登录">登录问题解决</a>
+                        <a href="#" class="search-tag" data-keyword="数据导出">报表导出方法</a>
+                    </div>
+                </div>
+
+                <!-- 搜索结果区域 -->
+                <div id="results-section" class="results-section">
+                    <div class="results-header">
+                        <h3>搜索结果</h3>
+                        <span id="results-count" class="results-count">找到 0 个结果</span>
+                    </div>
+                    <div id="results-container" class="results-grid">
+                        <!-- 搜索结果将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题分类 -->
+        <section class="faq-section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                常见问题分类
+            </h2>
+            
+            <div class="faq-categories">
+                <!-- 账户与个人设置 -->
+                <div class="faq-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-user-cog"></i>
+                        账户与个人设置
+                    </h3>
+                    <ul class="faq-list">
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="修改密码">如何修改登录密码？</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="银行账户">如何更新银行账户信息？</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="个人信息">个人信息填写规范说明</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="账户安全">账户安全设置建议</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 任务管理 -->
+                <div class="faq-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-tasks"></i>
+                        任务管理
+                    </h3>
+                    <ul class="faq-list">
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="任务确认">如何确认或拒绝任务？</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="任务状态">任务状态说明和含义</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="任务附件">任务附件下载和查看方法</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="任务统计">如何查看个人任务统计？</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 津贴与报表 -->
+                <div class="faq-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-chart-bar"></i>
+                        津贴与报表
+                    </h3>
+                    <ul class="faq-list">
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="津贴发放">津贴发放时间和标准</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="报表导出">如何导出个人统计报表？</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="数据统计">数据统计规则说明</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="津贴查询">历史津贴查询方法</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 系统操作 -->
+                <div class="faq-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-desktop"></i>
+                        系统操作
+                    </h3>
+                    <ul class="faq-list">
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="系统登录">登录失败问题排查</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="消息通知">消息通知设置和管理</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="文件上传">文件上传格式和大小限制</a>
+                        </li>
+                        <li class="faq-item">
+                            <a href="#" class="faq-question" data-keyword="系统兼容">浏览器兼容性要求</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 模拟数据库 - 实际项目中应该从后端API获取
+        const faqDatabase = [
+            {
+                id: 1,
+                title: "如何修改登录密码？",
+                content: "登录系统后，进入'个人中心' > '账户安全'页面，点击'修改密码'按钮，按照提示输入原密码和新密码完成修改。",
+                category: "账户与个人设置",
+                keywords: ["修改密码", "密码重置", "账户安全"],
+                link: "profile.html#security"
+            },
+            {
+                id: 2,
+                title: "津贴发放时间和标准",
+                content: "博士生津贴每月15日发放，遇节假日顺延。发放标准根据任务完成情况和学时计算，具体可在'个人统计报表'中查看明细。",
+                category: "津贴与报表",
+                keywords: ["津贴发放", "发放时间", "津贴标准", "工资"],
+                link: "statistics.html"
+            },
+            {
+                id: 3,
+                title: "如何确认或拒绝任务？",
+                content: "在'我的任务'页面，找到待处理的任务，点击'查看详情'进入任务详情页，页面底部有'确认'和'拒绝'按钮。确认任务后系统会自动记录工时。",
+                category: "任务管理",
+                keywords: ["任务确认", "任务拒绝", "任务处理", "确认任务"],
+                link: "task-detail.html"
+            },
+            {
+                id: 4,
+                title: "如何更新银行账户信息？",
+                content: "进入'个人中心' > '银行账户'页面，点击'编辑'按钮修改账户信息。请确保账户信息准确无误，以免影响津贴发放。",
+                category: "账户与个人设置",
+                keywords: ["银行账户", "账户信息", "银行卡", "账户修改"],
+                link: "profile.html#bank"
+            },
+            {
+                id: 5,
+                title: "任务状态说明和含义",
+                content: "任务状态分为：待确认（等待处理）、已确认（任务接受）、进行中（任务执行）、已完成（任务结束）、已拒绝（拒绝任务）。不同状态对应不同操作权限。",
+                category: "任务管理",
+                keywords: ["任务状态", "状态说明", "状态含义", "任务进度"],
+                link: "guide.html#task-status"
+            },
+            {
+                id: 6,
+                title: "如何导出个人统计报表？",
+                content: "在'统计报表'页面，选择需要导出的时间段和报表类型，点击'导出'按钮，可选择Excel或PDF格式下载报表。",
+                category: "津贴与报表",
+                keywords: ["报表导出", "数据导出", "导出报表", "Excel导出"],
+                link: "statistics.html#export"
+            },
+            {
+                id: 7,
+                title: "登录失败问题排查",
+                content: "如遇登录问题：1. 检查网络连接 2. 确认账号密码正确 3. 清除浏览器缓存 4. 尝试更换浏览器 5. 联系系统管理员。",
+                category: "系统操作",
+                keywords: ["系统登录", "登录失败", "登录问题", "无法登录"],
+                link: "manual.html#login-help"
+            },
+            {
+                id: 8,
+                title: "消息通知设置和管理",
+                content: "在'个人中心' > '通知设置'页面，可以管理各类通知的接收方式（站内消息、邮件、短信），以及设置免打扰时段。",
+                category: "系统操作",
+                keywords: ["消息通知", "通知设置", "消息管理", "通知提醒"],
+                link: "profile.html#notifications"
+            },
+            {
+                id: 9,
+                title: "文件上传格式和大小限制",
+                content: "系统支持上传的文件格式：PDF、DOC、DOCX、XLS、XLSX、JPG、PNG，单个文件大小不超过20MB。建议使用PDF格式确保兼容性。",
+                category: "系统操作",
+                keywords: ["文件上传", "上传格式", "文件大小", "附件上传"],
+                link: "manual.html#upload"
+            },
+            {
+                id: 10,
+                title: "如何查看个人任务统计？",
+                content: "进入'统计报表'页面，系统默认显示当前学期的任务统计，包括完成情况、工时统计、津贴明细等可视化数据。",
+                category: "任务管理",
+                keywords: ["任务统计", "个人统计", "工时统计", "统计查看"],
+                link: "statistics.html"
+            }
+        ];
+
+        // DOM元素
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const resultsSection = document.getElementById('results-section');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsCount = document.getElementById('results-count');
+        const searchTags = document.querySelectorAll('.search-tag');
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        // 搜索功能
+        function performSearch(keyword) {
+            if (!keyword.trim()) {
+                resultsSection.style.display = 'none';
+                return;
+            }
+
+            // 清空之前的结果
+            resultsContainer.innerHTML = '';
+            
+            // 搜索匹配
+            const searchTerm = keyword.toLowerCase();
+            const matchedResults = faqDatabase.filter(item => {
+                // 在标题、内容、关键词中搜索
+                const searchText = (
+                    item.title.toLowerCase() + 
+                    item.content.toLowerCase() + 
+                    item.keywords.join(' ').toLowerCase()
+                );
+                return searchText.includes(searchTerm);
+            });
+
+            // 显示结果数量
+            resultsCount.textContent = `找到 ${matchedResults.length} 个结果`;
+            
+            // 显示或隐藏结果区域
+            if (matchedResults.length > 0) {
+                resultsSection.style.display = 'block';
+                
+                // 生成结果卡片
+                matchedResults.forEach(result => {
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'result-card fade-in';
+                    
+                    // 高亮搜索关键词
+                    const highlightedTitle = highlightText(result.title, searchTerm);
+                    const highlightedContent = highlightText(
+                        result.content.length > 150 
+                            ? result.content.substring(0, 150) + '...' 
+                            : result.content, 
+                        searchTerm
+                    );
+                    
+                    resultCard.innerHTML = `
+                        <div class="result-header">
+                            <div>
+                                <h4 class="result-title">${highlightedTitle}</h4>
+                                <span class="result-category">${result.category}</span>
+                            </div>
+                        </div>
+                        <p class="result-content">${highlightedContent}</p>
+                        <a href="${result.link}" class="result-link" target="_blank">
+                            查看详情 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    `;
+                    
+                    resultsContainer.appendChild(resultCard);
+                });
+            } else {
+                // 无结果时显示提示
+                resultsSection.style.display = 'block';
+                resultsContainer.innerHTML = `
+                    <div class="no-results fade-in">
+                        <i class="fas fa-search"></i>
+                        <h3>未找到相关结果</h3>
+                        <p>请尝试使用其他关键词搜索，或浏览下方的常见问题分类</p>
+                    </div>
+                `;
+            }
+            
+            // 滚动到结果区域
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 文本高亮函数
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span style="background-color: #ffeb3b; padding: 2px 4px; border-radius: 3px;">$1</span>');
+        }
+
+        // 事件监听
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value.trim());
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value.trim());
+            }
+        });
+
+        // 热门标签点击事件
+        searchTags.forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.preventDefault();
+                const keyword = tag.getAttribute('data-keyword');
+                searchInput.value = keyword;
+                performSearch(keyword);
+            });
+        });
+
+        // 常见问题点击事件
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', (e) => {
+                e.preventDefault();
+                const keyword = question.getAttribute('data-keyword');
+                searchInput.value = keyword;
+                performSearch(keyword);
+            });
+        });
+
+        // 页面加载时聚焦搜索框
+        window.addEventListener('load', () => {
+            searchInput.focus();
+        });
+
+        // 搜索框自动建议（简单实现）
+        searchInput.addEventListener('input', function() {
+            const value = this.value.toLowerCase();
+            if (value.length >= 2) {
+                // 这里可以实现更复杂的自动完成功能
+                const suggestions = Array.from(
+                    new Set(faqDatabase.flatMap(item => item.keywords))
+                ).filter(keyword => 
+                    keyword.toLowerCase().includes(value)
+                ).slice(0, 5);
+                
+                // 实际项目中可以显示下拉建议列表
+                console.log('搜索建议:', suggestions);
+            }
+        });
+    </script>
+</body>
+</html>

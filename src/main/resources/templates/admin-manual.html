@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员手册 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/manual.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="admin-management.html" class="sidebar-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>管理员管理</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">管理员手册</h1>
+                    <p class="page-subtitle">详细管理功能说明文档，包含所有操作步骤</p>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="search-box manual-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="manualSearch" placeholder="搜索手册内容..." oninput="searchManual()">
+                        <button class="search-clear" onclick="clearSearch()" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button class="btn-secondary" onclick="printManual()">
+                        <i class="fas fa-print"></i>
+                        打印手册
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 手册目录 -->
+            <div class="manual-toc">
+                <div class="toc-header">
+                    <h3><i class="fas fa-list"></i> 目录</h3>
+                    <button class="btn-icon" onclick="toggleToc()" title="展开/收起目录">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#chapter1" class="toc-link" onclick="scrollToChapter('chapter1')">第1章 系统概述</a></li>
+                        <li><a href="#chapter2" class="toc-link" onclick="scrollToChapter('chapter2')">第2章 工作台管理</a></li>
+                        <li><a href="#chapter3" class="toc-link" onclick="scrollToChapter('chapter3')">第3章 任务管理</a>
+                            <ul class="toc-sublist">
+                                <li><a href="#chapter3-1" class="toc-link" onclick="scrollToChapter('chapter3-1')">3.1 任务发布流程</a></li>
+                                <li><a href="#chapter3-2" class="toc-link" onclick="scrollToChapter('chapter3-2')">3.2 任务分配与跟踪</a></li>
+                                <li><a href="#chapter3-3" class="toc-link" onclick="scrollToChapter('chapter3-3')">3.3 津贴计算与发放</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#chapter4" class="toc-link" onclick="scrollToChapter('chapter4')">第4章 博士生管理</a>
+                            <ul class="toc-sublist">
+                                <li><a href="#chapter4-1" class="toc-link" onclick="scrollToChapter('chapter4-1')">4.1 博士生信息管理</a></li>
+                                <li><a href="#chapter4-2" class="toc-link" onclick="scrollToChapter('chapter4-2')">4.2 博士生状态跟踪</a></li>
+                                <li><a href="#chapter4-3" class="toc-link" onclick="scrollToChapter('chapter4-3')">4.3 批量操作指南</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#chapter5" class="toc-link" onclick="scrollToChapter('chapter5')">第5章 统计分析</a></li>
+                        <li><a href="#chapter6" class="toc-link" onclick="scrollToChapter('chapter6')">第6章 系统设置</a>
+                            <ul class="toc-sublist">
+                                <li><a href="#chapter6-1" class="toc-link" onclick="scrollToChapter('chapter6-1')">6.1 常规设置</a></li>
+                                <li><a href="#chapter6-2" class="toc-link" onclick="scrollToChapter('chapter6-2')">6.2 权限管理</a></li>
+                                <li><a href="#chapter6-3" class="toc-link" onclick="scrollToChapter('chapter6-3')">6.3 通知设置</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#chapter7" class="toc-link" onclick="scrollToChapter('chapter7')">第7章 管理员管理</a></li>
+                        <li><a href="#chapter8" class="toc-link" onclick="scrollToChapter('chapter8')">第8章 故障排除</a></li>
+                        <li><a href="#appendix" class="toc-link" onclick="scrollToChapter('appendix')">附录</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 手册内容 -->
+            <div class="manual-content">
+                <!-- 第1章：系统概述 -->
+                <section id="chapter1" class="manual-chapter">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">第1章 系统概述</h2>
+                        <span class="chapter-number">1</span>
+                    </div>
+                    
+                    <div class="chapter-body">
+                        <h3>1.1 系统简介</h3>
+                        <p><strong>DocIM Stipend</strong> 是专为高校设计的博士生助教/代管任务管理系统，旨在简化和规范化博士生任务分配、津贴管理和数据统计流程。</p>
+                        
+                        <div class="system-architecture">
+                            <h4>系统架构</h4>
+                            <div class="architecture-diagram">
+                                <div class="layer">
+                                    <div class="layer-title">表示层</div>
+                                    <div class="layer-content">用户界面（管理员端、博士生端）</div>
+                                </div>
+                                <div class="layer">
+                                    <div class="layer-title">应用层</div>
+                                    <div class="layer-content">
+                                        <ul>
+                                            <li>任务管理模块</li>
+                                            <li>学生管理模块</li>
+                                            <li>统计分析模块</li>
+                                            <li>系统设置模块</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="layer">
+                                    <div class="layer-title">数据层</div>
+                                    <div class="layer-content">数据库（任务数据、学生信息、系统配置）</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3>1.2 主要功能模块</h3>
+                        <div class="modules-grid">
+                            <div class="module-card">
+                                <div class="module-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="module-content">
+                                    <h5>任务管理</h5>
+                                    <p>发布、分配、跟踪任务，管理津贴计算</p>
+                                </div>
+                            </div>
+                            <div class="module-card">
+                                <div class="module-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="module-content">
+                                    <h5>博士生管理</h5>
+                                    <p>博士生信息管理、状态跟踪、任务分配</p>
+                                </div>
+                            </div>
+                            <div class="module-card">
+                                <div class="module-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div class="module-content">
+                                    <h5>统计分析</h5>
+                                    <p>数据报表、趋势分析、绩效评估</p>
+                                </div>
+                            </div>
+                            <div class="module-card">
+                                <div class="module-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="module-content">
+                                    <h5>系统设置</h5>
+                                    <p>参数配置、权限管理、通知设置</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 第2章：工作台管理 -->
+                <section id="chapter2" class="manual-chapter">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">第2章 工作台管理</h2>
+                        <span class="chapter-number">2</span>
+                    </div>
+                    
+                    <div class="chapter-body">
+                        <h3>2.1 工作台布局</h3>
+                        <p>管理员工作台是系统的控制中心，包含以下区域：</p>
+                        
+                        <div class="layout-diagram">
+                            <div class="layout-item header">
+                                <div class="layout-label">顶部导航栏</div>
+                                <div class="layout-desc">包含Logo、主要导航、用户信息和通知</div>
+                            </div>
+                            <div class="layout-container">
+                                <div class="layout-item sidebar">
+                                    <div class="layout-label">侧边栏</div>
+                                    <div class="layout-desc">功能模块导航菜单</div>
+                                </div>
+                                <div class="layout-item main">
+                                    <div class="layout-label">主内容区</div>
+                                    <div class="layout-desc">
+                                        <div class="sub-item">数据概览卡片</div>
+                                        <div class="sub-item">快速操作区域</div>
+                                        <div class="sub-item">近期任务列表</div>
+                                        <div class="sub-item">待处理事项</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-item footer">
+                                <div class="layout-label">全局页脚</div>
+                                <div class="layout-desc">帮助中心与支持链接</div>
+                            </div>
+                        </div>
+                        
+                        <h3>2.2 数据概览</h3>
+                        <p>工作台首页显示的关键统计数据包括：</p>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>统计项目</th>
+                                    <th>说明</th>
+                                    <th>更新频率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>待处理任务</td>
+                                    <td>需要管理员确认或审批的任务数量</td>
+                                    <td>实时</td>
+                                </tr>
+                                <tr>
+                                    <td>进行中任务</td>
+                                    <td>博士生正在执行的任务数量</td>
+                                    <td>每5分钟</td>
+                                </tr>
+                                <tr>
+                                    <td>总博士生数</td>
+                                    <td>系统中注册的博士生总数</td>
+                                    <td>实时</td>
+                                </tr>
+                                <tr>
+                                    <td>活跃博士生</td>
+                                    <td>当前有任务在执行的博士生数量</td>
+                                    <td>每5分钟</td>
+                                </tr>
+                                <tr>
+                                    <td>本月津贴总额</td>
+                                    <td>本月已发放和待发放的津贴总额</td>
+                                    <td>每天</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>2.3 快速操作</h3>
+                        <div class="quick-operations">
+                            <div class="operation-item">
+                                <div class="operation-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="operation-content">
+                                    <h5>发布新任务</h5>
+                                    <p>点击后跳转到任务发布页面，创建新的助教或代管任务</p>
+                                </div>
+                            </div>
+                            <div class="operation-item">
+                                <div class="operation-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="operation-content">
+                                    <h5>批量发布</h5>
+                                    <p>一次性发布多个相同或类似的任务</p>
+                                </div>
+                            </div>
+                            <div class="operation-item">
+                                <div class="operation-icon">
+                                    <i class="fas fa-file-export"></i>
+                                </div>
+                                <div class="operation-content">
+                                    <h5>导出数据</h5>
+                                    <p>导出当前数据为Excel、PDF或CSV格式</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 第3章：任务管理 -->
+                <section id="chapter3" class="manual-chapter">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">第3章 任务管理</h2>
+                        <span class="chapter-number">3</span>
+                    </div>
+                    
+                    <div class="chapter-body">
+                        <h3 id="chapter3-1">3.1 任务发布流程</h3>
+                        <p>发布新任务的完整步骤：</p>
+                        
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">步骤1</span>
+                                    <span class="step-title">进入任务发布页面</span>
+                                </div>
+                                <div class="step-content">
+                                    <p>点击工作台的"发布新任务"按钮或从侧边栏进入"任务管理" → "发布新任务"</p>
+                                    <div class="step-screenshot">
+                                        <div class="screenshot-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <span>任务发布界面截图</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">步骤2</span>
+                                    <span class="step-title">填写任务信息</span>
+                                </div>
+                                <div class="step-content">
+                                    <div class="form-fields">
+                                        <div class="field-group">
+                                            <span class="field-label">必填字段：</span>
+                                            <ul>
+                                                <li>任务标题</li>
+                                                <li>任务类型</li>
+                                                <li>任务描述</li>
+                                                <li>截止日期</li>
+                                                <li>津贴标准</li>
+                                            </ul>
+                                        </div>
+                                        <div class="field-group">
+                                            <span class="field-label">可选字段：</span>
+                                            <ul>
+                                                <li>附件上传</li>
+                                                <li>特殊要求</li>
+                                                <li>考核标准</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">步骤3</span>
+                                    <span class="step-title">选择博士生</span>
+                                </div>
+                                <div class="step-content">
+                                    <p>从博士生列表中选择合适的博士生，系统会显示：</p>
+                                    <ul>
+                                        <li>博士生当前任务负载</li>
+                                        <li>专业匹配度</li>
+                                        <li>历史表现评分</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">步骤4</span>
+                                    <span class="step-title">确认发布</span>
+                                </div>
+                                <div class="step-content">
+                                    <p>预览任务信息，确认无误后点击"发布"按钮。系统将：</p>
+                                    <ol>
+                                        <li>向选中的博士生发送通知</li>
+                                        <li>在任务列表中创建新任务</li>
+                                        <li>更新相关统计数据</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 id="chapter3-2">3.2 任务分配与跟踪</h3>
+                        <div class="task-tracking">
+                            <h4>任务状态说明</h4>
+                            <div class="status-indicators">
+                                <div class="status-indicator">
+                                    <span class="status-dot pending"></span>
+                                    <span class="status-label">待确认</span>
+                                    <span class="status-desc">博士生尚未确认接受任务</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot confirmed"></span>
+                                    <span class="status-label">已确认</span>
+                                    <span class="status-desc">博士生已确认接受任务</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot in-progress"></span>
+                                    <span class="status-label">进行中</span>
+                                    <span class="status-desc">博士生正在执行任务</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot completed"></span>
+                                    <span class="status-label">已完成</span>
+                                    <span class="status-desc">任务已完成，待审核</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot verified"></span>
+                                    <span class="status-label">已审核</span>
+                                    <span class="status-desc">管理员已审核通过</span>
+                                </div>
+                            </div>
+                            
+                            <h4>任务跟踪操作</h4>
+                            <div class="tracking-actions">
+                                <div class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h5>查看详情</h5>
+                                        <p>查看任务的完整信息和进度</p>
+                                    </div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-edit"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h5>编辑任务</h5>
+                                        <p>修改任务信息（仅限特定状态）</p>
+                                    </div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-comment-alt"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h5>添加备注</h5>
+                                        <p>为任务添加管理员备注</p>
+                                    </div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h5>延期处理</h5>
+                                        <p>申请或批准任务延期</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 id="chapter3-3">3.3 津贴计算与发放</h3>
+                        <div class="stipend-calculation">
+                            <h4>津贴计算公式</h4>
+                            <div class="formula-box">
+                                <div class="formula">
+                                    总津贴 = 基础津贴 × 工作量系数 × 质量系数
+                                </div>
+                                <div class="formula-explanation">
+                                    <p><strong>基础津贴：</strong>根据任务类型预设的标准津贴</p>
+                                    <p><strong>工作量系数：</strong>根据任务复杂度和耗时确定</p>
+                                    <p><strong>质量系数：</strong>根据任务完成质量评估确定</p>
+                                </div>
+                            </div>
+                            
+                            <h4>津贴发放流程</h4>
+                            <div class="payment-flow">
+                                <div class="flow-step">
+                                    <div class="flow-number">1</div>
+                                    <div class="flow-content">
+                                        <h5>任务完成确认</h5>
+                                        <p>博士生提交任务完成申请</p>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="flow-number">2</div>
+                                    <div class="flow-content">
+                                        <h5>质量评估</h5>
+                                        <p>管理员审核任务完成质量</p>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="flow-number">3</div>
+                                    <div class="flow-content">
+                                        <h5>津贴计算</h5>
+                                        <p>系统自动计算应发津贴</p>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="flow-number">4</div>
+                                    <div class="flow-content">
+                                        <h5>发放确认</h5>
+                                        <p>管理员确认发放，系统生成发放记录</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 第4章：博士生管理 -->
+                <section id="chapter4" class="manual-chapter">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">第4章 博士生管理</h2>
+                        <span class="chapter-number">4</span>
+                    </div>
+                    
+                    <div class="chapter-body">
+                        <h3 id="chapter4-1">4.1 博士生信息管理</h3>
+                        <div class="student-info-management">
+                            <h4>信息字段说明</h4>
+                            <table class="info-field-table">
+                                <thead>
+                                    <tr>
+                                        <th>字段分类</th>
+                                        <th>字段名称</th>
+                                        <th>必填/选填</th>
+                                        <th>说明</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">基本信息</td>
+                                        <td>姓名</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>博士生的真实姓名</td>
+                                    </tr>
+                                    <tr>
+                                        <td>学号</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>学校统一学号</td>
+                                    </tr>
+                                    <tr>
+                                        <td>性别</td>
+                                        <td><span class="optional">选填</span></td>
+                                        <td>性别信息</td>
+                                    </tr>
+                                    <tr>
+                                        <td>出生日期</td>
+                                        <td><span class="optional">选填</span></td>
+                                        <td>用于年龄计算</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">学业信息</td>
+                                        <td>专业</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>博士生专业方向</td>
+                                    </tr>
+                                    <tr>
+                                        <td>导师</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>博士生导师姓名</td>
+                                    </tr>
+                                    <tr>
+                                        <td>入学年份</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>博士生入学时间</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">联系信息</td>
+                                        <td>邮箱</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>用于系统通知和联系</td>
+                                    </tr>
+                                    <tr>
+                                        <td>手机号码</td>
+                                        <td><span class="required">必填</span></td>
+                                        <td>紧急联系方式</td>
+                                    </tr>
+                                    <tr>
+                                        <td>实验室位置</td>
+                                        <td><span class="optional">选填</span></td>
+                                        <td>博士生实验室位置</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h4>博士生添加方式</h4>
+                            <div class="add-methods">
+                                <div class="method-card">
+                                    <div class="method-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="method-content">
+                                        <h5>单个添加</h5>
+                                        <p>通过表单逐个添加博士生信息</p>
+                                        <a href="#" class="method-link" onclick="showAddForm()">查看示例</a>
+                                    </div>
+                                </div>
+                                <div class="method-card">
+                                    <div class="method-icon">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
+                                    <div class="method-content">
+                                        <h5>Excel导入</h5>
+                                        <p>通过Excel模板批量导入</p>
+                                        <a href="#" class="method-link" onclick="downloadTemplate()">下载模板</a>
+                                    </div>
+                                </div>
+                                <div class="method-card">
+                                    <div class="method-icon">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div class="method-content">
+                                        <h5>学生注册</h5>
+                                        <p>学生自行注册后管理员审核</p>
+                                        <a href="#" class="method-link" onclick="viewPending()">查看待审核</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 id="chapter4-2">4.2 博士生状态跟踪</h3>
+                        <div class="student-tracking">
+                            <h4>状态说明</h4>
+                            <div class="student-statuses">
+                                <div class="status-item">
+                                    <span class="status-badge active">活跃</span>
+                                    <p>博士生可正常接受任务</p>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-badge busy">忙碌</span>
+                                    <p>当前任务较多，不建议分配新任务</p>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-badge inactive">休假</span>
+                                    <p>博士生处于休假状态</p>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-badge graduated">已毕业</span>
+                                    <p>博士生已毕业，不再接受任务</p>
+                                </div>
+                            </div>
+                            
+                            <h4>任务历史记录</h4>
+                            <p>每个博士生的任务历史记录包括：</p>
+                            <ul>
+                                <li>已完成任务数量</li>
+                                <li>任务完成平均评分</li>
+                                <li>累计津贴总额</li>
+                                <li>特殊贡献记录</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 id="chapter4-3">4.3 批量操作指南</h3>
+                        <div class="batch-operations">
+                            <h4>批量导入博士生</h4>
+                            <ol>
+                                <li>下载Excel导入模板</li>
+                                <li>按照模板格式填写博士生信息</li>
+                                <li>上传Excel文件</li>
+                                <li>系统验证数据格式</li>
+                                <li>确认导入结果</li>
+                            </ol>
+                            
+                            <div class="note-box">
+                                <div class="note-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="note-content">
+                                    <p><strong>注意：</strong>批量导入时，如果遇到重复数据，系统会提示是否覆盖或跳过。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 搜索结果显示 -->
+                <div class="search-results" id="searchResults" style="display: none;">
+                    <div class="results-header">
+                        <h3><i class="fas fa-search"></i> 搜索结果</h3>
+                        <button class="btn-secondary btn-sm" onclick="clearSearch()">返回手册</button>
+                    </div>
+                    <div class="results-list" id="resultsList">
+                        <!-- 搜索结果将动态生成 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 手册导航 -->
+            <div class="manual-navigation">
+                <button class="nav-btn prev-btn" onclick="prevChapter()">
+                    <i class="fas fa-arrow-left"></i>
+                    上一章
+                </button>
+                <div class="chapter-progress">
+                    <span id="currentChapter">第1章</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="chapterProgress"></div>
+                    </div>
+                </div>
+                <button class="nav-btn next-btn" onclick="nextChapter()">
+                    下一章
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card active">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/manual.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

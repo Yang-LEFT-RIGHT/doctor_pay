@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item active">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">系统设置</h1>
+                    <p class="page-subtitle">管理系统配置参数、用户权限和通知设置</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i>
+                        恢复默认
+                    </button>
+                    <button class="btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i>
+                        保存设置
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 设置选项卡 -->
+            <div class="settings-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="general" onclick="switchTab('general')">
+                        <i class="fas fa-cog"></i>
+                        常规设置
+                    </button>
+                    <button class="tab-btn" data-tab="notifications" onclick="switchTab('notifications')">
+                        <i class="fas fa-bell"></i>
+                        通知设置
+                    </button>
+                    <button class="tab-btn" data-tab="permissions" onclick="switchTab('permissions')">
+                        <i class="fas fa-shield-alt"></i>
+                        权限管理
+                    </button>
+                    <button class="tab-btn" data-tab="advanced" onclick="switchTab('advanced')">
+                        <i class="fas fa-sliders-h"></i>
+                        高级设置
+                    </button>
+                    <button class="tab-btn" data-tab="about" onclick="switchTab('about')">
+                        <i class="fas fa-info-circle"></i>
+                        关于系统
+                    </button>
+                </div>
+                
+                <!-- 常规设置 -->
+                <div class="tab-content active" id="general-tab">
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">系统基本信息</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">系统名称</h4>
+                                    <p class="setting-desc">显示在浏览器标签和页面顶部的系统名称</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="text" class="setting-input" id="systemName" value="DocIM Stipend">
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">系统版本</h4>
+                                    <p class="setting-desc">当前系统版本号，用于更新和问题排查</p>
+                                </div>
+                                <div class="setting-control">
+                                    <div class="setting-display">v2.1.0</div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">系统时区</h4>
+                                    <p class="setting-desc">系统使用的时区设置，影响时间显示和计算</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="timezone">
+                                        <option value="Asia/Shanghai" selected>中国标准时间 (GMT+8)</option>
+                                        <option value="Asia/Tokyo">日本时间 (GMT+9)</option>
+                                        <option value="America/New_York">美国东部时间 (GMT-5)</option>
+                                        <option value="Europe/London">伦敦时间 (GMT+0)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">日期格式</h4>
+                                    <p class="setting-desc">系统日期显示格式</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="dateFormat">
+                                        <option value="YYYY-MM-DD" selected>YYYY-MM-DD</option>
+                                        <option value="YYYY/MM/DD">YYYY/MM/DD</option>
+                                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">每页显示数量</h4>
+                                    <p class="setting-desc">列表页面默认每页显示的项目数量</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="itemsPerPage">
+                                        <option value="10">10 条</option>
+                                        <option value="20" selected>20 条</option>
+                                        <option value="50">50 条</option>
+                                        <option value="100">100 条</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">自动保存间隔</h4>
+                                    <p class="setting-desc">表单自动保存的时间间隔（分钟）</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="autoSaveInterval" value="5" min="1" max="60">
+                                    <span class="setting-unit">分钟</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">任务相关设置</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">默认任务确认时间</h4>
+                                    <p class="setting-desc">博士生确认任务的默认时间限制</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="taskConfirmDays" value="7" min="1" max="30">
+                                    <span class="setting-unit">天</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">任务提醒提前天数</h4>
+                                    <p class="setting-desc">在任务截止前多少天发送提醒通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="taskReminderDays" value="3" min="1" max="14">
+                                    <span class="setting-unit">天</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">自动过期任务处理</h4>
+                                    <p class="setting-desc">是否自动标记过期任务为已过期状态</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoExpireTasks" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">任务分配最大限制</h4>
+                                    <p class="setting-desc">每个博士生同时可接受的最大任务数量</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="maxTasksPerStudent" value="5" min="1" max="20">
+                                    <span class="setting-unit">个</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 通知设置 -->
+                <div class="tab-content" id="notifications-tab">
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">通知接收设置</h3>
+                            <button class="btn-secondary btn-sm" onclick="testNotifications()">
+                                <i class="fas fa-paper-plane"></i>
+                                发送测试通知
+                            </button>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">
+                                        <i class="fas fa-tasks"></i>
+                                        任务相关通知
+                                    </h4>
+                                    <p class="setting-desc">接收任务分配、确认、完成、过期等通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyTasks" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">
+                                        <i class="fas fa-user-graduate"></i>
+                                        博士生相关通知
+                                    </h4>
+                                    <p class="setting-desc">接收博士生注册、状态变更、信息更新等通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyStudents" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        津贴相关通知
+                                    </h4>
+                                    <p class="setting-desc">接收津贴申请、审核、发放等通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyStipends" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">
+                                        <i class="fas fa-chart-bar"></i>
+                                        统计报告通知
+                                    </h4>
+                                    <p class="setting-desc">接收月度、季度、年度统计报告通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyReports" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">
+                                        <i class="fas fa-cogs"></i>
+                                        系统维护通知
+                                    </h4>
+                                    <p class="setting-desc">接收系统维护、更新、故障等通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifySystem" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">通知方式设置</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">站内消息通知</h4>
+                                    <p class="setting-desc">在系统内通过消息中心接收通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyInApp" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">邮件通知</h4>
+                                    <p class="setting-desc">通过电子邮件接收重要通知</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyEmail" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">即时通知提醒</h4>
+                                    <p class="setting-desc">重要通知立即提醒，一般通知批量发送</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="notifyImmediate" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">通知频率</h4>
+                                    <p class="setting-desc">批量通知的发送频率</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="notifyFrequency">
+                                        <option value="instant">即时</option>
+                                        <option value="hourly" selected>每小时</option>
+                                        <option value="daily">每天</option>
+                                        <option value="weekly">每周</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">通知模板</h3>
+                            <button class="btn-secondary btn-sm" onclick="previewTemplate()">
+                                <i class="fas fa-eye"></i>
+                                预览模板
+                            </button>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item full-width">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">任务分配通知模板</h4>
+                                    <p class="setting-desc">向博士生发送任务分配通知的模板内容</p>
+                                </div>
+                                <div class="setting-control">
+                                    <textarea class="setting-textarea" id="taskAssignTemplate" rows="4">
+尊敬的{student_name}博士：
+
+您已被分配新的任务：{task_title}
+截止时间：{deadline}
+任务详情：{task_description}
+
+请及时登录系统确认任务并开始工作。
+
+系统管理员
+{system_name}</textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item full-width">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">任务提醒通知模板</h4>
+                                    <p class="setting-desc">任务截止前发送的提醒通知模板</p>
+                                </div>
+                                <div class="setting-control">
+                                    <textarea class="setting-textarea" id="taskReminderTemplate" rows="4">
+尊敬的{student_name}博士：
+
+提醒：您的任务"{task_title}"即将在{days_left}天后截止。
+当前状态：{task_status}
+请及时完成相关工作并提交成果。
+
+如有疑问请联系系统管理员。
+
+系统管理员
+{system_name}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 权限管理 -->
+                <div class="tab-content" id="permissions-tab">
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">角色权限管理</h3>
+                            <button class="btn-primary btn-sm" onclick="addRole()">
+                                <i class="fas fa-plus"></i>
+                                添加角色
+                            </button>
+                        </div>
+                        
+                        <div class="permissions-table">
+                            <div class="table-container">
+                                <table class="settings-table">
+                                    <thead>
+                                        <tr>
+                                            <th>角色名称</th>
+                                            <th>描述</th>
+                                            <th>任务管理</th>
+                                            <th>学生管理</th>
+                                            <th>统计分析</th>
+                                            <th>系统设置</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rolesTable">
+                                        <!-- 角色数据将通过JavaScript动态生成 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">用户权限分配</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">博士生默认权限</h4>
+                                    <p class="setting-desc">博士生注册后的默认权限设置</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="defaultStudentRole">
+                                        <option value="student_basic">基础权限（查看任务）</option>
+                                        <option value="student_standard" selected>标准权限（任务管理）</option>
+                                        <option value="student_advanced">高级权限（任务协作）</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">管理员权限级别</h4>
+                                    <p class="setting-desc">系统管理员的默认权限级别</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="defaultAdminRole">
+                                        <option value="admin_basic">基础管理员</option>
+                                        <option value="admin_standard" selected>标准管理员</option>
+                                        <option value="admin_super">超级管理员</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">权限继承设置</h4>
+                                    <p class="setting-desc">是否允许权限向下级角色继承</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="permissionInheritance" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 高级设置 -->
+                <div class="tab-content" id="advanced-tab">
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">数据管理</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">数据备份频率</h4>
+                                    <p class="setting-desc">系统自动备份数据的频率</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="backupFrequency">
+                                        <option value="daily">每天</option>
+                                        <option value="weekly" selected>每周</option>
+                                        <option value="monthly">每月</option>
+                                        <option value="never">不自动备份</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">数据保留期限</h4>
+                                    <p class="setting-desc">系统中历史数据的保留时间</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="dataRetention" value="365" min="30" max="3650">
+                                    <span class="setting-unit">天</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">自动清理过期数据</h4>
+                                    <p class="setting-desc">是否自动清理超过保留期限的数据</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoCleanData" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">导出数据格式</h4>
+                                    <p class="setting-desc">系统数据导出的默认格式</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="exportFormat">
+                                        <option value="csv" selected>CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                        <option value="json">JSON</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">性能优化</h3>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">页面缓存时间</h4>
+                                    <p class="setting-desc">静态页面资源的缓存时间</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="cacheTime" value="3600" min="300" max="86400">
+                                    <span class="setting-unit">秒</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">数据加载方式</h4>
+                                    <p class="setting-desc">列表数据的分页加载方式</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="setting-select" id="dataLoading">
+                                        <option value="pagination" selected>分页加载</option>
+                                        <option value="scroll">滚动加载</option>
+                                        <option value="all">一次性加载</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">图片压缩质量</h4>
+                                    <p class="setting-desc">上传图片的压缩质量百分比</p>
+                                </div>
+                                <div class="setting-control">
+                                    <input type="number" class="setting-input" id="imageQuality" value="80" min="10" max="100">
+                                    <span class="setting-unit">%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4 class="setting-title">启用Gzip压缩</h4>
+                                    <p class="setting-desc">是否启用Gzip压缩提升加载速度</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="enableGzip" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section warning-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                危险操作
+                            </h3>
+                        </div>
+                        <div class="danger-zone">
+                            <div class="danger-item">
+                                <div class="danger-info">
+                                    <h4 class="danger-title">清除所有缓存</h4>
+                                    <p class="danger-desc">清除系统所有缓存数据，可能会影响性能</p>
+                                </div>
+                                <button class="btn-danger" onclick="clearCache()">
+                                    <i class="fas fa-trash"></i>
+                                    清除缓存
+                                </button>
+                            </div>
+                            
+                            <div class="danger-item">
+                                <div class="danger-info">
+                                    <h4 class="danger-title">重建数据库索引</h4>
+                                    <p class="danger-desc">重建数据库索引以提升查询性能</p>
+                                </div>
+                                <button class="btn-danger" onclick="rebuildIndexes()">
+                                    <i class="fas fa-database"></i>
+                                    重建索引
+                                </button>
+                            </div>
+                            
+                            <div class="danger-item">
+                                <div class="danger-info">
+                                    <h4 class="danger-title">重置系统配置</h4>
+                                    <p class="danger-desc">将所有系统设置恢复为出厂默认值</p>
+                                </div>
+                                <button class="btn-danger" onclick="confirmReset()">
+                                    <i class="fas fa-redo"></i>
+                                    重置系统
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 关于系统 -->
+                <div class="tab-content" id="about-tab">
+                    <div class="about-section">
+                        <div class="about-header">
+                            <div class="system-logo">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>DocIM</span> Stipend
+                            </div>
+                            <div class="system-version">
+                                版本 v2.1.0
+                            </div>
+                        </div>
+                        
+                        <div class="about-info">
+                            <div class="info-card">
+                                <h4 class="info-title">系统简介</h4>
+                                <p>DocIM Stipend 是一款专为高校设计的博士生助教/代管任务管理系统，旨在简化任务分配、津贴管理和数据统计流程，提高管理效率。</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4 class="info-title">主要功能</h4>
+                                <ul class="features-list">
+                                    <li><i class="fas fa-check-circle"></i> 任务发布与分配管理</li>
+                                    <li><i class="fas fa-check-circle"></i> 博士生信息管理</li>
+                                    <li><i class="fas fa-check-circle"></i> 津贴计算与发放跟踪</li>
+                                    <li><i class="fas fa-check-circle"></i> 统计分析报表</li>
+                                    <li><i class="fas fa-check-circle"></i> 通知提醒系统</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4 class="info-title">系统信息</h4>
+                                <div class="system-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">开发团队：</span>
+                                        <span class="detail-value">高校信息化建设办公室</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">技术支持：</span>
+                                        <span class="detail-value">support@docim.edu.cn</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">版权所有：</span>
+                                        <span class="detail-value">© 2024 DocIM 项目组</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">最后更新：</span>
+                                        <span class="detail-value">2024年3月15日</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4 class="info-title">系统状态</h4>
+                                <div class="status-grid">
+                                    <div class="status-item">
+                                        <div class="status-icon running">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <div class="status-label">服务状态</div>
+                                            <div class="status-value">运行正常</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="status-item">
+                                        <div class="status-icon good">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <div class="status-label">数据库</div>
+                                            <div class="status-value">连接正常</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="status-item">
+                                        <div class="status-icon warning">
+                                            <i class="fas fa-hdd"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <div class="status-label">存储空间</div>
+                                            <div class="status-value">剩余 45%</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="status-item">
+                                        <div class="status-icon running">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <div class="status-label">在线用户</div>
+                                            <div class="status-value">8 人</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="about-actions">
+                            <button class="btn-secondary" onclick="checkUpdates()">
+                                <i class="fas fa-sync-alt"></i>
+                                检查更新
+                            </button>
+                            <button class="btn-secondary" onclick="viewLogs()">
+                                <i class="fas fa-file-alt"></i>
+                                查看日志
+                            </button>
+                            <button class="btn-primary" onclick="exportSystemInfo()">
+                                <i class="fas fa-download"></i>
+                                导出系统信息
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

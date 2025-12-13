@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>处理任务申请 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/task-process.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <!-- 顶部导航栏 -->
+    </div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <!-- 侧边栏导航 -->
+        </div>
+
+        <div class="content-area">
+            <div class="process-header">
+                <div class="header-left">
+                    <h1 class="page-title">处理任务申请</h1>
+                    <div class="application-info">
+                        <span class="task-name">《数据结构》课程助教</span>
+                        <span class="applicant">申请人: 张三博士</span>
+                        <span class="apply-time">申请时间: 2024-05-18 14:30</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <span class="urgency-badge danger">今天过期</span>
+                </div>
+            </div>
+            
+            <div class="process-container">
+                <!-- 申请详情 -->
+                <div class="application-detail">
+                    <h3 class="section-title">申请详情</h3>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>申请人</label>
+                            <div class="applicant-info">
+                                <div class="student-avatar">张</div>
+                                <div class="student-details">
+                                    <h4>张三博士</h4>
+                                    <p>计算机科学与技术学院 · 2021级博士生</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <label>申请理由</label>
+                            <div class="reason-box">
+                                <p>我对数据结构有深入的研究，曾担任相关课程的本科生助教，有丰富的教学经验。希望能够通过这个机会进一步提升教学能力。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <label>相关经验</label>
+                            <div class="experience-list">
+                                <ul>
+                                    <li>2023年春季学期担任《算法设计》课程助教</li>
+                                    <li>参与数据结构相关科研项目2年</li>
+                                    <li>发表相关学术论文1篇</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务信息 -->
+                <div class="task-info-review">
+                    <h3 class="section-title">任务信息</h3>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>任务标题</label>
+                            <span>《数据结构》课程助教 - 实验课指导</span>
+                        </div>
+                        <div class="info-item">
+                            <label>任务类型</label>
+                            <span>课程助教</span>
+                        </div>
+                        <div class="info-item">
+                            <label>需求人数</label>
+                            <span>2人</span>
+                        </div>
+                        <div class="info-item">
+                            <label>预计工时</label>
+                            <span>40小时</span>
+                        </div>
+                        <div class="info-item">
+                            <label>截止日期</label>
+                            <span>2024-06-15</span>
+                        </div>
+                        <div class="info-item">
+                            <label>津贴标准</label>
+                            <span>40元/小时</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 处理意见 -->
+                <div class="process-form">
+                    <h3 class="section-title">处理意见</h3>
+                    
+                    <div class="form-group">
+                        <label>处理结果 <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="result" value="approve" checked>
+                                <span class="radio-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <div>
+                                        <strong>批准申请</strong>
+                                        <small>申请人将收到任务确认通知</small>
+                                    </div>
+                                </span>
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="result" value="reject">
+                                <span class="radio-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <div>
+                                        <strong>拒绝申请</strong>
+                                        <small>需要填写拒绝理由</small>
+                                    </div>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminComment">处理意见</label>
+                        <textarea id="adminComment" rows="4" 
+                                  placeholder="填写处理意见或反馈建议..."></textarea>
+                    </div>
+                    
+                    <div class="form-group" id="rejectReasonGroup" style="display: none;">
+                        <label for="rejectReason">拒绝理由 <span class="required">*</span></label>
+                        <select id="rejectReason">
+                            <option value="">请选择拒绝理由</option>
+                            <option value="capacity">已满员</option>
+                            <option value="qualification">不符合资格要求</option>
+                            <option value="schedule">时间安排冲突</option>
+                            <option value="other">其他原因</option>
+                        </select>
+                        <textarea id="otherReason" rows="3" placeholder="其他原因说明..." style="display: none;"></textarea>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="process-actions">
+                    <button class="btn btn-secondary" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i> 返回列表
+                    </button>
+                    <button class="btn btn-outline" onclick="deferProcessing()">
+                        <i class="fas fa-clock"></i> 稍后处理
+                    </button>
+                    <button class="btn btn-primary" onclick="submitProcess()">
+                        <i class="fas fa-check"></i> 提交处理
+                    </button>
+                </div>
+                
+                <!-- 处理历史 -->
+                <div class="process-history">
+                    <h3 class="section-title">处理历史</h3>
+                    <div class="history-list">
+                        <!-- 历史记录将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/task-process.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

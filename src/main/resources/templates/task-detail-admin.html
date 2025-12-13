@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务详情 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/task-detail-admin.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <!-- 通知内容 -->
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="task-detail-header">
+                <div class="header-left">
+                    <h1 class="page-title">《数据结构》课程助教 - 实验课指导</h1>
+                    <div class="task-meta-info">
+                        <span class="task-type-badge course">课程助教</span>
+                        <span class="task-id">任务ID: TA-2024-006</span>
+                        <span class="task-status status-pending">待确认</span>
+                        <span class="publish-date">发布时间: 2024-05-15</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='task-edit.html?id=1'">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                    <button class="btn btn-outline" onclick="window.location.href='task-stats.html?id=1'">
+                        <i class="fas fa-chart-bar"></i> 统计
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 关键指标卡片 -->
+            <div class="key-metrics-cards">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">2/2</div>
+                        <div class="metric-label">需求人数</div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">32/40</div>
+                        <div class="metric-label">已完成工时</div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">¥1,280</div>
+                        <div class="metric-label">累计津贴</div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">2024-06-15</div>
+                        <div class="metric-label">截止日期</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 任务详情区域 -->
+            <div class="detail-sections">
+                <!-- 基本信息 -->
+                <div class="detail-section">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fas fa-info-circle"></i> 基本信息</h3>
+                        <button class="btn-copy" onclick="copyTaskInfo()">
+                            <i class="far fa-copy"></i> 复制信息
+                        </button>
+                    </div>
+                    
+                    <div class="section-content">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>任务类型</label>
+                                <span>课程助教</span>
+                            </div>
+                            <div class="info-item">
+                                <label>所属院系</label>
+                                <span>计算机科学与技术学院</span>
+                            </div>
+                            <div class="info-item">
+                                <label>需求人数</label>
+                                <span>2人</span>
+                            </div>
+                            <div class="info-item">
+                                <label>预计工时</label>
+                                <span>40小时</span>
+                            </div>
+                            <div class="info-item">
+                                <label>发布日期</label>
+                                <span>2024-05-15</span>
+                            </div>
+                            <div class="info-item">
+                                <label>截止日期</label>
+                                <span class="deadline-text">2024-06-15</span>
+                            </div>
+                            <div class="info-item">
+                                <label>津贴标准</label>
+                                <span>40元/小时</span>
+                            </div>
+                            <div class="info-item">
+                                <label>预计总津贴</label>
+                                <span class="stipend-amount">¥1,600</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务描述 -->
+                <div class="detail-section">
+                    <h3 class="section-title"><i class="fas fa-clipboard-list"></i> 任务描述</h3>
+                    <div class="section-content">
+                        <div class="description-content">
+                            <p>负责每周二下午的实验课指导，协助学生完成图像处理实验，批改实验报告。需要熟悉Python编程和数据结构相关知识。</p>
+                            
+                            <div class="requirements-box">
+                                <h4>具体要求：</h4>
+                                <ul>
+                                    <li>熟悉Python编程语言</li>
+                                    <li>了解数据结构与算法</li>
+                                    <li>具有良好的沟通能力</li>
+                                    <li>每周至少能保证4小时工作时间</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 参与博士生 -->
+                <div class="detail-section">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fas fa-user-graduate"></i> 参与的博士生</h3>
+                        <button class="btn btn-small" onclick="manageParticipants()">
+                            <i class="fas fa-user-plus"></i> 管理参与人员
+                        </button>
+                    </div>
+                    
+                    <div class="section-content">
+                        <div class="students-list">
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <span>张</span>
+                                </div>
+                                <div class="student-info">
+                                    <h4>张三博士</h4>
+                                    <div class="student-meta">
+                                        <span>计算机科学与技术学院</span>
+                                        <span>2021级博士生</span>
+                                    </div>
+                                    <div class="task-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 60%"></div>
+                                        </div>
+                                        <span>已完成 12/20 小时</span>
+                                    </div>
+                                </div>
+                                <div class="student-actions">
+                                    <button class="btn-icon" onclick="viewStudentDetails(1)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" onclick="contactStudent(1)">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <span>李</span>
+                                </div>
+                                <div class="student-info">
+                                    <h4>李四博士</h4>
+                                    <div class="student-meta">
+                                        <span>计算机科学与技术学院</span>
+                                        <span>2022级博士生</span>
+                                    </div>
+                                    <div class="task-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 80%"></div>
+                                        </div>
+                                        <span>已完成 16/20 小时</span>
+                                    </div>
+                                </div>
+                                <div class="student-actions">
+                                    <button class="btn-icon" onclick="viewStudentDetails(2)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" onclick="contactStudent(2)">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="no-data-message" style="display: none;">
+                            <i class="fas fa-user-slash"></i>
+                            <p>暂无博士生参与此任务</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工时记录 -->
+                <div class="detail-section">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fas fa-clock"></i> 工时记录</h3>
+                        <button class="btn btn-small" onclick="exportHours()">
+                            <i class="fas fa-file-export"></i> 导出工时
+                        </button>
+                    </div>
+                    
+                    <div class="section-content">
+                        <div class="hours-summary">
+                            <div class="summary-item">
+                                <span class="summary-label">总工时</span>
+                                <span class="summary-value">32 小时</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">剩余工时</span>
+                                <span class="summary-value">8 小时</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">完成率</span>
+                                <span class="summary-value">80%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hours-table-container">
+                            <table class="hours-table">
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>博士生</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>工作时长</th>
+                                        <th>工作内容</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-05-20</td>
+                                        <td>张三博士</td>
+                                        <td>14:00</td>
+                                        <td>18:00</td>
+                                        <td>4小时</td>
+                                        <td>实验课指导</td>
+                                        <td><span class="status-badge status-confirmed">已确认</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-21</td>
+                                        <td>李四博士</td>
+                                        <td>15:00</td>
+                                        <td>19:00</td>
+                                        <td>4小时</td>
+                                        <td>实验报告批改</td>
+                                        <td><span class="status-badge status-pending">待确认</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-27</td>
+                                        <td>张三博士</td>
+                                        <td>14:00</td>
+                                        <td>18:00</td>
+                                        <td>4小时</td>
+                                        <td>实验课准备</td>
+                                        <td><span class="status-badge status-confirmed">已确认</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="table-actions">
+                            <button class="btn btn-outline" onclick="loadMoreHours()">
+                                <i class="fas fa-redo"></i> 加载更多
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务日志 -->
+                <div class="detail-section">
+                    <h3 class="section-title"><i class="fas fa-history"></i> 任务日志</h3>
+                    <div class="section-content">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-time">2024-05-15 10:30</span>
+                                        <span class="timeline-user">李老师</span>
+                                    </div>
+                                    <p>创建了任务</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-time">2024-05-18 14:20</span>
+                                        <span class="timeline-user">张三博士</span>
+                                    </div>
+                                    <p>申请参与任务</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-time">2024-05-19 09:15</span>
+                                        <span class="timeline-user">李老师</span>
+                                    </div>
+                                    <p>批准了张三博士的申请</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-time">2024-05-20 16:30</span>
+                                        <span class="timeline-user">张三博士</span>
+                                    </div>
+                                    <p>提交了4小时工时记录</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 侧边操作栏 -->
+            <div class="action-sidebar">
+                <div class="action-section">
+                    <h4>快速操作</h4>
+                    <button class="btn-action" onclick="updateTaskStatus()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>更新状态</span>
+                    </button>
+                    <button class="btn-action" onclick="sendReminder()">
+                        <i class="fas fa-bell"></i>
+                        <span>发送提醒</span>
+                    </button>
+                    <button class="btn-action" onclick="generateReport()">
+                        <i class="fas fa-file-alt"></i>
+                        <span>生成报告</span>
+                    </button>
+                </div>
+                
+                <div class="action-section">
+                    <h4>任务状态</h4>
+                    <div class="status-selector">
+                        <button class="status-option active" data-status="pending">
+                            <i class="fas fa-clock"></i>
+                            <span>待确认</span>
+                        </button>
+                        <button class="status-option" data-status="confirmed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>已确认</span>
+                        </button>
+                        <button class="status-option" data-status="completed">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>已完成</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-section">
+                    <h4>相关链接</h4>
+                    <a href="#" class="link-item" onclick="viewSimilarTasks()">
+                        <i class="fas fa-search"></i>
+                        <span>查看类似任务</span>
+                    </a>
+                    <a href="#" class="link-item" onclick="viewDepartmentTasks()">
+                        <i class="fas fa-building"></i>
+                        <span>院系其他任务</span>
+                    </a>
+                    <a href="#" class="link-item" onclick="openDiscussion()">
+                        <i class="fas fa-comments"></i>
+                        <span>任务讨论区</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/task-detail-admin.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

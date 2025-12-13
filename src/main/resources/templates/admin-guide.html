@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员指南 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/notification.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="admin-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i> 工作台首页
+            </a>
+            <a href="admin-management.html" class="nav-item">
+                <i class="fas fa-user-shield"></i> 管理员管理
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">管理员</span>
+                <span id="username">李老师</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">5</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list-admin.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务管理</span>
+                </a>
+                <a href="student-list.html" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>博士生管理</span>
+                </a>
+                <a href="stats-overview.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>统计分析</span>
+                </a>
+                <a href="system-settings.html" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">5</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">管理员指南</h1>
+                    <p class="page-subtitle">系统管理操作流程与使用说明</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="printGuide()">
+                        <i class="fas fa-print"></i>
+                        打印指南
+                    </button>
+                    <button class="btn-primary" onclick="downloadGuide()">
+                        <i class="fas fa-download"></i>
+                        下载PDF
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 快速导航 -->
+            <div class="quick-nav">
+                <div class="nav-cards">
+                    <a href="#getting-started" class="nav-card">
+                        <div class="nav-icon primary">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="nav-content">
+                            <h4>快速开始</h4>
+                            <p>系统基础操作指南</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#task-management" class="nav-card">
+                        <div class="nav-icon success">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="nav-content">
+                            <h4>任务管理</h4>
+                            <p>发布、分配、跟踪任务</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#student-management" class="nav-card">
+                        <div class="nav-icon warning">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="nav-content">
+                            <h4>学生管理</h4>
+                            <p>博士生信息管理指南</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#system-settings" class="nav-card">
+                        <div class="nav-icon accent">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="nav-content">
+                            <h4>系统设置</h4>
+                            <p>配置系统参数和权限</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 指南内容 -->
+            <div class="guide-content">
+                <!-- 快速开始 -->
+                <section id="getting-started" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-rocket"></i>
+                            快速开始
+                        </h2>
+                        <div class="section-badge">新手必读</div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">系统简介</h3>
+                        <div class="card-content">
+                            <p><strong>DocIM Stipend</strong> 是一款专为高校设计的博士生助教/代管任务管理系统，旨在简化任务分配、津贴管理和数据统计流程，提高管理效率。</p>
+                            
+                            <div class="info-box">
+                                <div class="info-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="info-content">
+                                    <p><strong>核心功能：</strong></p>
+                                    <ul>
+                                        <li>任务发布与分配管理</li>
+                                        <li>博士生信息管理</li>
+                                        <li>津贴计算与发放跟踪</li>
+                                        <li>统计分析报表</li>
+                                        <li>通知提醒系统</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">首次登录与设置</h3>
+                        <div class="card-content">
+                            <p>首次登录系统后，建议按照以下步骤完成基本设置：</p>
+                            
+                            <div class="steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>完善个人信息</h4>
+                                        <p>前往系统设置 → 常规设置，设置系统名称、时区、日期格式等基础信息。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>配置通知设置</h4>
+                                        <p>设置邮件通知、站内消息通知，确保能及时收到系统提醒。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>添加博士生信息</h4>
+                                        <p>在博士生管理页面，批量导入或逐个添加博士生信息。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h4>设置任务类型</h4>
+                                        <p>在系统设置中，预设常见的任务类型和津贴标准。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">工作台使用指南</h3>
+                        <div class="card-content">
+                            <p>管理员工作台是系统的控制中心，包含以下主要区域：</p>
+                            
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="feature-content">
+                                        <h4>数据概览</h4>
+                                        <p>实时显示任务统计、学生数量、津贴总额等关键数据</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="feature-content">
+                                        <h4>快速操作</h4>
+                                        <p>一键发布新任务、批量操作、导出数据等快捷功能</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-list-alt"></i>
+                                    </div>
+                                    <div class="feature-content">
+                                        <h4>近期任务</h4>
+                                        <p>显示最近发布的任务和待处理事项</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="feature-content">
+                                        <h4>待办事项</h4>
+                                        <p>需要立即处理的任务提醒和过期预警</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 任务管理 -->
+                <section id="task-management" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-tasks"></i>
+                            任务管理
+                        </h2>
+                        <div class="section-badge">核心功能</div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">任务发布流程</h3>
+                        <div class="card-content">
+                            <p>发布新任务的完整流程如下：</p>
+                            
+                            <div class="process-diagram">
+                                <div class="process-step">
+                                    <div class="process-icon">
+                                        <i class="fas fa-edit"></i>
+                                    </div>
+                                    <div class="process-content">
+                                        <h5>1. 创建任务</h5>
+                                        <p>点击"发布新任务"按钮，填写任务基本信息</p>
+                                        <div class="process-tip">
+                                            <strong>提示：</strong> 详细的任务描述有助于博士生理解工作要求
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="process-step">
+                                    <div class="process-icon">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div class="process-content">
+                                        <h5>2. 分配博士生</h5>
+                                        <p>选择合适的博士生，设置截止日期和津贴标准</p>
+                                        <div class="process-tip">
+                                            <strong>注意：</strong> 系统会自动检查博士生当前任务负载
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="process-step">
+                                    <div class="process-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div class="process-content">
+                                        <h5>3. 发送通知</h5>
+                                        <p>系统自动发送任务通知给选中的博士生</p>
+                                        <div class="process-tip">
+                                            <strong>提醒：</strong> 博士生需要在指定时间内确认接受任务
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="process-step">
+                                    <div class="process-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="process-content">
+                                        <h5>4. 跟踪进度</h5>
+                                        <p>在任务列表中可以实时跟踪任务状态</p>
+                                        <div class="process-tip">
+                                            <strong>功能：</strong> 系统会在截止前自动发送提醒通知
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">任务类型与津贴设置</h3>
+                        <div class="card-content">
+                            <p>系统支持多种任务类型，每种类型可设置不同的津贴标准：</p>
+                            
+                            <div class="table-responsive">
+                                <table class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th>任务类型</th>
+                                            <th>描述</th>
+                                            <th>津贴标准</th>
+                                            <th>计算方式</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>课程助教</strong></td>
+                                            <td>协助教师完成课程教学任务</td>
+                                            <td>¥800-¥1,500/门</td>
+                                            <td>按课程周期计算</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>论文指导</strong></td>
+                                            <td>指导本科生或研究生毕业论文</td>
+                                            <td>¥600-¥1,200/人</td>
+                                            <td>按学生人数计算</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>行政协助</strong></td>
+                                            <td>协助学院或实验室行政工作</td>
+                                            <td>¥50-¥100/小时</td>
+                                            <td>按工作时间计算</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>实验室管理</strong></td>
+                                            <td>实验室设备维护与管理</td>
+                                            <td>¥400-¥800/月</td>
+                                            <td>按月计算</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="note-box">
+                                <div class="note-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="note-content">
+                                    <p><strong>提示：</strong> 津贴标准可以在系统设置中进行调整，以适应不同学院或部门的要求。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">批量任务管理</h3>
+                        <div class="card-content">
+                            <p>对于批量操作，系统提供以下高效工具：</p>
+                            
+                            <div class="bulk-features">
+                                <div class="bulk-feature">
+                                    <div class="bulk-icon">
+                                        <i class="fas fa-file-import"></i>
+                                    </div>
+                                    <div class="bulk-content">
+                                        <h4>Excel批量导入</h4>
+                                        <p>支持通过Excel模板批量导入任务和学生信息</p>
+                                        <a href="#" class="download-link">
+                                            <i class="fas fa-download"></i> 下载导入模板
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="bulk-feature">
+                                    <div class="bulk-icon">
+                                        <i class="fas fa-clone"></i>
+                                    </div>
+                                    <div class="bulk-content">
+                                        <h4>任务模板</h4>
+                                        <p>保存常用任务为模板，快速创建类似任务</p>
+                                        <a href="#" class="action-link">
+                                            <i class="fas fa-plus"></i> 创建新模板
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="bulk-feature">
+                                    <div class="bulk-icon">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </div>
+                                    <div class="bulk-content">
+                                        <h4>批量操作</h4>
+                                        <p>支持批量确认、批量发放津贴、批量导出数据</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 学生管理 -->
+                <section id="student-management" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-users"></i>
+                            学生管理
+                        </h2>
+                        <div class="section-badge">重要模块</div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">博士生信息管理</h3>
+                        <div class="card-content">
+                            <p>博士生管理模块提供完整的学生信息生命周期管理：</p>
+                            
+                            <div class="student-management-grid">
+                                <div class="management-card">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <h4>添加博士生</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>单个添加：手动填写学生信息</li>
+                                            <li>批量导入：通过Excel文件批量导入</li>
+                                            <li>学生注册：学生自行注册后管理员审核</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="management-card">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <h4>信息维护</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>基本信息：姓名、学号、专业等</li>
+                                            <li>联系方式：邮箱、电话、地址</li>
+                                            <li>学业信息：导师、年级、研究方向</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="management-card">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </div>
+                                        <h4>状态跟踪</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>任务历史：已完成和进行中的任务</li>
+                                            <li>津贴记录：津贴发放历史和总额</li>
+                                            <li>表现评估：任务完成质量和评价</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="management-card">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <h4>毕业处理</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>毕业状态标记</li>
+                                            <li>历史数据归档</li>
+                                            <li>津贴结算处理</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">博士生选择与分配</h3>
+                        <div class="card-content">
+                            <p>为任务选择合适的博士生时，系统提供智能建议：</p>
+                            
+                            <div class="selection-criteria">
+                                <div class="criterion">
+                                    <div class="criterion-header">
+                                        <span class="criterion-label">任务匹配度</span>
+                                        <span class="criterion-score">权重: 40%</span>
+                                    </div>
+                                    <div class="criterion-desc">
+                                        根据博士生专业背景、研究方向与任务要求匹配度
+                                    </div>
+                                </div>
+                                
+                                <div class="criterion">
+                                    <div class="criterion-header">
+                                        <span class="criterion-label">工作负载</span>
+                                        <span class="criterion-score">权重: 30%</span>
+                                    </div>
+                                    <div class="criterion-desc">
+                                        考虑博士生当前正在进行的任务数量和进度
+                                    </div>
+                                </div>
+                                
+                                <div class="criterion">
+                                    <div class="criterion-header">
+                                        <span class="criterion-label">历史表现</span>
+                                        <span class="criterion-score">权重: 20%</span>
+                                    </div>
+                                    <div class="criterion-desc">
+                                        参考博士生过往任务完成质量和评价
+                                    </div>
+                                </div>
+                                
+                                <div class="criterion">
+                                    <div class="criterion-header">
+                                        <span class="criterion-label">个人偏好</span>
+                                        <span class="criterion-score">权重: 10%</span>
+                                    </div>
+                                    <div class="criterion-desc">
+                                        考虑博士生自己的任务类型偏好和可用时间
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="warning-box">
+                                <div class="warning-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="warning-content">
+                                    <p><strong>注意事项：</strong> 系统建议仅供参考，管理员应根据实际情况进行最终决策。请确保任务分配公平合理，避免个别博士生工作负担过重。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 系统设置 -->
+                <section id="system-settings" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-cog"></i>
+                            系统设置
+                        </h2>
+                        <div class="section-badge">高级功能</div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">权限管理</h3>
+                        <div class="card-content">
+                            <p>系统支持多级权限管理，满足不同管理需求：</p>
+                            
+                            <div class="permissions-guide">
+                                <div class="permission-level">
+                                    <div class="level-header super">
+                                        <h4>超级管理员</h4>
+                                        <span class="level-badge">最高权限</span>
+                                    </div>
+                                    <div class="level-permissions">
+                                        <ul>
+                                            <li>所有系统功能的完全访问权限</li>
+                                            <li>管理其他管理员账户和权限</li>
+                                            <li>系统设置和配置的修改</li>
+                                            <li>数据导出和系统备份</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="permission-level">
+                                    <div class="level-header admin">
+                                        <h4>系统管理员</h4>
+                                        <span class="level-badge">标准权限</span>
+                                    </div>
+                                    <div class="level-permissions">
+                                        <ul>
+                                            <li>任务管理和分配</li>
+                                            <li>博士生信息管理</li>
+                                            <li>数据统计和报表查看</li>
+                                            <li>通知管理</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="permission-level">
+                                    <div class="level-header task">
+                                        <h4>任务管理员</h4>
+                                        <span class="level-badge">受限权限</span>
+                                    </div>
+                                    <div class="level-permissions">
+                                        <ul>
+                                            <li>发布和管理任务</li>
+                                            <li>查看博士生基本信息</li>
+                                            <li>跟踪任务进度</li>
+                                            <li>有限的数据查看权限</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="permission-level">
+                                    <div class="level-header viewer">
+                                        <h4>查看者</h4>
+                                        <span class="level-badge">只读权限</span>
+                                    </div>
+                                    <div class="level-permissions">
+                                        <ul>
+                                            <li>查看任务和博士生信息</li>
+                                            <li>查看统计报表</li>
+                                            <li>无修改和删除权限</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">通知系统配置</h3>
+                        <div class="card-content">
+                            <p>系统提供灵活的通知配置选项，确保信息及时传达：</p>
+                            
+                            <div class="notification-types">
+                                <div class="notification-type">
+                                    <div class="type-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="type-content">
+                                        <h4>邮件通知</h4>
+                                        <p>通过电子邮件发送重要通知，如任务分配、截止提醒等</p>
+                                        <div class="type-config">
+                                            <span class="config-label">建议配置：</span>
+                                            <span class="config-value">开启所有重要通知</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-type">
+                                    <div class="type-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div class="type-content">
+                                        <h4>站内消息</h4>
+                                        <p>系统内部的消息通知，博士生和管理员都能收到</p>
+                                        <div class="type-config">
+                                            <span class="config-label">建议配置：</span>
+                                            <span class="config-value">实时接收，及时处理</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-type">
+                                    <div class="type-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="type-content">
+                                        <h4>移动端推送</h4>
+                                        <p>通过移动应用推送通知（需安装移动端应用）</p>
+                                        <div class="type-config">
+                                            <span class="config-label">建议配置：</span>
+                                            <span class="config-value">开启紧急通知推送</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-type">
+                                    <div class="type-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="type-content">
+                                        <h4>定期报告</h4>
+                                        <p>定期发送统计报告和汇总信息</p>
+                                        <div class="type-config">
+                                            <span class="config-label">建议配置：</span>
+                                            <span class="config-value">每周或每月发送</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <h3 class="card-title">数据备份与安全</h3>
+                        <div class="card-content">
+                            <p>确保数据安全是系统管理的重要环节：</p>
+                            
+                            <div class="security-tips">
+                                <div class="security-tip">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>定期备份</h4>
+                                        <p>建议每周至少进行一次完整的数据备份。备份文件应存储在安全的位置。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-tip">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>权限控制</h4>
+                                        <p>遵循最小权限原则，为每个管理员分配必要的权限，避免权限滥用。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-tip">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-key"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>密码策略</h4>
+                                        <p>要求管理员使用强密码，并定期更换。建议启用双重验证。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-tip">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>操作日志</h4>
+                                        <p>系统记录所有重要操作日志，可用于审计和问题排查。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 常见问题 -->
+                <section id="faq" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-question-circle"></i>
+                            常见问题
+                        </h2>
+                        <div class="section-badge">问题解答</div>
+                    </div>
+                    
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">如何重置管理员密码？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>如果是超级管理员忘记密码，请联系系统技术支持。如果是普通管理员忘记密码，超级管理员可以在"管理员管理"页面重置其密码。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">任务津贴如何计算？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>任务津贴根据任务类型和设置的标准自动计算。可以在系统设置中调整津贴标准，也可以为单个任务设置特殊津贴。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">博士生没有确认任务怎么办？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>系统会在任务分配后发送通知，如果博士生在规定时间内未确认，系统会自动提醒。管理员也可以手动联系博士生或重新分配任务。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">如何导出统计数据？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>在统计分析页面，选择需要导出的数据范围和类型，点击"导出"按钮，可以选择导出为Excel、PDF或CSV格式。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">系统支持批量导入博士生信息吗？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>支持。在博士生管理页面，点击"批量导入"按钮，下载Excel模板，按照模板格式填写博士生信息后上传即可。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <span class="question-text">如何设置任务自动提醒？</span>
+                                <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>在系统设置 → 常规设置中，可以设置任务提醒提前天数。系统会在任务截止前自动发送提醒通知。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 联系我们 -->
+                <section id="contact" class="guide-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-envelope"></i>
+                            联系我们
+                        </h2>
+                        <div class="section-badge">获取帮助</div>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>技术支持</h4>
+                                <p>邮箱：<a href="mailto:support@docim.edu.cn">support@docim.edu.cn</a></p>
+                                <p>电话：010-6275-1234</p>
+                                <p>工作时间：周一至周五 9:00-18:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>文档资源</h4>
+                                <p><a href="#"><i class="fas fa-download"></i> 管理员手册完整版</a></p>
+                                <p><a href="#"><i class="fas fa-download"></i> 系统API文档</a></p>
+                                <p><a href="#"><i class="fas fa-download"></i> 数据导入模板</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>反馈建议</h4>
+                                <p>我们欢迎您的反馈和建议，帮助我们改进系统。</p>
+                                <p>反馈邮箱：<a href="mailto:feedback@docim.edu.cn">feedback@docim.edu.cn</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="admin-guide.html" class="footer-card active">
+                    <h4><i class="fas fa-book"></i> 管理员指南</h4>
+                    <p>了解系统管理操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="admin-manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 管理员手册</h4>
+                    <p>详细管理功能说明文档，包含所有操作步骤</p>
+                </a>
+                
+                <a href="admin-faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决管理中的常见问题</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/notification.js"></script>
+</body>
+</html>

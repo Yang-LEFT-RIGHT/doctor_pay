@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务详情 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/student-dashboard.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <style>
+        /* 任务详情页面特定样式 */
+        .task-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .task-header {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .task-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .task-title-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .task-type-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        
+        .task-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .task-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .meta-item:nth-child(2) { border-left-color: var(--success-color); }
+        .meta-item:nth-child(3) { border-left-color: var(--warning-color); }
+        .meta-item:nth-child(4) { border-left-color: var(--danger-color); }
+        
+        .meta-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .meta-content h4 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        
+        .meta-content p {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .task-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.2);
+        }
+        
+        .status-confirmed {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+        
+        .status-rejected {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        
+        .status-completed {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .task-action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-task-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: 1px solid;
+            font-size: 14px;
+        }
+        
+        .btn-back {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+        
+        .btn-back:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .task-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .task-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .task-section {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 24px;
+        }
+        
+        .task-description {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        
+        .task-description p {
+            margin-bottom: 16px;
+        }
+        
+        .task-description ul {
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .task-description li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .task-description li:before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+        
+        .requirements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .requirement-icon {
+            color: var(--success-color);
+            margin-top: 2px;
+        }
+        
+        /* 侧边栏样式 */
+        .task-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .timeline-card, .contact-card, .confirmation-card {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .timeline {
+            margin-top: 20px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 32px;
+            bottom: -24px;
+            width: 2px;
+            background-color: var(--border-light);
+        }
+        
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 20px;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        
+        .timeline-icon.pending {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+        }
+        
+        .timeline-icon.future {
+            background-color: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-light);
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        .timeline-date {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .contact-person {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .contact-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .contact-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+        
+        .contact-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: rgba(52, 152, 219, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+        
+        .contact-text h4 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        .contact-text p {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .confirmation-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .confirmation-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-normal);
+            font-size: 16px;
+        }
+        
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--success-color), #27ae60);
+            color: white;
+        }
+        
+        .btn-confirm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-reject {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+        }
+        
+        .btn-reject:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .confirmation-note {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: rgba(243, 156, 18, 0.1);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .confirmation-note p {
+            font-size: 14px;
+            color: var(--warning-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .task-header-top {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .task-action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn-task-action {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .task-meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="top-bar">
+        <a href="student-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="student-dashboard.html" class="nav-item">
+                <i class="fas fa-tasks"></i> 个人首页
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user-circle"></i> 个人信息
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">博士生</span>
+                <span>张三博士</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-home"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list.html" class="sidebar-item active">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务列表</span>
+                </a>
+                <a href="statistics.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>个人统计</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">3</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <div class="task-detail-container">
+                <!-- 任务头部信息 -->
+                <div class="task-header">
+                    <div class="task-header-top">
+                        <div class="task-title-section">
+                            <h1>
+                                《计算机视觉》课程助教 - 实验课指导
+                                <span class="task-type-badge">课程助教</span>
+                            </h1>
+                            <p class="task-subtitle">协助主讲教师完成每周实验课教学任务，指导学生完成计算机视觉实验项目</p>
+                            <div class="task-status-badge status-pending">
+                                <i class="fas fa-clock"></i>
+                                待确认
+                            </div>
+                        </div>
+                        
+                        <div class="task-action-buttons">
+                            <button class="btn-task-action btn-back" onclick="window.history.back()">
+                                <i class="fas fa-arrow-left"></i>
+                                返回列表
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="meta-content">
+                                <h4>总工作量</h4>
+                                <p>20小时</p>
+                            </div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <div class="meta-icon">
+                                <i class="far fa-calendar-alt"></i>
+                            </div>
+                            <div class="meta-content">
+                                <h4>截止时间</h4>
+                                <p>2024-06-15</p>
+                            </div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <div class="meta-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="meta-content">
+                                <h4>剩余时间</h4>
+                                <p>3天</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 任务内容区域 -->
+                <div class="task-content">
+                    <!-- 左侧主要区域 -->
+                    <div class="task-main">
+                        <!-- 任务描述 -->
+                        <div class="task-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-align-left"></i>
+                                任务描述
+                            </h2>
+                            
+                            <div class="task-description">
+                                <p>本任务为《计算机视觉》课程的实验课助教工作，主要职责是协助主讲教师完成每周的实验课教学任务。</p>
+                                
+                                <p><strong>具体工作内容：</strong></p>
+                                <ul>
+                                    <li>每周二下午14:00-16:30，负责计算机视觉实验课的教学辅助</li>
+                                    <li>协助学生完成图像处理、特征提取、目标检测等实验项目</li>
+                                    <li>批改学生实验报告，并提供详细的反馈意见</li>
+                                    <li>解答学生在实验过程中遇到的问题，提供技术指导</li>
+                                    <li>维护实验课秩序，确保实验设备正常运行</li>
+                                    <li>每周提交实验课教学记录和总结</li>
+                                </ul>
+                                
+                                <p><strong>课程信息：</strong></p>
+                                <ul>
+                                    <li>课程名称：计算机视觉（CS305）</li>
+                                    <li>上课时间：每周二下午14:00-16:30</li>
+                                    <li>上课地点：信息楼301实验室</li>
+                                    <li>学生人数：45人</li>
+                                    <li>课程周期：2023年9月5日 - 2023年12月26日</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 任职要求 -->
+                        <div class="task-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-user-check"></i>
+                                任职要求
+                            </h2>
+                            
+                            <div class="requirements-list">
+                                <div class="requirement-item">
+                                    <i class="fas fa-check requirement-icon"></i>
+                                    <span>计算机视觉或相关领域博士研究生，具备扎实的图像处理基础知识</span>
+                                </div>
+                                
+                                <div class="requirement-item">
+                                    <i class="fas fa-check requirement-icon"></i>
+                                    <span>熟悉OpenCV、PyTorch/TensorFlow等计算机视觉相关工具和框架</span>
+                                </div>
+                                
+                                <div class="requirement-item">
+                                    <i class="fas fa-check requirement-icon"></i>
+                                    <span>具有良好的沟通能力和教学热情，能够耐心指导学生</span>
+                                </div>
+                                
+                                <div class="requirement-item">
+                                    <i class="fas fa-check requirement-icon"></i>
+                                    <span>每周能够保证至少3小时的备课和批改作业时间</span>
+                                </div>
+                                
+                                <div class="requirement-item">
+                                    <i class="fas fa-check requirement-icon"></i>
+                                    <span>有助教经验者优先考虑</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 附件区域已删除 -->
+                    </div>
+                    
+                    <!-- 右侧侧边栏 -->
+                    <div class="task-sidebar">
+                        <!-- 任务时间线 -->
+                        <div class="timeline-card">
+                            <h2 class="section-title">
+                                <i class="fas fa-history"></i>
+                                任务时间线
+                            </h2>
+                            
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">任务发布</div>
+                                        <div class="timeline-date">2023年11月15日 10:30</div>
+                                        <div class="timeline-desc">李教授发布了此任务</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">任务分配</div>
+                                        <div class="timeline-date">2023年11月15日 11:15</div>
+                                        <div class="timeline-desc">任务已分配给您</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-icon pending">
+                                        <i class="far fa-clock"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">待确认</div>
+                                        <div class="timeline-date">当前状态</div>
+                                        <div class="timeline-desc">请于2023年11月30日前确认</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-icon future">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">任务确认</div>
+                                        <div class="timeline-date">待完成</div>
+                                        <div class="timeline-desc">确认后任务将进入进行中状态</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-icon future">
+                                        <i class="fas fa-flag-checkered"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">任务完成</div>
+                                        <div class="timeline-date">预计2023年12月5日</div>
+                                        <div class="timeline-desc">完成任务后提交验收报告</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 确认操作区域 -->
+                        <div class="confirmation-card">
+                            <h2 class="section-title">
+                                <i class="fas fa-clipboard-check"></i>
+                                任务确认
+                            </h2>
+                            
+                            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                                请仔细阅读任务详情，确认您能够按时完成此任务。确认后，任务将进入"进行中"状态，津贴将在任务完成后发放。
+                            </p>
+                            
+                            <div class="confirmation-actions">
+                                <button class="confirmation-btn btn-confirm" id="confirmBtn">
+                                    <i class="fas fa-check-circle"></i>
+                                    确认接受任务
+                                </button>
+                                
+                                <button class="confirmation-btn btn-reject" id="rejectBtn">
+                                    <i class="fas fa-times-circle"></i>
+                                    拒绝任务
+                                </button>
+                            </div>
+                            
+                            <div class="confirmation-note">
+                                <p>
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    请注意：拒绝任务可能会影响未来任务分配
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- 联系人信息 -->
+                        <div class="contact-card">
+                            <h2 class="section-title">
+                                <i class="fas fa-user-tie"></i>
+                                联系人信息
+                            </h2>
+                            
+                            <div class="contact-person">
+                                <div class="contact-avatar">李</div>
+                                <div class="contact-info">
+                                    <h3>李教授</h3>
+                                    <p>计算机视觉课程主讲教师</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-details">
+                                <div class="contact-detail">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="contact-text">
+                                        <h4>邮箱</h4>
+                                        <p>li.professor@university.edu</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="guide.html" class="footer-card">
+                    <h4><i class="fas fa-book"></i> 使用指南</h4>
+                    <p>了解系统基本操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 用户手册</h4>
+                    <p>详细功能说明文档，包含所有操作步骤和注意事项</p>
+                </a>
+                
+                <a href="faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决常见问题，包含故障排除方法</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/student-dashboard.js"></script>
+    <script src="js/notification.js"></script>
+    <script>
+        // 任务详情页面脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绑定按钮事件
+            const confirmBtn = document.getElementById('confirmBtn');
+            const rejectBtn = document.getElementById('rejectBtn');
+            
+            // 确认任务
+            confirmBtn.addEventListener('click', function() {
+                if (confirm('确定要接受此任务吗？任务确认后将不可更改。')) {
+                    // 模拟API调用
+                    simulateTaskConfirmation(true);
+                }
+            });
+            
+            // 拒绝任务
+            rejectBtn.addEventListener('click', function() {
+                if (confirm('确定要拒绝此任务吗？拒绝后该任务将重新分配。')) {
+                    simulateTaskConfirmation(false);
+                }
+            });
+            
+            // 模拟任务确认/拒绝
+            function simulateTaskConfirmation(isConfirm) {
+                // 显示加载状态
+                const originalText = isConfirm ? confirmBtn.innerHTML : rejectBtn.innerHTML;
+                const loadingText = isConfirm ? 
+                    '<i class="fas fa-spinner fa-spin"></i> 确认中...' : 
+                    '<i class="fas fa-spinner fa-spin"></i> 拒绝中...';
+                
+                if (isConfirm) {
+                    confirmBtn.innerHTML = loadingText;
+                    confirmBtn.disabled = true;
+                } else {
+                    rejectBtn.innerHTML = loadingText;
+                    rejectBtn.disabled = true;
+                }
+                
+                // 模拟网络延迟
+                setTimeout(() => {
+                    if (isConfirm) {
+                        // 更新状态
+                        document.querySelector('.task-status-badge').className = 'task-status-badge status-confirmed';
+                        document.querySelector('.task-status-badge').innerHTML = '<i class="fas fa-check-circle"></i> 已确认';
+                        
+                        // 更新按钮状态
+                        confirmBtn.innerHTML = '<i class="fas fa-check"></i> 任务已确认';
+                        confirmBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                        confirmBtn.disabled = true;
+                        rejectBtn.style.display = 'none';
+                        
+                        showNotification('任务确认成功！', 'success');
+                        
+                        // 更新时间线
+                        updateTimelineAfterConfirmation();
+                    } else {
+                        showNotification('任务已拒绝。', 'info');
+                        
+                        // 重定向到任务列表
+                        setTimeout(() => {
+                            window.location.href = 'task-list.html';
+                        }, 1500);
+                    }
+                }, 1500);
+            }
+            
+            // 更新时间线
+            function updateTimelineAfterConfirmation() {
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                if (timelineItems.length >= 3) {
+                    timelineItems[2].querySelector('.timeline-icon').className = 'timeline-icon';
+                    timelineItems[2].querySelector('.timeline-title').textContent = '任务已确认';
+                    timelineItems[2].querySelector('.timeline-desc').textContent = '您已确认接受此任务';
+                    
+                    timelineItems[3].querySelector('.timeline-icon').className = 'timeline-icon pending';
+                }
+            }
+            
+            // 显示通知
+            function showNotification(message, type = 'info') {
+                // 创建通知元素
+                const notification = document.createElement('div');
+                notification.className = `notification-toast notification-${type}`;
+                notification.innerHTML = `
+                    <div class="notification-toast-content">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-toast-close">&times;</button>
+                `;
+                
+                // 添加到页面
+                document.body.appendChild(notification);
+                
+                // 显示通知
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                // 关闭通知
+                const closeBtn = notification.querySelector('.notification-toast-close');
+                closeBtn.addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                });
+                
+                // 自动关闭
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
+            
+            // 初始化页面
+            initPage();
+        });
+        
+        function initPage() {
+            // 检查登录状态
+            checkLoginStatus();
+            
+            // 初始化通知系统（如果存在）
+            if (typeof initNotificationSystem === 'function') {
+                initNotificationSystem();
+            }
+        }
+        
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('docim_user');
+            if (!savedUser) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+        
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('docim_user');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用指南 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <style>
+        /* 新增的返回工作台按钮样式 */
+        .back-to-dashboard {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .back-dashboard-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+            font-size: 15px;
+        }
+        
+        .back-dashboard-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .back-dashboard-btn i {
+            font-size: 16px;
+        }
+        
+        /* 修复指南页面布局 */
+        .guide-content {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        
+        .guide-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-light);
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+        }
+        
+        .guide-main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+            background-color: var(--bg-secondary);
+        }
+        
+        /* 移除系统概述处的上一节链接 */
+        .guide-bottom .prev-guide[href="#getting-started"] {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="student-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="student-dashboard.html" class="nav-item">
+                <i class="fas fa-tasks"></i> 个人首页
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user-circle"></i> 个人信息
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">博士生</span>
+                <span>张三博士</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <div class="page-content guide-content">
+        <div class="sidebar guide-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-book-open"></i> 使用指南目录</h3>
+                <button class="sidebar-search-btn" title="搜索指南">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <nav class="guide-nav">
+                <!-- 导航内容不变 -->
+                <div class="guide-nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-rocket"></i> 快速入门
+                    </div>
+                    <a href="#getting-started" class="guide-nav-item active">
+                        <i class="fas fa-play-circle"></i> 系统概述
+                    </a>
+                    <a href="#registration" class="guide-nav-item">
+                        <i class="fas fa-user-plus"></i> 账号注册与登录
+                    </a>
+                    <a href="#dashboard-overview" class="guide-nav-item">
+                        <i class="fas fa-tachometer-alt"></i> 工作台介绍
+                    </a>
+                </div>
+                
+                <div class="guide-nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-tasks"></i> 任务管理
+                    </div>
+                    <a href="#task-types" class="guide-nav-item">
+                        <i class="fas fa-list-alt"></i> 任务类型说明
+                    </a>
+                    <a href="#accept-task" class="guide-nav-item">
+                        <i class="fas fa-check-circle"></i> 接受与确认任务
+                    </a>
+                    <a href="#task-progress" class="guide-nav-item">
+                        <i class="fas fa-chart-line"></i> 进度跟踪与报告
+                    </a>
+                    <a href="#task-completion" class="guide-nav-item">
+                        <i class="fas fa-flag-checkered"></i> 任务完成与验收
+                    </a>
+                </div>
+                
+                <div class="guide-nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-chart-bar"></i> 统计与报告
+                    </div>
+                    <a href="#personal-stats" class="guide-nav-item">
+                        <!-- 添加图标 -->
+                        <i class="fas fa-chart-bar"></i> 个人统计
+                    </a>
+                    <a href="#work-hours" class="guide-nav-item">
+                        <i class="fas fa-clock"></i> 工作时长记录
+                    </a>
+                </div>
+                
+                <div class="guide-nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-cogs"></i> 设置管理
+                    </div>
+                    <a href="#profile-management" class="guide-nav-item">
+                        <i class="fas fa-user-edit"></i> 个人信息管理
+                    </a>
+                    <a href="#notification-settings" class="guide-nav-item">
+                        <i class="fas fa-bell"></i> 通知设置
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="guide-progress">
+                <div class="progress-label">
+                    <i class="fas fa-graduation-cap"></i> 学习进度
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+                <div class="progress-text">25% 已学完</div>
+            </div>
+        </div>
+
+        <div class="content-area guide-main">
+            <!-- 搜索区域 -->
+            <div class="guide-search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="guideSearch" placeholder="搜索使用指南内容...">
+                    <button class="search-btn">搜索</button>
+                </div>
+                <div class="search-tips">
+                    <span><i class="fas fa-lightbulb"></i> 提示：输入关键词如"任务确认"、"报告生成"等，将高亮相关内容</span>
+                </div>
+            </div>
+            
+            <!-- 使用指南内容 -->
+            <div class="guide-section" id="getting-started">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-rocket"></i> 系统概述
+                    </h1>
+                    <span class="guide-badge beginner">新手入门</span>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-card-header">
+                        <h2><i class="fas fa-info-circle"></i> 系统简介</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <p>DocIM Stipend 博士生工作管理系统是一个专门为高校博士生设计的综合性工作管理平台，旨在帮助博士生高效管理助教、代管等工作任务，并提供完善的统计报告功能。</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <h4>任务管理</h4>
+                                <p>统一管理各类工作任务，包括助教、代管、临时工作等</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h4>工时统计</h4>
+                                <p>自动记录工作时间，生成详细的工作统计报告</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <h4>智能提醒</h4>
+                                <p>重要任务截止日期提醒，避免错过关键时间点</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-card-header">
+                        <h2><i class="fas fa-users"></i> 用户角色</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="role-grid">
+                            <div class="role-card">
+                                <div class="role-icon student">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h3>博士生</h3>
+                                <ul class="role-features">
+                                    <li>查看和接受工作任务</li>
+                                    <li>记录工作进度和时长</li>
+                                    <li>管理个人信息</li>
+                                </ul>
+                            </div>
+                            <div class="role-card">
+                                <div class="role-icon admin">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <h3>管理员</h3>
+                                <ul class="role-features">
+                                    <li>发布和管理工作任务</li>
+                                    <li>审核博士生工作申请</li>
+                                    <li>查看系统统计报表</li>
+                                    <li>管理系统用户和权限</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 其他章节内容保持不变 -->
+            <div class="guide-section" id="registration">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-user-plus"></i> 账号注册与登录
+                    </h1>
+                    <span class="guide-badge beginner">新手入门</span>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-card-header">
+                        <h2><i class="fas fa-user-check"></i> 账号注册</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <p>博士生账号由系统管理员统一创建和分配，您无需自行注册。当您被分配为博士生用户时，管理员会通过学校邮箱向您发送账号激活邮件。</p>
+                        
+                        <div class="info-box">
+                            <i class="fas fa-info-circle info-icon"></i>
+                            <div class="info-content">
+                                <strong>重要提示：</strong>
+                                <ul>
+                                    <li>请使用学校分配的邮箱账号登录系统</li>
+                                    <li>首次登录需要修改初始密码</li>
+                                    <li>如未收到激活邮件，请联系学院管理员</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-card-header">
+                        <h2><i class="fas fa-sign-in-alt"></i> 登录系统</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <p>访问系统登录页面，输入您的学校邮箱和密码即可登录。</p>
+                        
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>访问登录页面</h4>
+                                    <p>在浏览器中输入系统地址，进入登录页面</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>输入登录信息</h4>
+                                    <p>输入您的学校邮箱地址和密码</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>点击登录</h4>
+                                    <p>点击登录按钮进入系统工作台</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section" id="task-types">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-list-alt"></i> 任务类型说明
+                    </h1>
+                    <span class="guide-badge intermediate">中级指南</span>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-card-header">
+                        <h2><i class="fas fa-chalkboard-teacher"></i> 助教任务</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <p>助教任务是系统中最常见的任务类型，主要协助主讲教师完成课程相关工作。</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>课程辅导</h4>
+                                    <p>协助解答学生课程问题，组织答疑课</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file-check"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>作业批改</h4>
+                                    <p>批改学生作业，提供评分和反馈</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-vial"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>实验指导</h4>
+                                    <p>协助指导学生完成实验课程</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 指南页面底部 -->
+            <div class="guide-bottom">
+                <div class="guide-navigation">
+                    <!-- 系统概述处没有上一节 -->
+                    <span class="prev-guide disabled">
+                        <i class="fas fa-arrow-left"></i>
+                        <div>
+                            <span>上一节</span>
+                            <strong>无</strong>
+                        </div>
+                    </span>
+                    <a href="#registration" class="next-guide">
+                        <div>
+                            <span>下一节</span>
+                            <strong>账号注册与登录</strong>
+                        </div>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="guide-actions">
+                    <button class="btn btn-secondary">
+                        <i class="far fa-bookmark"></i> 收藏本页
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> 标记为已学
+                    </button>
+                    <a href="contact.html" class="btn btn-outline">
+                        <i class="fas fa-question-circle"></i> 仍有疑问？
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 返回工作台按钮 -->
+    <div class="back-to-dashboard">
+        <button class="back-dashboard-btn" onclick="goToDashboard()">
+            <i class="fas fa-arrow-left"></i>
+            返回工作台
+        </button>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="guide.html" class="footer-card active">
+                    <h4><i class="fas fa-book"></i> 使用指南</h4>
+                    <p>了解系统基本操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="manual.html" class="footer-card">
+                    <h4><i class="fas fa-file-alt"></i> 用户手册</h4>
+                    <p>详细功能说明文档，包含所有操作步骤和注意事项</p>
+                </a>
+                
+                <a href="faq.html" class="footer-card">
+                    <h4><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    <p>快速查找和解决常见问题，包含故障排除方法</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4><i class="fas fa-comments"></i> 联系反馈</h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/notification.js"></script>
+    <script src="js/guide.js"></script>
+    <script>
+        // 新增的JavaScript功能
+        function goToDashboard() {
+            window.location.href = 'student-dashboard.html';
+        }
+        
+        // 初始化指南页面
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('使用指南页面加载完成');
+            
+            // 初始化通知系统
+            if (!window.notificationSystem) {
+                window.notificationSystem = new NotificationSystem();
+            }
+            
+            // 更新通知计数
+            updateNotificationCount();
+            
+            // 绑定搜索功能
+            bindSearchFunction();
+            
+            // 绑定导航功能
+            bindNavigationEvents();
+            
+            // 绑定学习进度功能
+            bindLearningProgress();
+        });
+        
+        function updateNotificationCount() {
+            if (window.notificationSystem) {
+                const unreadCount = window.notificationSystem.notifications.filter(n => !n.read).length;
+                document.getElementById('notificationCount').textContent = unreadCount;
+            }
+        }
+        
+        function bindSearchFunction() {
+            const searchInput = document.getElementById('guideSearch');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            if (searchInput && searchBtn) {
+                // 搜索按钮点击事件
+                searchBtn.addEventListener('click', function() {
+                    performSearch(searchInput.value);
+                });
+                
+                // 回车键搜索
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch(searchInput.value);
+                    }
+                });
+            }
+        }
+        
+        function performSearch(keyword) {
+            if (!keyword.trim()) {
+                alert('请输入搜索关键词');
+                return;
+            }
+            
+            // 高亮搜索结果
+            highlightText(keyword);
+            
+            // 滚动到第一个搜索结果
+            const firstHighlight = document.querySelector('.highlight');
+            if (firstHighlight) {
+                firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstHighlight.classList.add('highlight-pulse');
+                setTimeout(() => {
+                    firstHighlight.classList.remove('highlight-pulse');
+                }, 2000);
+            }
+            
+            // 显示搜索结果统计
+            const highlights = document.querySelectorAll('.highlight');
+            showToast(`找到 ${highlights.length} 个相关结果`, 'info');
+        }
+        
+        function highlightText(keyword) {
+            // 移除之前的高亮
+            removeHighlights();
+            
+            if (!keyword.trim()) return;
+            
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            const contentElements = document.querySelectorAll('.guide-card-body, .step-content, .feature-content');
+            
+            contentElements.forEach(element => {
+                element.innerHTML = element.innerHTML.replace(
+                    regex,
+                    '<span class="highlight">$1</span>'
+                );
+            });
+        }
+        
+        function removeHighlights() {
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+        }
+        
+        function bindNavigationEvents() {
+            // 侧边栏导航点击事件
+            const navItems = document.querySelectorAll('.guide-nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有激活状态
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // 添加当前激活状态
+                    this.classList.add('active');
+                    
+                    // 滚动到对应章节
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+        
+        function bindLearningProgress() {
+            const markAsLearnedBtn = document.querySelector('.btn-primary');
+            if (markAsLearnedBtn) {
+                markAsLearnedBtn.addEventListener('click', function() {
+                    const progressFill = document.querySelector('.progress-fill');
+                    const progressText = document.querySelector('.progress-text');
+                    
+                    // 更新进度
+                    const currentWidth = parseInt(progressFill.style.width);
+                    const newWidth = Math.min(currentWidth + 25, 100);
+                    
+                    progressFill.style.width = `${newWidth}%`;
+                    progressText.textContent = `${newWidth}% 已学完`;
+                    
+                    // 更新按钮状态
+                    this.innerHTML = '<i class="fas fa-check"></i> 已学习';
+                    this.disabled = true;
+                    
+                    showToast('本节内容已标记为已学习', 'success');
+                });
+            }
+        }
+        
+        function showToast(message, type) {
+            // 创建Toast元素
+            const toast = document.createElement('div');
+            toast.className = 'guide-toast';
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // 添加样式
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: ${type === 'success' ? '#2ecc71' : '#3498db'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+                font-weight: 500;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        document.body.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('docim_user');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

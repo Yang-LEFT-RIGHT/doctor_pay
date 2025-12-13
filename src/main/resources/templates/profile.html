@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <!-- 顶部通栏 -->
+    <div class="top-bar">
+        <a href="student-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="student-dashboard.html" class="nav-item">
+                <i class="fas fa-tasks"></i> 个人首页
+            </a>
+            <a href="profile.html" class="nav-item active">
+                <i class="fas fa-user-circle"></i> 个人信息
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">博士生</span>
+                <span id="username">张三博士</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <!-- 主布局 -->
+    <div class="page-content">
+        <!-- 左侧导航 -->
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-home"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务列表</span>
+                </a>
+                <a href="statistics.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>个人统计</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">3</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="content-area">
+            <!-- 页面标题区域 -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">个人信息</h1>
+                    <p class="page-subtitle">管理您的个人信息与账户设置</p>
+                </div>
+            </div>
+            
+            <!-- 个人信息概览卡片 -->
+            <div class="profile-overview">
+                <div class="profile-header">
+                    <div class="avatar-section">
+                        <div class="avatar" id="user-avatar">
+                            张
+                        </div>
+                        <button class="avatar-action" onclick="changeAvatar()">
+                            <i class="fas fa-camera"></i>
+                            更换头像
+                        </button>
+                    </div>
+                    
+                    <div class="profile-main-info">
+                        <h2 class="profile-name" id="user-fullname">张三</h2>
+                        <div class="profile-role">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span id="user-program-type">博士研究生 - 招考</span>
+                        </div>
+                        
+                        <div class="profile-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-university"></i>
+                                    所属院系
+                                </div>
+                                <div class="detail-value" id="user-department">计算机科学与技术学院</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-id-card"></i>
+                                    学号
+                                </div>
+                                <div class="detail-value" id="user-id">2401111713</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-flask"></i>
+                                    专业方向
+                                </div>
+                                <div class="detail-value" id="user-major">人工智能与机器学习</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    入学时间
+                                </div>
+                                <div class="detail-value" id="user-enrollment">2023年9月</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user-tie"></i>
+                                    导师
+                                </div>
+                                <div class="detail-value" id="user-supervisor">李教授</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-envelope"></i>
+                                    邮箱
+                                </div>
+                                <div class="detail-value" id="user-email">zhangsan@university.edu.cn</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-tasks">15</div>
+                                <div class="stat-label">总任务数</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-completed">12</div>
+                                <div class="stat-label">已完成</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-active">3</div>
+                                <div class="stat-label">进行中</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-total-hours">320</div>
+                                <div class="stat-label">总任务量(小时)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 信息编辑区域 -->
+            <div class="edit-sections">
+                <div class="edit-tabs">
+                    <button class="edit-tab active" data-tab="basic">
+                        <i class="fas fa-user"></i>
+                        基础信息
+                    </button>
+                    <button class="edit-tab" data-tab="contact">
+                        <i class="fas fa-address-book"></i>
+                        联系信息
+                    </button>
+                </div>
+                
+                <!-- 基础信息标签页 -->
+                <div id="basic-tab" class="tab-content active">
+                    <div class="tab-content-inner">
+                        <h3 class="tab-title">
+                            <i class="fas fa-user-edit"></i>
+                            基础信息设置
+                        </h3>
+                        
+                        <form id="basic-form" class="profile-form">
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-id-card"></i>
+                                    基本信息
+                                </h4>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-name">
+                                            <i class="fas fa-signature"></i>
+                                            姓名
+                                        </label>
+                                        <input type="text" class="form-input" id="input-name" value="张三" required>
+                                        <div class="form-hint">
+                                            请输入您的真实姓名
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-student-id">
+                                            <i class="fas fa-hashtag"></i>
+                                            学号
+                                        </label>
+                                        <input type="text" class="form-input" id="input-student-id" value="S2023001" disabled>
+                                        <div class="form-hint">
+                                            <i class="fas fa-info-circle"></i>
+                                            学号信息请联系管理员修改
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-gender">
+                                            <i class="fas fa-venus-mars"></i>
+                                            性别
+                                        </label>
+                                        <div class="gender-selection">
+                                            <label class="gender-option">
+                                                <input type="radio" name="gender" value="male" checked>
+                                                <span class="gender-label">男</span>
+                                            </label>
+                                            <label class="gender-option">
+                                                <input type="radio" name="gender" value="female">
+                                                <span class="gender-label">女</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    学业信息
+                                </h4>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-program-type">
+                                            <i class="fas fa-user-graduate"></i>
+                                            培养类型
+                                        </label>
+                                        <select class="form-select" id="input-program-type" required>
+                                            <option value="recruitment" selected>招考</option>
+                                            <option value="direct-phd">直博</option>
+                                            <option value="application-assessment">申请-考核制</option>
+                                        </select>
+                                        <div class="form-hint">
+                                            请选择您的博士培养类型
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-department">
+                                            <i class="fas fa-university"></i>
+                                            所属院系
+                                        </label>
+                                        <select class="form-select" id="input-department" required>
+                                            <option value="computer" selected>计算机科学与技术学院</option>
+                                            <option value="mathematics">数学科学学院</option>
+                                            <option value="physics">物理学院</option>
+                                            <option value="chemistry">化学与化工学院</option>
+                                            <option value="biology">生命科学学院</option>
+                                            <option value="engineering">工程学院</option>
+                                            <option value="management">管理学院</option>
+                                            <option value="humanities">人文学院</option>
+                                            <option value="law">法学院</option>
+                                            <option value="medicine">医学院</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-major">
+                                            <i class="fas fa-flask"></i>
+                                            专业方向
+                                        </label>
+                                        <input type="text" class="form-input" id="input-major" value="人工智能与机器学习" required>
+                                        <div class="form-hint">
+                                            请填写您的具体研究方向
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-supervisor">
+                                            <i class="fas fa-user-tie"></i>
+                                            导师
+                                        </label>
+                                        <input type="text" class="form-input" id="input-supervisor" value="李教授" required>
+                                        <div class="form-hint">
+                                            请填写您的博士生导师姓名
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-enrollment">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            入学时间
+                                        </label>
+                                        <input type="month" class="form-input" id="input-enrollment" value="2023-09" required>
+                                        <div class="form-hint">
+                                            请选择您正式入学的年月
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="resetBasicForm()">
+                                    <i class="fas fa-undo"></i>
+                                    重置
+                                </button>
+                                <button type="submit" class="btn-primary" id="save-basic-btn">
+                                    <i class="fas fa-save"></i>
+                                    保存修改
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- 联系信息标签页 -->
+                <div id="contact-tab" class="tab-content">
+                    <div class="tab-content-inner">
+                        <h3 class="tab-title">
+                            <i class="fas fa-address-book"></i>
+                            联系信息设置
+                        </h3>
+                        
+                        <form id="contact-form" class="profile-form">
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-phone-alt"></i>
+                                    联系方式
+                                </h4>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-phone">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            联系电话
+                                        </label>
+                                        <input type="tel" class="form-input" id="input-phone" value="13800138000" required>
+                                        <div class="form-hint">
+                                            请填写常用手机号码
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-email">
+                                            <i class="fas fa-envelope"></i>
+                                            电子邮箱
+                                        </label>
+                                        <input type="email" class="form-input" id="input-email" value="zhangsan@university.edu.cn" required>
+                                        <div class="form-hint">
+                                            请填写学校邮箱或常用邮箱
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="input-wechat">
+                                            <i class="fab fa-weixin"></i>
+                                            微信号
+                                        </label>
+                                        <input type="text" class="form-input" id="input-wechat" placeholder="请输入您的微信号">
+                                        <div class="form-hint">
+                                            用于紧急联系或工作沟通
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    通讯地址
+                                </h4>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label class="form-label" for="input-dorm">
+                                            <i class="fas fa-home"></i>
+                                            宿舍地址
+                                        </label>
+                                        <input type="text" class="form-input" id="input-dorm" placeholder="例如：东区1号楼201室">
+                                        <div class="form-hint">
+                                            请填写当前住宿地址，用于联系或邮寄材料
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="resetContactForm()">
+                                    <i class="fas fa-undo"></i>
+                                    重置
+                                </button>
+                                <button type="submit" class="btn-primary" id="save-contact-btn">
+                                    <i class="fas fa-save"></i>
+                                    保存修改
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="guide.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-book"></i> 使用指南
+                    </h4>
+                    <p>了解系统基本操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="manual.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-file-alt"></i> 用户手册
+                    </h4>
+                    <p>详细功能说明文档，包含所有操作步骤和注意事项</p>
+                </a>
+                
+                <a href="faq.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-question-circle"></i> 常见问题
+                    </h4>
+                    <p>快速查找和解决常见问题，包含故障排除方法</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-comments"></i> 联系反馈
+                    </h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/notification.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

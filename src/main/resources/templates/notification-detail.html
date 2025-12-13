@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知详情 - DocIM Stipend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link rel="stylesheet" href="css/notification-detail.css">
+</head>
+<body>
+    <!-- 顶部通栏 -->
+    <div class="top-bar">
+        <a href="student-dashboard.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>DocIM</span> Stipend
+        </a>
+        
+        <div class="main-nav">
+            <a href="student-dashboard.html" class="nav-item">
+                <i class="fas fa-tasks"></i> 个人首页
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user-circle"></i> 个人信息
+            </a>
+        </div>
+        
+        <div class="top-tools">
+            <div class="user-info">
+                <span class="role-badge">博士生</span>
+                <span id="username">张三博士</span>
+            </div>
+            
+            <button class="notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                退出
+            </button>
+        </div>
+    </div>
+
+    <!-- 通知弹窗 -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> 通知中心</h3>
+            <div class="notification-actions">
+                <button class="btn-mark-all-read" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+                <button class="btn-clear-all" id="clearAllBtn">
+                    <i class="fas fa-trash-alt"></i> 清空
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- 通知项将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="notification-footer">
+            <a href="notification-center.html" class="view-all-link">
+                <i class="fas fa-external-link-alt"></i> 前往通知中心
+            </a>
+        </div>
+    </div>
+    
+    <!-- 通知遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay"></div>
+
+    <!-- 主布局 -->
+    <div class="page-content">
+        <!-- 左侧导航 -->
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="student-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-home"></i>
+                    <span>工作台首页</span>
+                </a>
+                <a href="task-list.html" class="sidebar-item">
+                    <i class="fas fa-list-ul"></i>
+                    <span>任务列表</span>
+                </a>
+                <a href="statistics.html" class="sidebar-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>个人统计</span>
+                </a>
+                <a href="notification-center.html" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知中心</span>
+                    <span class="sidebar-badge" id="sidebarNotificationCount">3</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="content-area">
+            <!-- 返回按钮 -->
+            <div class="back-nav">
+                <a href="notification-center.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    返回通知中心
+                </a>
+            </div>
+            
+            <!-- 通知详情内容 -->
+            <div class="notification-detail">
+                <div class="notification-detail-header">
+                    <div class="notification-type-badge" id="notificationTypeBadge">
+                        <i class="fas fa-tasks"></i>
+                        <span>任务通知</span>
+                    </div>
+                    
+                    <div class="notification-status" id="notificationStatus">
+                        <span class="status-badge unread">未读</span>
+                    </div>
+                </div>
+                
+                <div class="notification-detail-title">
+                    <h1 id="notificationTitle">通知标题</h1>
+                    <div class="notification-meta">
+                        <span class="notification-time" id="notificationTime">刚刚</span>
+                        <span class="notification-id">ID: <span id="notificationId">N001</span></span>
+                    </div>
+                </div>
+                
+                <div class="notification-detail-content">
+                    <div class="notification-message" id="notificationMessage">
+                        通知内容将在这里显示...
+                    </div>
+                    
+                    <!-- 详情信息区域 -->
+                    <div class="notification-details" id="notificationDetails">
+                        <!-- 动态生成的通知详情 -->
+                    </div>
+                </div>
+                
+                <div class="notification-detail-actions">
+                    <button class="btn-secondary" id="markAsReadBtn">
+                        <i class="fas fa-check"></i>
+                        标记为已读
+                    </button>
+                    <button class="btn-secondary" id="deleteNotificationBtn">
+                        <i class="fas fa-trash-alt"></i>
+                        删除通知
+                    </button>
+                    <button class="btn-primary" id="relatedActionBtn">
+                        <i class="fas fa-external-link-alt"></i>
+                        相关操作
+                    </button>
+                </div>
+                
+                <!-- 相关通知 -->
+                <div class="related-notifications">
+                    <h3>
+                        <i class="fas fa-link"></i>
+                        相关通知
+                    </h3>
+                    <div class="related-list" id="relatedNotifications">
+                        <!-- 相关通知列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 全局帮助中心/页脚 -->
+    <div class="global-footer">
+        <div class="footer-container">
+            <div class="footer-title">
+                <i class="fas fa-life-ring"></i> 帮助中心与支持
+            </div>
+            
+            <div class="footer-grid">
+                <a href="guide.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-book"></i> 使用指南
+                    </h4>
+                    <p>了解系统基本操作流程，快速上手使用各项功能</p>
+                </a>
+                
+                <a href="manual.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-file-alt"></i> 用户手册
+                    </h4>
+                    <p>详细功能说明文档，包含所有操作步骤和注意事项</p>
+                </a>
+                
+                <a href="faq.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-question-circle"></i> 常见问题
+                    </h4>
+                    <p>快速查找和解决常见问题，包含故障排除方法</p>
+                </a>
+                
+                <a href="contact.html" class="footer-card">
+                    <h4>
+                        <i class="fas fa-comments"></i> 联系反馈
+                    </h4>
+                    <p>获取技术支持，提交使用反馈、建议和问题报告</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/notification.js"></script>
+    <script src="js/notification-detail.js"></script>
+</body>
+</html>
