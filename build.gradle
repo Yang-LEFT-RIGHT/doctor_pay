@@ -45,6 +45,10 @@ dependencies {
     // Jackson库，用于JSON序列化和反序列化
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+
+	// Lombok库，用于简化Java类的编写
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
 tasks.named('test') {

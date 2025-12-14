@@ -2,18 +2,7 @@
 class ProfileManager {
     constructor() {
         this.userData = {
-            id: "S2023001",
-            name: "张三",
             gender: "male",
-            department: "computer",
-            major: "人工智能与机器学习",
-            programType: "recruitment", // 招考
-            supervisor: "李教授",
-            enrollment: "2023-09",
-            phone: "13800138000",
-            email: "zhangsan@university.edu.cn",
-            wechat: "",
-            dorm: "",
             stats: {
                 totalTasks: 15,
                 completedTasks: 12,
@@ -42,14 +31,14 @@ class ProfileManager {
             // 绑定事件
             this.bindEvents();
             
-            // 加载用户数据
-            this.loadUserData();
-            
             // 初始化标签页
             this.initTabs();
             
             // 初始化表单
             this.initForms();
+            
+            // 加载用户数据（在DOM完全初始化后）
+            this.loadUserData();
             
             console.log('ProfileManager 初始化完成');
             
@@ -94,17 +83,47 @@ class ProfileManager {
         console.log('加载用户数据...');
         
         try {
-            // 尝试从localStorage加载用户数据
+            // 1. 重置为默认userData
+            this.userData = {
+                gender: "male",
+                stats: {
+                    totalTasks: 15,
+                    completedTasks: 12,
+                    activeTasks: 3,
+                    totalHours: 320
+                }
+            };
+            
+            console.log('步骤1 - 默认userData:', this.userData);
+            
+            // 2. 从docim_user获取登录时存储的用户信息（最高优先级）
+            const loginUserData = localStorage.getItem('docim_user');
+            if (loginUserData) {
+                const loginData = JSON.parse(loginUserData);
+                // 将登录信息合并到userData（覆盖默认值）
+                this.userData = {
+                    ...this.userData,
+                    ...loginData
+                };
+                console.log('步骤2 - 合并登录数据后:', this.userData);
+            }
+            
+            // 3. 从profile_data获取用户可能修改过的信息（次高优先级）
             const savedUser = localStorage.getItem('profile_data');
             if (savedUser) {
                 const savedData = JSON.parse(savedUser);
-                this.userData = { ...this.userData, ...savedData };
+                // 将保存的信息合并到userData（覆盖默认值和登录数据）
+                this.userData = {
+                    ...this.userData,
+                    ...savedData
+                };
+                console.log('步骤3 - 合并保存数据后:', this.userData);
             }
             
-            // 更新基本信息显示
+            // 4. 更新基本信息显示
             this.updateProfileDisplay();
             
-            // 更新表单数据
+            // 5. 更新表单数据
             this.updateFormData();
             
             console.log('用户数据加载完成');
@@ -127,12 +146,11 @@ class ProfileManager {
         // 更新基本信息
         const elements = {
             'user-fullname': this.userData.name,
-            'user-program-type': `博士研究生 - ${this.getProgramTypeName(this.userData.programType)}`,
-            'user-department': this.getDepartmentName(this.userData.department),
-            'user-id': this.userData.id,
+            'user-program-type': `博士研究生 - ${this.getProgramTypeName(this.userData.student_type)}`,
+            'user-id': this.userData.student_id,
             'user-major': this.userData.major,
-            'user-supervisor': this.userData.supervisor,
-            'user-enrollment': this.formatEnrollmentDate(this.userData.enrollment),
+            'user-supervisor': this.userData.supervisor_id,
+            'user-enrollment': this.formatEnrollmentDate(this.userData.enrollment_year),
             'user-email': this.userData.email
         };
         
@@ -144,11 +162,19 @@ class ProfileManager {
         }
         
         // 更新统计信息
+        // 确保stats对象存在，如果不存在则使用默认值
+        const userStats = this.userData.stats || {
+            totalTasks: 0,
+            completedTasks: 0,
+            activeTasks: 0,
+            totalHours: 0
+        };
+        
         const stats = {
-            'stat-tasks': this.userData.stats.totalTasks,
-            'stat-completed': this.userData.stats.completedTasks,
-            'stat-active': this.userData.stats.activeTasks,
-            'stat-total-hours': this.userData.stats.totalHours
+            'stat-tasks': userStats.totalTasks,
+            'stat-completed': userStats.completedTasks,
+            'stat-active': userStats.activeTasks,
+            'stat-total-hours': userStats.totalHours
         };
         
         for (const [id, value] of Object.entries(stats)) {
@@ -161,9 +187,9 @@ class ProfileManager {
     
     getProgramTypeName(key) {
         const types = {
-            'recruitment': '招考',
-            'direct-phd': '直博',
-            'application-assessment': '申请-考核制'
+            '招考': '招考',
+            '直博': '直博',
+            '申请-考核制': '申请-考核制'
         };
         return types[key] || key;
     }
@@ -184,34 +210,74 @@ class ProfileManager {
         return departments[key] || key;
     }
     
-    formatEnrollmentDate(dateStr) {
-        if (!dateStr) return '';
-        const [year, month] = dateStr.split('-');
-        return `${year}年${parseInt(month)}月`;
+    formatEnrollmentDate(dateInput) {
+        if (!dateInput) return '';
+        
+        try {
+            // 如果是数字类型（如2023），则作为年份处理
+            if (typeof dateInput === 'number') {
+                return `${dateInput}年`;
+            }
+            
+            // 如果是字符串类型（如"2023-09"），则分割年和月
+            if (typeof dateInput === 'string') {
+                const [year, month] = dateInput.split('-');
+                if (year && month) {
+                    return `${year}年${parseInt(month)}月`;
+                } else if (year) {
+                    return `${year}年`;
+                }
+            }
+            
+            // 默认处理：转换为字符串并返回
+            return String(dateInput);
+            
+        } catch (error) {
+            console.error('格式化入学日期失败:', error);
+            return String(dateInput); // 出错时至少返回原始值
+        }
     }
     
     updateFormData() {
+        console.log('开始更新表单数据，当前userData:', this.userData);
+        
         // 基础信息表单
-        document.getElementById('input-name').value = this.userData.name;
-        document.getElementById('input-student-id').value = this.userData.id;
+        const nameInput = document.getElementById('input-name');
+        const studentIdInput = document.getElementById('input-student-id');
+        const programTypeInput = document.getElementById('input-program-type');
+        const departmentInput = document.getElementById('input-department');
+        const majorInput = document.getElementById('input-major');
+        const supervisorInput = document.getElementById('input-supervisor');
+        const enrollmentInput = document.getElementById('input-enrollment');
+        
+        if (nameInput) nameInput.value = this.userData.name || '';
+        if (studentIdInput) studentIdInput.value = this.userData.student_id || this.userData.id || '';
         
         // 设置性别选择
         const genderInputs = document.querySelectorAll('input[name="gender"]');
         genderInputs.forEach(input => {
-            input.checked = input.value === this.userData.gender;
+            input.checked = input.value === (this.userData.gender || 'male');
         });
         
-        document.getElementById('input-program-type').value = this.userData.programType;
-        document.getElementById('input-department').value = this.userData.department;
-        document.getElementById('input-major').value = this.userData.major;
-        document.getElementById('input-supervisor').value = this.userData.supervisor;
-        document.getElementById('input-enrollment').value = this.userData.enrollment;
+        if (programTypeInput) programTypeInput.value = this.userData.student_type || this.userData.programType || '招考';
+        if (departmentInput) departmentInput.value = this.userData.department || 'computer';
+        if (majorInput) majorInput.value = this.userData.major || '';
+        if (supervisorInput) supervisorInput.value = this.userData.supervisor_id || this.userData.supervisor || '';
+        if (enrollmentInput) enrollmentInput.value = this.userData.enrollment_year ? 
+            `${this.userData.enrollment_year}` : (this.userData.enrollment || '');
         
         // 联系信息表单
-        document.getElementById('input-phone').value = this.userData.phone;
-        document.getElementById('input-email').value = this.userData.email;
-        document.getElementById('input-wechat').value = this.userData.wechat || '';
-        document.getElementById('input-dorm').value = this.userData.dorm || '';
+        const phoneInput = document.getElementById('input-phone');
+        const emailInput = document.getElementById('input-email');
+        const wechatInput = document.getElementById('input-wechat');
+        const dormInput = document.getElementById('input-dorm');
+        
+        if (phoneInput) phoneInput.value = this.userData.phone || '';
+        if (emailInput) emailInput.value = this.userData.email || '';
+        if (wechatInput) wechatInput.value = this.userData.wechat_id || this.userData.wechat || '';
+        if (dormInput) dormInput.value = this.userData.dorm || '';
+        
+        console.log('表单数据更新完成');
         
         // 重置表单变化状态
         this.formChanged.basic = false;
@@ -321,14 +387,15 @@ class ProfileManager {
             this.userData.gender = genderInput.value;
         }
         
-        this.userData.programType = document.getElementById('input-program-type').value;
+        this.userData.student_type = document.getElementById('input-program-type').value;
+        this.userData.programType = this.userData.student_type; // 保持兼容性
         this.userData.department = document.getElementById('input-department').value;
         this.userData.major = document.getElementById('input-major').value.trim();
-        this.userData.supervisor = document.getElementById('input-supervisor').value.trim();
-        this.userData.enrollment = document.getElementById('input-enrollment').value;
+        this.userData.supervisor_id = document.getElementById('input-supervisor').value.trim();
+        this.userData.enrollment_year = document.getElementById('input-enrollment').value;
         
         // 验证数据
-        if (!this.userData.name || !this.userData.major || !this.userData.supervisor) {
+        if (!this.userData.name || !this.userData.major || !this.userData.supervisor_id) {
             this.showToast('请填写所有必填项', 'error');
             return;
         }
@@ -435,6 +502,9 @@ class ProfileManager {
             const savedUser = JSON.parse(localStorage.getItem('docim_user') || '{}');
             savedUser.name = this.userData.name;
             savedUser.department = this.userData.department;
+            savedUser.major = this.userData.major;
+            savedUser.supervisor_id = this.userData.supervisor_id;
+            savedUser.enrollment_year = this.userData.enrollment_year;
             localStorage.setItem('docim_user', JSON.stringify(savedUser));
             
             // 更新顶部栏用户名
@@ -555,6 +625,19 @@ document.addEventListener('DOMContentLoaded', function() {
         window.notificationManager = new NotificationManager();
     }
 });
+
+// 全局重置函数
+function resetBasicForm() {
+    if (window.profileManager) {
+        window.profileManager.resetBasicForm();
+    }
+}
+
+function resetContactForm() {
+    if (window.profileManager) {
+        window.profileManager.resetContactForm();
+    }
+}
 
 // 添加必要的动画样式
 if (!document.querySelector('#toast-animations')) {

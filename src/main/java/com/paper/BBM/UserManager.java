@@ -40,8 +40,8 @@ public class UserManager {
     public boolean login_Stu(Students student) throws SQLException{
         boolean f = false;
         // 使用参数化查询，修复原SQL语句的语法错误和注入风险
-        String sqlString = "SELECT PASSWORD FROM USER WHERE uname = ?";
-        Map<String,Object> map = mysqlhelper.executeSQLWithSelect(sqlString, student.getName());
+        String sqlString = "SELECT PASSWORD FROM students WHERE student_id = ?";
+        Map<String,Object> map = mysqlhelper.executeSQLWithSelect(sqlString, student.getStudent_id());
         
         ResultSet set = null;
         try {
@@ -66,6 +66,44 @@ public class UserManager {
             }
         }
         return f;
+    }
+
+    public Students fetch_info_Stu(String student_id) throws SQLException{
+        Students student = new Students();
+        // 使用参数化查询，修复原SQL语句的语法错误和注入风险
+        String sqlString = "SELECT * FROM students WHERE student_id = ?";
+        Map<String,Object> map = mysqlhelper.executeSQLWithSelect(sqlString, student_id);
+        ResultSet set=null;
+        try {
+            if(map.get("result") != null){
+                set = (ResultSet) map.get("result");
+                // 检查是否有结果
+                if(set.next()){
+                    student.setStudent_id(set.getString("student_id"));
+                    student.setPassword(set.getString("password"));
+                    student.setName(set.getString("name"));
+                    student.setPhone(set.getString("phone"));
+                    student.setEmail(set.getString("email"));
+                    student.setMajor(set.getString("major"));
+                    student.setStudent_type(set.getString("student_type"));
+                    student.setSupervisor_id(set.getString("supervisor_id"));
+                    student.setEnrollment_year(set.getInt("enrollment_year"));
+                    student.setTraining_mode(set.getString("training_mode"));
+                    student.setStudent_id(set.getString("student_id"));
+                    student.setWechat_id(set.getString("wechat_id"));
+                }
+            }
+        } finally {
+            // 关闭ResultSet
+            if (set != null) {
+                try {
+                    set.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return student;
     }
 
     // 修改密码(未完成)
