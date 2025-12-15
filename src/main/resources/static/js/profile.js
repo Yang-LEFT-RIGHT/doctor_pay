@@ -84,40 +84,42 @@ class ProfileManager {
         
         try {
             // 1. 重置为默认userData
-            this.userData = {
-                gender: "male",
-                stats: {
-                    totalTasks: 15,
-                    completedTasks: 12,
-                    activeTasks: 3,
-                    totalHours: 320
-                }
-            };
+        this.userData = {
+            gender: "male",
+            student_type: "招考",  // 默认培养类型为"招考"
+            stats: {
+                totalTasks: 15,
+                completedTasks: 12,
+                activeTasks: 3,
+                totalHours: 320
+            }
+        };
             
             console.log('步骤1 - 默认userData:', this.userData);
-            
-            // 2. 从docim_user获取登录时存储的用户信息（最高优先级）
-            const loginUserData = localStorage.getItem('docim_user');
-            if (loginUserData) {
-                const loginData = JSON.parse(loginUserData);
-                // 将登录信息合并到userData（覆盖默认值）
-                this.userData = {
-                    ...this.userData,
-                    ...loginData
-                };
-                console.log('步骤2 - 合并登录数据后:', this.userData);
-            }
             
             // 3. 从profile_data获取用户可能修改过的信息（次高优先级）
             const savedUser = localStorage.getItem('profile_data');
             if (savedUser) {
                 const savedData = JSON.parse(savedUser);
-                // 将保存的信息合并到userData（覆盖默认值和登录数据）
+                // 将保存的信息合并到userData（覆盖默认值）
                 this.userData = {
                     ...this.userData,
                     ...savedData
                 };
-                console.log('步骤3 - 合并保存数据后:', this.userData);
+                console.log('步骤2 - 合并保存数据后:', this.userData);
+            }
+            
+            // 2. 从docim_user获取登录时存储的用户信息（最高优先级）
+            const loginUserData = localStorage.getItem('docim_user');
+            if (loginUserData) {
+                const loginData = JSON.parse(loginUserData);
+                // 将登录信息合并到userData（覆盖默认值和保存数据）
+                this.userData = {
+                    ...this.userData,
+                    ...loginData
+                };
+                console.log('步骤3 - 合并登录数据后:', this.userData);
+                console.log('合并登录数据后，培养类型:', this.userData.student_type);
             }
             
             // 4. 更新基本信息显示
@@ -245,7 +247,6 @@ class ProfileManager {
         const nameInput = document.getElementById('input-name');
         const studentIdInput = document.getElementById('input-student-id');
         const programTypeInput = document.getElementById('input-program-type');
-        const departmentInput = document.getElementById('input-department');
         const majorInput = document.getElementById('input-major');
         const supervisorInput = document.getElementById('input-supervisor');
         const enrollmentInput = document.getElementById('input-enrollment');
@@ -259,8 +260,15 @@ class ProfileManager {
             input.checked = input.value === (this.userData.gender || 'male');
         });
         
-        if (programTypeInput) programTypeInput.value = this.userData.student_type || this.userData.programType || '招考';
-        if (departmentInput) departmentInput.value = this.userData.department || 'computer';
+        if (programTypeInput) {
+            // 优先使用programType字段，因为它的值与选择框选项匹配
+            // 同时兼容student_type字段，确保向后兼容
+            const programTypeValue = this.userData.programType || this.userData.student_type || '招考';
+            // 确保值在选择框选项中存在
+            const validOptions = Array.from(programTypeInput.options).map(option => option.value);
+            programTypeInput.value = validOptions.includes(programTypeValue) ? programTypeValue : '招考';
+            console.log('设置培养方案选择框值为:', programTypeInput.value);
+        }
         if (majorInput) majorInput.value = this.userData.major || '';
         if (supervisorInput) supervisorInput.value = this.userData.supervisor_id || this.userData.supervisor || '';
         if (enrollmentInput) enrollmentInput.value = this.userData.enrollment_year ? 
@@ -270,12 +278,10 @@ class ProfileManager {
         const phoneInput = document.getElementById('input-phone');
         const emailInput = document.getElementById('input-email');
         const wechatInput = document.getElementById('input-wechat');
-        const dormInput = document.getElementById('input-dorm');
         
         if (phoneInput) phoneInput.value = this.userData.phone || '';
         if (emailInput) emailInput.value = this.userData.email || '';
         if (wechatInput) wechatInput.value = this.userData.wechat_id || this.userData.wechat || '';
-        if (dormInput) dormInput.value = this.userData.dorm || '';
         
         console.log('表单数据更新完成');
         
@@ -389,7 +395,6 @@ class ProfileManager {
         
         this.userData.student_type = document.getElementById('input-program-type').value;
         this.userData.programType = this.userData.student_type; // 保持兼容性
-        this.userData.department = document.getElementById('input-department').value;
         this.userData.major = document.getElementById('input-major').value.trim();
         this.userData.supervisor_id = document.getElementById('input-supervisor').value.trim();
         this.userData.enrollment_year = document.getElementById('input-enrollment').value;
@@ -403,8 +408,29 @@ class ProfileManager {
         // 显示保存状态
         this.setButtonLoading(saveBtn, true, '保存中...');
         
-        // 模拟保存操作
-        setTimeout(() => {
+        // 实际保存操作：与后端API交互
+        fetch('/save-basic-info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: this.userData.name,
+                student_id: this.userData.student_id,
+                enrollment: this.userData.enrollment_year,
+                supervisor: this.userData.supervisor_id,
+                major: this.userData.major,
+                program_type: this.userData.student_type,
+                gender: this.userData.gender
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log('保存状态:', data);
+            
             // 保存到localStorage
             this.saveToLocalStorage();
             
@@ -422,8 +448,15 @@ class ProfileManager {
             this.setButtonLoading(saveBtn, false, '保存修改');
             
             this.showToast('基础信息已保存', 'success');
+        })
+        .catch(error => {
+            console.error('保存基础信息失败:', error);
             
-        }, 800);
+            // 恢复按钮状态
+            this.setButtonLoading(saveBtn, false, '保存修改');
+            
+            this.showToast('保存失败，请检查网络连接或服务器状态', 'error');
+        });
     }
     
     saveContactInfo() {
@@ -436,7 +469,6 @@ class ProfileManager {
         this.userData.phone = document.getElementById('input-phone').value.trim();
         this.userData.email = document.getElementById('input-email').value.trim();
         this.userData.wechat = document.getElementById('input-wechat').value.trim();
-        this.userData.dorm = document.getElementById('input-dorm').value.trim();
         
         // 验证数据
         if (!this.userData.phone || !this.userData.email) {
@@ -461,27 +493,51 @@ class ProfileManager {
         // 显示保存状态
         this.setButtonLoading(saveBtn, true, '保存中...');
         
-        // 模拟保存操作
-        setTimeout(() => {
+        fetch('/save-contant-info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                phone: this.userData.phone,
+                email: this.userData.email,
+                wechat_id: this.userData.wechat,
+                student_id: this.userData.student_id
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log('保存状态:', data);
+            
             // 保存到localStorage
             this.saveToLocalStorage();
             
-            // 更新显示中的邮箱
-            const emailElement = document.getElementById('user-email');
-            if (emailElement) {
-                emailElement.textContent = this.userData.email;
-            }
+            // 更新显示
+            this.updateProfileDisplay();
+            
+            // 更新localStorage中的用户数据
+            this.updateUserInLocalStorage();
             
             // 重置表单状态
-            this.formChanged.contact = false;
+            this.formChanged.basic = false;
             this.updateSaveButtons();
             
             // 恢复按钮状态
             this.setButtonLoading(saveBtn, false, '保存修改');
             
             this.showToast('联系信息已保存', 'success');
+        })
+        .catch(error => {
+            console.error('保存联系信息失败:', error);
             
-        }, 800);
+            // 恢复按钮状态
+            this.setButtonLoading(saveBtn, false, '保存修改');
+            
+            this.showToast('保存联系信息失败，请检查网络连接或服务器状态', 'error');
+        });
     }
     
     saveToLocalStorage() {
@@ -505,6 +561,8 @@ class ProfileManager {
             savedUser.major = this.userData.major;
             savedUser.supervisor_id = this.userData.supervisor_id;
             savedUser.enrollment_year = this.userData.enrollment_year;
+            // 添加培养类型的更新
+            savedUser.student_type = this.userData.training_mode;
             localStorage.setItem('docim_user', JSON.stringify(savedUser));
             
             // 更新顶部栏用户名

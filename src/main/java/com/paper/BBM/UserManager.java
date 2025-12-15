@@ -106,6 +106,18 @@ public class UserManager {
         return student;
     }
 
+    public String updateContactInfo_Stu(Students student) throws SQLException{
+        // 使用参数化查询
+        String sqlString = "UPDATE students SET phone=?,email=?,wechat_id=? WHERE student_id = ?";
+        return mysqlhelper.executeSQL(sqlString, student.getPhone(), student.getEmail(), student.getWechat_id(), student.getStudent_id());
+    }
+
+    public String updateDetailInfo_Stu(Students student) throws SQLException{
+        // 使用参数化查询
+        String sqlString = "UPDATE students SET name=?,enrollment_year=?,supervisor_id=?,major=?,training_mode=?,gender=? WHERE student_id = ?";
+        return mysqlhelper.executeSQL(sqlString, student.getName(), student.getEnrollment_year(), student.getSupervisor_id(), student.getMajor(), student.getTraining_mode(), student.getGender(), student.getStudent_id());
+    }
+
     // 修改密码(未完成)
     public String updatePassword_Stu(Students student){
         // 使用参数化查询
@@ -264,4 +276,17 @@ public class UserManager {
         return false;
     }
          */
+    
+    // 关闭数据库连接
+    public void close() {
+        if (mysqlhelper != null) {
+            try {
+                mysqlhelper.close();
+                System.out.println("数据库连接已关闭");
+            } catch (Exception e) {
+                System.err.println("关闭数据库连接失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -19,7 +19,7 @@ class TaskListManager {
     
     loadTaskData() {
         console.log('加载任务数据');
-        this.tasks = [
+        /*this.tasks = [
             {
                 id: 1,
                 title: "《数据结构》课程助教",
@@ -31,109 +31,29 @@ class TaskListManager {
                 workload: "20小时",
                 publishDate: "2024-06-01"
             },
-            {
-                id: 2,
-                title: "实验室设备维护管理",
-                description: "负责3号实验室的设备日常维护与管理，包括设备检查、故障上报、使用登记等工作。",
-                type: "实验管理",
-                status: "confirmed",
-                publisher: "王主任",
-                deadline: "2024-06-10",
-                workload: "15小时",
-                publishDate: "2024-05-28"
-            },
-            {
-                id: 3,
-                title: "学术会议组织协助",
-                description: "协助筹备国际学术会议，负责部分会务工作，包括资料整理、嘉宾接待、场地协调等。",
-                type: "行政助理",
-                status: "pending",
-                publisher: "学术会议组委会",
-                deadline: "2024-06-20",
-                workload: "25小时",
-                publishDate: "2024-06-05"
-            },
-            {
-                id: 4,
-                title: "论文评审辅助工作",
-                description: "协助导师进行学术论文的初审工作，包括格式检查、参考文献核对、摘要翻译等。",
-                type: "科研助理",
-                status: "confirmed",
-                publisher: "张教授",
-                deadline: "2024-06-05",
-                workload: "12小时",
-                publishDate: "2024-05-25"
-            },
-            {
-                id: 5,
-                title: "实验数据整理与分析",
-                description: "协助整理实验室近期的实验数据，进行初步统计分析，制作数据图表。",
-                type: "科研助理",
-                status: "pending",
-                publisher: "赵研究员",
-                deadline: "2024-06-25",
-                workload: "18小时",
-                publishDate: "2024-06-08"
-            },
-            {
-                id: 6,
-                title: "《机器学习》课程助教",
-                description: "协助《机器学习》课程的教学工作，主要负责任业批改和实验课指导。",
-                type: "课程助教",
-                status: "rejected",
-                publisher: "陈教授",
-                deadline: "2024-06-12",
-                workload: "22小时",
-                publishDate: "2024-05-30"
-            },
-            {
-                id: 7,
-                title: "学院网站内容维护",
-                description: "负责学院网站的新闻更新、通知发布和部分页面维护工作。",
-                type: "行政助理",
-                status: "expired",
-                publisher: "院办公室",
-                deadline: "2024-05-30",
-                workload: "10小时",
-                publishDate: "2024-05-15"
-            },
-            {
-                id: 8,
-                title: "新生迎新活动协助",
-                description: "协助组织新生迎新活动，包括场地布置、物资准备、新生引导等工作。",
-                type: "行政助理",
-                status: "confirmed",
-                publisher: "学生工作处",
-                deadline: "2024-07-10",
-                workload: "16小时",
-                publishDate: "2024-06-10"
-            },
-            {
-                id: 9,
-                title: "文献翻译工作",
-                description: "协助翻译英文学术文献，要求专业术语准确，文笔流畅。",
-                type: "科研助理",
-                status: "pending",
-                publisher: "刘教授",
-                deadline: "2024-06-18",
-                workload: "14小时",
-                publishDate: "2024-06-03"
-            },
-            {
-                id: 10,
-                title: "实验设备采购协助",
-                description: "协助实验室进行设备采购流程，包括供应商联系、报价对比、合同准备等。",
-                type: "行政助理",
-                status: "confirmed",
-                publisher: "实验室管理科",
-                deadline: "2024-06-22",
-                workload: "20小时",
-                publishDate: "2024-06-07"
-            }
-        ];
+            
+        ];*/
         
-        console.log('任务数据加载完成，数量:', this.tasks.length);
-        this.filteredTasks = [...this.tasks];
+        // 从服务器获取任务数据
+        fetch('/tasklist')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                //console.log('获取到的原始数据:', response.json());
+                return response.json();
+            })
+            .then(data => {
+                this.tasks = data;
+                console.log('获取到的任务数据:', this.tasks);
+                console.log('任务数据加载完成，数量:', this.tasks.length);
+                this.filteredTasks = [...this.tasks];
+                this.renderTaskList();
+            })
+            .catch(error => console.error('获取任务数据失败:', error));
+
+        //console.log('任务数据加载完成，数量:', this.tasks.length);
+        //this.filteredTasks = [...this.tasks];
     }
     
     bindEvents() {
@@ -255,29 +175,30 @@ class TaskListManager {
         card.setAttribute('data-task-id', task.id);
         
         const statusColors = {
-            'pending': '#f39c12',
-            'confirmed': '#2ecc71',
-            'rejected': '#95a5a6',
-            'expired': '#e74c3c'
+            //'pending': '#f39c12',
+            'open': '#2ecc71',
+            //'rejected': '#95a5a6',
+            'closed': '#e74c3c'
         };
         
         const statusText = {
-            'pending': '待确认',
-            'confirmed': '已确认',
-            'rejected': '已拒绝',
-            'expired': '已过期'
+            'open': '开放',
+            'closed': '关闭',
+            //'rejected': '已拒绝',
+            //'expired': '已过期'
         };
         
         const typeColors = {
-            '课程助教': '#3498db',
-            '实验管理': '#9b59b6',
-            '科研助理': '#2ecc71',
-            '行政助理': '#e74c3c',
-            '其他': '#f39c12'
+            '助教岗': '#3498db',
+            '非助教岗': '#9b59b6',
+            //'科研助理': '#2ecc71',
+            //'行政助理': '#e74c3c',
+            //'其他': '#f39c12'
         };
         
         const statusColor = statusColors[task.status] || '#95a5a6';
         const typeColor = typeColors[task.type] || '#3498db';
+        const type=task.is_teaching_assistant?'助教岗':'非助教岗'
         
         card.innerHTML = `
             <div class="task-header">
@@ -288,7 +209,7 @@ class TaskListManager {
             
             <div class="task-tags">
                 <span class="type-tag" style="background-color: ${typeColor}20; color: ${typeColor}">
-                    ${task.type}
+                    ${type}
                 </span>
                 <span class="status-tag-small" style="background-color: ${statusColor}20; color: ${statusColor}">
                     ${statusText[task.status]}
@@ -303,33 +224,33 @@ class TaskListManager {
                 <div class="task-meta">
                     <div class="meta-item">
                         <span class="meta-label">发布人</span>
-                        <span class="meta-value">${task.publisher}</span>
+                        <span class="meta-value">${task.publisher_id}</span>
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">截止时间</span>
-                        <span class="meta-value">${task.deadline}</span>
+                        <span class="meta-value">${task.application_deadline}</span>
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">工作量</span>
-                        <span class="meta-value">${task.workload}</span>
+                        <span class="meta-value">${task.workload_credits}</span>
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">发布时间</span>
-                        <span class="meta-value">${task.publishDate}</span>
+                        <span class="meta-value">${task.academic_year}</span>
                     </div>
                 </div>
                 
                 <div class="task-actions">
-                    <button class="action-btn detail" data-action="view" data-task-id="${task.id}">
+                    <button class="action-btn detail" data-action="view" data-task-id="${task.job_id}">
                         <i class="fas fa-eye"></i>
                         查看详情
                     </button>
-                    ${task.status === 'pending' ? `
-                    <button class="action-btn confirm" data-action="confirm" data-task-id="${task.id}">
+                    ${task.status === 'open' ? `
+                    <button class="action-btn confirm" data-action="confirm" data-task-id="${task.job_id}">
                         <i class="fas fa-check"></i>
                         确认任务
                     </button>
-                    <button class="action-btn reject" data-action="reject" data-task-id="${task.id}">
+                    <button class="action-btn reject" data-action="reject" data-task-id="${task.job_id}">
                         <i class="fas fa-times"></i>
                         拒绝
                     </button>

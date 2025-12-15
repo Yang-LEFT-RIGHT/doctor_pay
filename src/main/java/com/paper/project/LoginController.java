@@ -24,42 +24,51 @@ public class LoginController {
     @ResponseBody
     public Object login(@RequestBody LoginRequest loginRequest) throws ClassNotFoundException, SQLException{
         Students student=new Students();
-        UserManager usermanager=new UserManager();
+        UserManager usermanager=null;
 
-        if(loginRequest.getRole().equals("student")){
-            student.setStudent_id(loginRequest.getUsername());
-            student.setPassword(loginRequest.getPassword());
-            if(usermanager.login_Stu(student)){
-                student=usermanager.fetch_info_Stu(student.getStudent_id());
-                Map<String,Object> response=new HashMap<>();
-                response.put("message", "登录成功");
-                response.put("code",1);
-                response.put("student",student);
-                return response;
+        try {
+            usermanager=new UserManager();
+
+            if(loginRequest.getRole().equals("student")){
+                student.setStudent_id(loginRequest.getUsername());
+                student.setPassword(loginRequest.getPassword());
+                if(usermanager.login_Stu(student)){
+                    student=usermanager.fetch_info_Stu(student.getStudent_id());
+                    Map<String,Object> response=new HashMap<>();
+                    response.put("message", "登录成功");
+                    response.put("code",1);
+                    response.put("student",student);
+                    return response;
+                }
+                else{
+                    Map<String,Object> response=new HashMap<>();
+                    response.put("message", "用户名或密码错误");
+                    response.put("code",0);
+                    return response;
+                }
             }
+            /*else if(loginRequest.getRole().equals("admin")){
+                Teachers teacher=new Teachers();
+                teacher.setName(loginRequest.getUsername());
+                teacher.setPassword(loginRequest.getPassword());
+                if(usermanager.login_Teacher(teacher)){
+                    return "登录成功";
+                }
+                else{
+                    return "用户名或密码错误";
+                }
+            }*/
             else{
                 Map<String,Object> response=new HashMap<>();
-                response.put("message", "用户名或密码错误");
+                response.put("message", "角色错误");
                 response.put("code",0);
                 return response;
             }
-        }
-        /*else if(loginRequest.getRole().equals("admin")){
-            Teachers teacher=new Teachers();
-            teacher.setName(loginRequest.getUsername());
-            teacher.setPassword(loginRequest.getPassword());
-            if(usermanager.login_Teacher(teacher)){
-                return "登录成功";
+        } finally {
+            // 确保关闭数据库连接
+            if (usermanager != null) {
+                usermanager.close();
             }
-            else{
-                return "用户名或密码错误";
-            }
-        }*/
-        else{
-            Map<String,Object> response=new HashMap<>();
-            response.put("message", "角色错误");
-            response.put("code",0);
-            return response;
         }
     }
 }
