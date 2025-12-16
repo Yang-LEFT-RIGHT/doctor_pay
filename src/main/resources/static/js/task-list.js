@@ -303,10 +303,13 @@ class TaskListManager {
     }
     
     confirmTask(taskId) {
-        const task = this.tasks.find(t => t.id === taskId);
-        if (!task) return;
+        const task = this.tasks.find(t => t.job_id === taskId);
+        if (!task){
+            console.log(`未找到任务 ID ${taskId}`);
+            return;
+        }
         
-        if (confirm(`确认接受任务 "${task.title}" 吗？\n\n工作量：${task.workload}\n截止时间：${task.deadline}\n\n确认后无法更改。`)) {
+        if (confirm(`确认接受任务 "${task.title}" 吗？\n\n工作量：${task.workload_credits}\n截止时间：${task.application_deadline}\n\n确认后无法更改。`)) {
             task.status = 'confirmed';
             this.showToast(`任务 "${task.title}" 已确认！`, 'success');
             
@@ -324,8 +327,11 @@ class TaskListManager {
     }
     
     rejectTask(taskId) {
-        const task = this.tasks.find(t => t.id === taskId);
-        if (!task) return;
+        const task = this.tasks.find(t => t.job_id === taskId);
+        if (!task){
+            console.log(`未找到任务 ID ${taskId}`);
+            return;
+        }
         
         const reason = prompt(`请输入拒绝任务 "${task.title}" 的原因：`);
         if (reason !== null && reason.trim() !== '') {
