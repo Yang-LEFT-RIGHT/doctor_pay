@@ -16,7 +16,7 @@
 }
 
 .page-title-section h1 {
-    font-size: 28px;
+    font-size: 22px; /* 统一页面主标题为22px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -24,7 +24,7 @@
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 15px;
+    font-size: 13px; /* 统一副标题为13px */
     margin: 0;
 }
 
@@ -46,7 +46,7 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-light);
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .manual-search input {
@@ -54,7 +54,7 @@
     padding: 10px 15px 10px 40px;
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
-    font-size: 14px;
+    font-size: 13px; /* 统一表单文字为13px */
     color: var(--text-primary);
     background-color: var(--bg-primary);
     transition: all var(--transition-fast);
@@ -75,7 +75,7 @@
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     transition: color var(--transition-fast);
 }
 
@@ -104,7 +104,7 @@
 }
 
 .toc-header h3 {
-    font-size: 18px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -125,6 +125,7 @@
     color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 .btn-icon:hover {
@@ -162,12 +163,13 @@
 
 .toc-link {
     display: block;
-    padding: 10px 15px;
+    padding: 8px 12px; /* 调整内边距 */
     color: var(--text-secondary);
     text-decoration: none;
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
     font-weight: 500;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .toc-link:hover {
@@ -195,8 +197,8 @@
 }
 
 .toc-sublist .toc-link {
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 6px 10px; /* 调整内边距 */
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 /* 手册内容区域 */
@@ -205,14 +207,14 @@
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
     box-shadow: var(--shadow-sm);
-    padding: 40px;
+    padding: 30px; /* 调整内边距 */
     margin-bottom: 30px;
 }
 
 /* 章节样式 */
 .manual-chapter {
-    margin-bottom: 50px;
-    padding-bottom: 40px;
+    margin-bottom: 40px; /* 调整间距 */
+    padding-bottom: 30px;
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -226,51 +228,51 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
     border-bottom: 2px solid var(--secondary-color);
 }
 
 .chapter-title {
-    font-size: 24px;
+    font-size: 18px; /* 调整为18px，突出章节标题 */
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
 }
 
 .chapter-number {
-    width: 50px;
-    height: 50px;
+    width: 45px; /* 调整大小 */
+    height: 45px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--secondary-color), #2980b9);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 18px; /* 调整字体大小 */
     font-weight: 700;
 }
 
 .chapter-body {
-    font-size: 15px;
+    font-size: 14px; /* 统一主要内容为14px */
     line-height: 1.7;
     color: var(--text-secondary);
 }
 
 .chapter-body h3 {
-    font-size: 20px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
-    margin: 30px 0 15px;
+    margin: 25px 0 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-light);
 }
 
 .chapter-body h4 {
-    font-size: 17px;
+    font-size: 15px; /* 调整为15px，区分h3和h4 */
     font-weight: 600;
     color: var(--text-primary);
-    margin: 25px 0 10px;
+    margin: 20px 0 10px;
 }
 
 .chapter-body p {
@@ -284,11 +286,12 @@
 
 .chapter-body li {
     margin-bottom: 8px;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 /* 系统架构图 */
 .system-architecture {
-    margin: 25px 0;
+    margin: 20px 0; /* 调整间距 */
 }
 
 .architecture-diagram {
@@ -303,23 +306,28 @@
 
 .layer {
     background-color: var(--bg-primary);
-    padding: 20px;
+    padding: 15px; /* 调整内边距 */
 }
 
 .layer-title {
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 .layer-content {
     color: var(--text-secondary);
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .layer-content ul {
     margin: 10px 0 0;
     padding-left: 20px;
+}
+
+.layer-content li {
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 /* 模块网格 */
@@ -334,7 +342,7 @@
     display: flex;
     align-items: flex-start;
     gap: 15px;
-    padding: 20px;
+    padding: 18px; /* 调整内边距 */
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
@@ -347,27 +355,27 @@
 }
 
 .module-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+    width: 45px; /* 调整大小 */
+    height: 45px;
+    border-radius: 10px; /* 调整圆角 */
     background: linear-gradient(135deg, var(--secondary-color), #2980b9);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 20px;
+    font-size: 18px; /* 调整图标大小 */
     flex-shrink: 0;
 }
 
 .module-content h5 {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .module-content p {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     margin: 0;
 }
@@ -385,7 +393,7 @@
 
 .layout-item {
     background-color: var(--bg-primary);
-    padding: 20px;
+    padding: 15px; /* 调整内边距 */
 }
 
 .layout-item.header, .layout-item.footer {
@@ -395,11 +403,11 @@
 .layout-container {
     display: flex;
     gap: 2px;
-    min-height: 300px;
+    min-height: 250px; /* 调整高度 */
 }
 
 .layout-item.sidebar {
-    flex: 0 0 200px;
+    flex: 0 0 180px; /* 调整宽度 */
     background-color: var(--bg-primary);
 }
 
@@ -413,19 +421,21 @@
     color: var(--text-primary);
     margin-bottom: 10px;
     display: block;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .layout-desc {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .sub-item {
-    padding: 8px 12px;
+    padding: 6px 10px; /* 调整内边距 */
     background-color: var(--bg-primary);
     border-radius: var(--radius-sm);
     margin-bottom: 5px;
     border: 1px solid var(--border-light);
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .sub-item:last-child {
@@ -447,17 +457,19 @@
 }
 
 .data-table th {
-    padding: 15px;
+    padding: 12px 15px; /* 调整内边距 */
     text-align: left;
     font-weight: 600;
     color: var(--text-primary);
     border-bottom: 2px solid var(--border-light);
+    font-size: 12px; /* 统一表格标题为12px */
 }
 
 .data-table td {
-    padding: 15px;
+    padding: 12px 15px;
     border-bottom: 1px solid var(--border-light);
     color: var(--text-secondary);
+    font-size: 13px; /* 统一表格内容为13px */
 }
 
 .data-table tbody tr:hover {
@@ -483,27 +495,27 @@
 }
 
 .operation-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 36px; /* 调整大小 */
+    height: 36px;
+    border-radius: 8px; /* 调整圆角 */
     background: linear-gradient(135deg, var(--secondary-color), #2980b9);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 16px;
+    font-size: 14px; /* 调整图标大小 */
     flex-shrink: 0;
 }
 
 .operation-content h5 {
-    font-size: 15px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 5px;
 }
 
 .operation-content p {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     margin: 0;
 }
@@ -512,8 +524,8 @@
 .step-by-step {
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    margin: 25px 0;
+    gap: 20px; /* 调整间距 */
+    margin: 20px 0;
 }
 
 .step {
@@ -525,43 +537,44 @@
 
 .step-header {
     background-color: var(--bg-primary);
-    padding: 20px;
+    padding: 18px; /* 调整内边距 */
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px; /* 调整间距 */
     border-bottom: 1px solid var(--border-light);
 }
 
 .step-number {
-    padding: 6px 12px;
+    padding: 5px 10px; /* 调整内边距 */
     background-color: var(--secondary-color);
     color: white;
     border-radius: 4px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .step-title {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 .step-content {
-    padding: 20px;
+    padding: 18px;
 }
 
 .form-fields {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 15px; /* 调整间距 */
 }
 
 .field-group span {
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: block;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .field-group ul {
@@ -572,13 +585,14 @@
 .field-group li {
     margin-bottom: 5px;
     color: var(--text-secondary);
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .step-screenshot {
-    margin-top: 20px;
+    margin-top: 15px;
     border: 1px dashed var(--border-light);
     border-radius: var(--radius-md);
-    padding: 30px;
+    padding: 20px;
     text-align: center;
 }
 
@@ -587,11 +601,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .screenshot-placeholder i {
-    font-size: 48px;
+    font-size: 40px; /* 调整图标大小 */
+}
+
+.screenshot-placeholder span {
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 /* 状态指示器 */
@@ -609,8 +627,8 @@
 }
 
 .status-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px; /* 调整大小 */
+    height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
 }
@@ -639,11 +657,12 @@
     font-weight: 600;
     color: var(--text-primary);
     min-width: 60px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .status-desc {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 /* 跟踪操作 */
@@ -661,28 +680,28 @@
 }
 
 .action-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: 32px; /* 调整大小 */
+    height: 32px;
+    border-radius: 6px; /* 调整圆角 */
     background-color: var(--bg-primary);
     border: 1px solid var(--border-light);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--secondary-color);
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     flex-shrink: 0;
 }
 
 .action-content h5 {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 4px;
 }
 
 .action-content p {
-    font-size: 13px;
+    font-size: 12px; /* 统一辅助文字为12px */
     color: var(--text-secondary);
     margin: 0;
 }
@@ -692,30 +711,31 @@
     background-color: var(--bg-primary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
-    padding: 25px;
+    padding: 20px;
     margin: 20px 0;
     text-align: center;
 }
 
 .formula {
-    font-size: 18px;
+    font-size: 16px; /* 调整为16px */
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 20px;
-    padding: 15px;
+    margin-bottom: 15px;
+    padding: 12px;
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-sm);
 }
 
 .formula-explanation p {
     margin: 10px 0;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .payment-flow {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    margin: 25px 0;
+    margin: 20px 0;
 }
 
 .flow-step {
@@ -723,8 +743,8 @@
 }
 
 .flow-number {
-    width: 40px;
-    height: 40px;
+    width: 36px; /* 调整大小 */
+    height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--secondary-color), #2980b9);
     color: white;
@@ -732,18 +752,19 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
+    font-size: 16px; /* 调整字体大小 */
     margin: 0 auto 15px;
 }
 
 .flow-content h5 {
-    font-size: 15px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .flow-content p {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     margin: 0;
 }
@@ -759,31 +780,33 @@
 }
 
 .info-field-table th {
-    padding: 15px;
+    padding: 12px 15px;
     text-align: left;
     font-weight: 600;
     color: var(--text-primary);
     background-color: var(--bg-tertiary);
     border-bottom: 2px solid var(--border-light);
+    font-size: 12px; /* 统一表格标题为12px */
 }
 
 .info-field-table td {
-    padding: 15px;
+    padding: 12px 15px;
     border-bottom: 1px solid var(--border-light);
     color: var(--text-secondary);
     vertical-align: top;
+    font-size: 13px; /* 统一表格内容为13px */
 }
 
 .required {
     color: var(--accent-color);
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px; /* 统一辅助文字为12px */
 }
 
 .optional {
     color: var(--text-light);
     font-weight: 500;
-    font-size: 13px;
+    font-size: 12px; /* 统一辅助文字为12px */
 }
 
 /* 添加方式 */
@@ -798,7 +821,7 @@
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
-    padding: 25px;
+    padding: 20px;
     text-align: center;
     transition: all var(--transition-fast);
 }
@@ -809,39 +832,39 @@
 }
 
 .method-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
+    width: 50px; /* 调整大小 */
+    height: 50px;
+    border-radius: 12px; /* 调整圆角 */
     background: linear-gradient(135deg, var(--secondary-color), #2980b9);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 24px;
-    margin: 0 auto 20px;
+    font-size: 20px; /* 调整图标大小 */
+    margin: 0 auto 15px;
 }
 
 .method-content h5 {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 10px;
 }
 
 .method-content p {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     margin-bottom: 15px;
 }
 
 .method-link {
     display: inline-block;
-    padding: 8px 16px;
+    padding: 6px 12px; /* 调整内边距 */
     background-color: var(--secondary-color);
     color: white;
     text-decoration: none;
     border-radius: var(--radius-sm);
-    font-size: 14px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     font-weight: 500;
     transition: background-color var(--transition-fast);
 }
@@ -854,13 +877,13 @@
 .student-statuses {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 15px; /* 调整间距 */
     margin: 20px 0;
 }
 
 .status-item {
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
@@ -868,9 +891,9 @@
 
 .status-badge {
     display: inline-block;
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-size: 13px;
+    padding: 4px 10px; /* 调整内边距 */
+    border-radius: 16px; /* 调整圆角 */
+    font-size: 11px; /* 统一状态标签为11px-12px */
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -895,6 +918,12 @@
     color: #9b59b6;
 }
 
+.status-item p {
+    font-size: 12px; /* 统一辅助文字为12px */
+    color: var(--text-secondary);
+    margin: 0;
+}
+
 /* 批量操作指南 */
 .batch-operations ol {
     padding-left: 25px;
@@ -904,13 +933,14 @@
 .batch-operations li {
     margin-bottom: 10px;
     padding-left: 10px;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 .note-box {
     background-color: rgba(52, 152, 219, 0.1);
     border: 1px solid rgba(52, 152, 219, 0.3);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 18px;
     margin: 20px 0;
     display: flex;
     gap: 15px;
@@ -918,8 +948,12 @@
 
 .note-icon {
     color: var(--secondary-color);
-    font-size: 20px;
+    font-size: 18px; /* 调整图标大小 */
     flex-shrink: 0;
+}
+
+.note-content {
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .note-content strong {
@@ -947,7 +981,7 @@
 }
 
 .results-header h3 {
-    font-size: 20px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -963,7 +997,7 @@
 }
 
 .result-item {
-    padding: 20px;
+    padding: 18px;
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
@@ -976,21 +1010,21 @@
 }
 
 .result-title {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 10px;
 }
 
 .result-preview {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     margin-bottom: 10px;
     line-height: 1.5;
 }
 
 .result-meta {
-    font-size: 13px;
+    font-size: 12px; /* 统一辅助文字为12px */
     color: var(--text-light);
 }
 
@@ -1007,9 +1041,18 @@
 }
 
 .no-results i {
-    font-size: 48px;
+    font-size: 40px; /* 调整图标大小 */
     margin-bottom: 15px;
     color: var(--text-light);
+}
+
+.no-results h4 {
+    font-size: 16px; /* 统一区块标题为16px */
+    margin-bottom: 10px;
+}
+
+.no-results p {
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 /* 手册导航 */
@@ -1018,7 +1061,7 @@
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
     box-shadow: var(--shadow-sm);
-    padding: 20px 30px;
+    padding: 20px 25px; /* 调整内边距 */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1026,7 +1069,7 @@
 }
 
 .nav-btn {
-    padding: 12px 25px;
+    padding: 10px 20px; /* 调整内边距 */
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
     border: 1px solid var(--border-light);
@@ -1037,6 +1080,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 .nav-btn:hover:not(:disabled) {
@@ -1062,6 +1106,7 @@
 .chapter-progress span {
     font-weight: 600;
     color: var(--text-primary);
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .progress-bar {
@@ -1083,7 +1128,7 @@
 /* 响应式设计 */
 @media (max-width: 1200px) {
     .manual-content {
-        padding: 30px;
+        padding: 25px; /* 调整内边距 */
     }
     
     .modules-grid,
@@ -1116,7 +1161,7 @@
     
     .layout-item.sidebar {
         flex: 0 0 auto;
-        min-height: 100px;
+        min-height: 80px; /* 调整高度 */
     }
     
     .modules-grid,
@@ -1157,6 +1202,18 @@
         grid-template-columns: 1fr;
         gap: 15px;
     }
+    
+    .chapter-title {
+        font-size: 16px; /* 在小屏幕时调整为16px */
+    }
+    
+    .chapter-body h3 {
+        font-size: 14px; /* 在小屏幕时调整为14px */
+    }
+    
+    .chapter-body h4 {
+        font-size: 13px; /* 在小屏幕时调整为13px */
+    }
 }
 
 @media (max-width: 480px) {
@@ -1175,5 +1232,9 @@
     
     .chapter-progress {
         width: 100%;
+    }
+    
+    .page-title-section h1 {
+        font-size: 18px; /* 在小屏幕时调整为18px */
     }
 }

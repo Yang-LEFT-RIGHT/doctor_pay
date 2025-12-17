@@ -308,8 +308,21 @@ class TaskListManager {
             console.log(`未找到任务 ID ${taskId}`);
             return;
         }
-        
+        let is_confirmed_with_teacher=0
         if (confirm(`确认接受任务 "${task.title}" 吗？\n\n工作量：${task.workload_credits}\n截止时间：${task.application_deadline}\n\n确认后无法更改。`)) {
+            // 添加调试信息，查看task对象结构和is_teaching_assistant字段
+            console.log('当前任务对象:', task);
+            console.log('is_teaching_assistant字段值:', task.is_teaching_assistant);
+            console.log('is_teaching_assistant字段类型:', typeof task.is_teaching_assistant);
+            
+            if(task.is_teaching_assistant === 1 || task.is_teaching_assistant === '1' || task.is_teaching_assistant === true){
+                console.log('检测到助教岗任务，准备弹出确认弹窗');
+                if(confirm('检测到该任务为助教岗，请确认是否与老师确认过'))
+                    is_confirmed_with_teacher=1;
+                else is_confirmed_with_teacher=0;
+            } else {
+                console.log('非助教岗任务，跳过助教确认步骤');
+            }
             task.status = 'confirmed';
             this.showToast(`任务 "${task.title}" 已确认！`, 'success');
             
@@ -321,8 +334,33 @@ class TaskListManager {
                     `task-detail.html?id=${taskId}`
                 );
             }
-            
-            this.applyFilters();
+            const userData=localStorage.getItem('docim_user');
+            const student_id=JSON.parse(userData).student_id;
+            fetch('/task/confirm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    job_id: taskId,
+                    student_id: student_id,
+                    status:'under_review',
+                    confirmed_with_teacher: is_confirmed_with_teacher === 1
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'success') {
+                    this.showToast(`任务 "${task.title}" 已确认！`, 'success');
+                    this.applyFilters();
+                } else {
+                    this.showToast(`确认任务 "${task.title}" 失败：${data.message}`, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('确认任务时出错:', error);
+                this.showToast(`确认任务 "${task.title}" 时出错`, 'error');
+            });
         }
     }
     

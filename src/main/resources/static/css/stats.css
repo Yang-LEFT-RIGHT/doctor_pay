@@ -16,7 +16,7 @@
 }
 
 .page-title {
-    font-size: 24px;
+    font-size: 22px; /* 统一页面主标题为22px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -24,7 +24,7 @@
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一副标题为13px */
 }
 
 .header-actions {
@@ -43,13 +43,13 @@
 }
 
 .period-btn {
-    padding: 8px 16px;
+    padding: 6px 12px; /* 调整内边距 */
     background-color: var(--bg-primary);
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 14px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     font-weight: 500;
     white-space: nowrap;
 }
@@ -74,7 +74,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     white-space: nowrap;
     min-height: 40px;
 }
@@ -113,7 +113,7 @@
 .metric-card {
     background-color: var(--bg-primary);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 18px; /* 调整内边距 */
     border: 1px solid var(--border-light);
     transition: all var(--transition-normal);
 }
@@ -132,24 +132,24 @@
 }
 
 .metric-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 42px; /* 调整大小 */
+    height: 42px;
+    border-radius: 10px; /* 调整圆角 */
     background: linear-gradient(135deg, #3498db, #2980b9);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 20px;
+    font-size: 18px; /* 调整图标大小 */
 }
 
 .metric-trend {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
+    padding: 3px 6px; /* 调整内边距 */
+    border-radius: 10px; /* 调整圆角 */
+    font-size: 11px; /* 统一辅助文字为11px */
     font-weight: 600;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .metric-value {
-    font-size: 28px;
+    font-size: 24px; /* 调整为24px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 5px;
@@ -176,7 +176,7 @@
 }
 
 .metric-label {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     font-weight: 500;
 }
@@ -196,14 +196,14 @@
 }
 
 .detail-label {
-    font-size: 11px;
+    font-size: 10px; /* 统一辅助文字为10px */
     color: var(--text-light);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .detail-value {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -231,7 +231,7 @@
 .chart-card {
     background-color: var(--bg-primary);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 18px;
     border: 1px solid var(--border-light);
 }
 
@@ -245,7 +245,7 @@
 }
 
 .chart-title {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -254,34 +254,34 @@
 .chart-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    font-size: 12px;
+    gap: 8px;
+    font-size: 11px; /* 统一辅助文字为11px */
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .legend-color {
-    width: 12px;
-    height: 12px;
+    width: 10px; /* 调整大小 */
+    height: 10px;
     border-radius: 2px;
 }
 
 .chart-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .chart-btn {
-    padding: 6px 12px;
+    padding: 5px 10px; /* 调整内边距 */
     background-color: var(--bg-tertiary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: 11px; /* 统一辅助文字为11px */
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -299,7 +299,7 @@
 }
 
 .chart-container {
-    height: 250px;
+    height: 220px; /* 调整高度 */
     width: 100%;
     position: relative;
 }
@@ -308,7 +308,7 @@
 .data-tables {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
 .table-section {
@@ -328,7 +328,7 @@
 }
 
 .section-title {
-    font-size: 16px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -356,7 +356,7 @@
     font-weight: 600;
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-light);
-    font-size: 13px;
+    font-size: 12px; /* 统一表格标题为12px */
     white-space: nowrap;
 }
 
@@ -372,7 +372,7 @@
 .stats-table td {
     padding: 15px;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一表格内容为13px */
     vertical-align: middle;
 }
 
@@ -464,7 +464,11 @@
     .stats-table th,
     .stats-table td {
         padding: 10px 8px;
-        font-size: 13px;
+        font-size: 12px; /* 在小屏幕时调整为12px */
+    }
+    
+    .metric-value {
+        font-size: 20px; /* 在小屏幕时调整为20px */
     }
 }
 
@@ -478,16 +482,20 @@
     }
     
     .chart-container {
-        height: 200px;
+        height: 180px;
     }
     
     .chart-btn {
         padding: 4px 8px;
-        font-size: 11px;
+        font-size: 10px; /* 在小屏幕时调整为10px */
     }
     
     .period-btn {
-        padding: 6px 12px;
-        font-size: 13px;
+        padding: 5px 10px;
+        font-size: 11px; /* 在小屏幕时调整为11px */
+    }
+    
+    .page-title {
+        font-size: 20px; /* 在小屏幕时调整为20px */
     }
 }

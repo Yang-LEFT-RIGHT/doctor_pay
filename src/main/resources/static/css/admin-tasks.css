@@ -16,7 +16,7 @@
 }
 
 .page-title {
-    font-size: 24px;
+    font-size: 22px; /* 修正：统一页面主标题为22px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -24,7 +24,7 @@
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 修正：统一副标题为13px */
 }
 
 .header-actions {
@@ -45,7 +45,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 12px; /* 统一按钮文字为12px，可设置为12px-13px范围 */
     white-space: nowrap;
     min-height: 40px;
 }
@@ -106,7 +106,7 @@
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px; /* 统一输入框文字为13px */
     transition: all var(--transition-fast);
 }
 
@@ -121,7 +121,7 @@
     position: absolute;
     left: 15px;
     color: var(--text-light);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .search-clear {
@@ -131,7 +131,7 @@
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     transition: color var(--transition-fast);
     display: flex;
     align-items: center;
@@ -175,7 +175,7 @@
 }
 
 .filter-label {
-    font-size: 13px;
+    font-size: 12px; /* 统一表单标签为12px */
     color: var(--text-secondary);
     font-weight: 500;
 }
@@ -188,7 +188,7 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px; /* 统一表单输入文字为13px */
     transition: border-color var(--transition-fast);
 }
 
@@ -235,14 +235,14 @@
 }
 
 .section-title {
-    font-size: 16px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
 }
 
 .tasks-count {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -277,6 +277,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
+    font-size: 12px;
 }
 
 .view-btn:hover {
@@ -315,7 +316,7 @@
     font-weight: 600;
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-light);
-    font-size: 13px;
+    font-size: 12px; /* 统一表格标题为12px */
     white-space: nowrap;
 }
 
@@ -331,7 +332,7 @@
 .tasks-table td {
     padding: 15px;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一表格内容为13px */
     vertical-align: middle;
 }
 
@@ -377,7 +378,7 @@
     font-weight: 500;
     color: var(--text-primary);
     line-height: 1.4;
-    font-size: 14px;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 .task-type {
@@ -386,7 +387,7 @@
     background-color: var(--bg-tertiary);
     color: var(--text-secondary);
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 12px; /* 统一辅助文字为12px */
     font-weight: 500;
     align-self: flex-start;
 }
@@ -403,7 +404,7 @@
     background-color: var(--secondary-color);
     color: white;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 12px; /* 统一辅助文字为12px */
     font-weight: 600;
     min-width: 40px;
     text-align: center;
@@ -433,7 +434,7 @@
 }
 
 .progress-text {
-    font-size: 12px;
+    font-size: 12px; /* 统一辅助文字为12px */
     color: var(--text-secondary);
     min-width: 40px;
 }
@@ -470,7 +471,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     font-weight: 600;
     color: var(--text-primary);
     border: 1px solid var(--border-light);
@@ -478,7 +479,7 @@
 }
 
 .assignee-name {
-    font-size: 14px;
+    font-size: 14px; /* 统一主要内容为14px */
     color: var(--text-primary);
     font-weight: 500;
 }
@@ -495,7 +496,7 @@
     background-color: var(--bg-tertiary);
     color: var(--text-secondary);
     border-radius: 3px;
-    font-size: 11px;
+    font-size: 11px; /* 统一表单提示为11px */
     font-weight: 500;
 }
 
@@ -504,7 +505,7 @@
     display: inline-block;
     padding: 4px 10px;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 11px; /* 统一状态标签为11px-12px */
     font-weight: 600;
     text-align: center;
     min-width: 60px;
@@ -543,24 +544,24 @@
 }
 
 .deadline-warning {
-    font-size: 12px;
+    font-size: 11px; /* 统一时间标签为11px */
     color: var(--accent-color);
     font-weight: 500;
 }
 
 .deadline-normal {
-    font-size: 12px;
+    font-size: 11px; /* 统一时间标签为11px */
     color: var(--text-secondary);
 }
 
 .deadline-expired {
-    font-size: 12px;
+    font-size: 11px; /* 统一时间标签为11px */
     color: var(--text-light);
     font-weight: 500;
 }
 
 .deadline-completed {
-    font-size: 12px;
+    font-size: 11px; /* 统一时间标签为11px */
     color: var(--success-color);
     font-weight: 500;
 }
@@ -582,7 +583,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 13px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     background-color: var(--bg-tertiary);
     color: var(--text-secondary);
 }
@@ -635,7 +636,7 @@
 }
 
 .pagination-info {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -657,7 +658,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 12px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -683,7 +684,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .page-number:hover {
@@ -699,14 +700,14 @@
 .page-ellipsis {
     padding: 0 8px;
     color: var(--text-light);
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .rows-per-page {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -717,7 +718,7 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     min-width: 80px;
 }
 
@@ -762,6 +763,7 @@
     color: var(--text-secondary);
     margin-bottom: 20px;
     line-height: 1.5;
+    font-size: 14px; /* 统一主要内容为14px */
 }
 
 .error-modal-actions {
@@ -845,7 +847,7 @@
     }
     
     .task-title {
-        font-size: 13px;
+        font-size: 13px; /* 在小屏幕时调整为13px */
     }
     
     .requirement-info {
@@ -855,12 +857,12 @@
     }
     
     .requirement-badge {
-        font-size: 11px;
+        font-size: 11px; /* 在小屏幕时适当调整 */
         padding: 3px 8px;
     }
     
     .progress-text {
-        font-size: 11px;
+        font-size: 11px; /* 在小屏幕时适当调整 */
     }
     
     .assignee-info {

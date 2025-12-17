@@ -5,7 +5,7 @@
     position: fixed;
     top: 70px;
     right: 30px;
-    width: 380px;
+    width: 360px; /* 稍微调整宽度 */
     background-color: var(--bg-primary);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
@@ -27,7 +27,7 @@
 }
 
 .notification-header {
-    padding: 20px;
+    padding: 16px 20px; /* 调整内边距 */
     border-bottom: 1px solid var(--border-light);
     display: flex;
     justify-content: space-between;
@@ -37,22 +37,23 @@
 }
 
 .notification-header h3 {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin: 0;
 }
 
 .notification-header h3 i {
     color: var(--secondary-color);
+    font-size: 14px; /* 调整图标大小 */
 }
 
 .notification-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .btn-mark-all-read,
@@ -60,14 +61,14 @@
     background: none;
     border: none;
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: 11px; /* 统一辅助文字为11px */
     cursor: pointer;
-    padding: 6px 10px;
+    padding: 5px 8px; /* 调整内边距 */
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
 
 .btn-mark-all-read:hover {
@@ -88,7 +89,7 @@
 }
 
 .notification-item {
-    padding: 18px;
+    padding: 16px 18px; /* 调整内边距 */
     border-bottom: 1px solid var(--border-light);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -120,13 +121,14 @@
 }
 
 .notification-icon {
-    width: 36px;
-    height: 36px;
+    width: 32px; /* 调整大小 */
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .notification-icon.task {
@@ -158,7 +160,7 @@
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 6px;
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -172,7 +174,7 @@
 }
 
 .notification-time {
-    font-size: 11px;
+    font-size: 11px; /* 统一辅助文字为11px */
     color: var(--text-light);
     font-weight: 500;
     margin-left: 8px;
@@ -181,7 +183,7 @@
 
 .notification-message {
     color: var(--text-secondary);
-    font-size: 13px;
+    font-size: 12px; /* 统一辅助文字为12px */
     line-height: 1.5;
     margin-bottom: 8px;
     overflow: hidden;
@@ -195,14 +197,14 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 12px;
+    font-size: 11px; /* 统一辅助文字为11px */
     color: var(--text-light);
 }
 
 .notification-type {
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 11px;
+    padding: 2px 6px; /* 调整内边距 */
+    border-radius: 8px; /* 调整圆角 */
+    font-size: 10px; /* 统一辅助文字为10px */
     font-weight: 600;
 }
 
@@ -225,7 +227,7 @@
     display: flex;
     gap: 8px;
     margin-top: 10px;
-    padding-top: 10px;
+    padding-top: 8px; /* 调整内边距 */
     border-top: 1px solid var(--border-light);
 }
 
@@ -234,9 +236,9 @@
     background: none;
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
-    padding: 6px 12px;
+    padding: 5px 10px; /* 调整内边距 */
     border-radius: var(--radius-sm);
-    font-size: 12px;
+    font-size: 11px; /* 统一辅助文字为11px */
     cursor: pointer;
     transition: all var(--transition-fast);
     text-align: center;
@@ -260,35 +262,35 @@
 /* 通知角标 */
 .notification-unread-dot {
     position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 8px;
-    height: 8px;
+    top: 16px;
+    right: 16px;
+    width: 6px; /* 调整大小 */
+    height: 6px;
     background-color: var(--accent-color);
     border-radius: 50%;
 }
 
 /* 空状态 */
 .notification-empty {
-    padding: 40px 20px;
+    padding: 30px 20px; /* 调整内边距 */
     text-align: center;
     color: var(--text-light);
 }
 
 .notification-empty i {
-    font-size: 48px;
+    font-size: 36px; /* 调整图标大小 */
     color: var(--border-color);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .notification-empty p {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     margin-bottom: 0;
 }
 
 /* 通知页脚 */
 .notification-footer {
-    padding: 15px 20px;
+    padding: 12px 20px; /* 调整内边距 */
     border-top: 1px solid var(--border-light);
     background-color: var(--bg-tertiary);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
@@ -300,7 +302,7 @@
     color: var(--secondary-color);
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px; /* 统一辅助文字为12px */
     transition: all var(--transition-fast);
     display: flex;
     align-items: center;
@@ -338,10 +340,10 @@
     right: 20px;
     background-color: var(--accent-color);
     color: white;
-    font-size: 11px;
+    font-size: 10px; /* 统一辅助文字为10px */
     font-weight: 600;
-    width: 18px;
-    height: 18px;
+    width: 16px; /* 调整大小 */
+    height: 16px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -373,11 +375,23 @@
     .notification-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
+        gap: 8px;
     }
     
     .notification-actions {
         width: 100%;
         justify-content: space-between;
+    }
+    
+    .notification-header h3 {
+        font-size: 13px; /* 在小屏幕时调整为13px */
+    }
+    
+    .notification-title {
+        font-size: 12px; /* 在小屏幕时调整为12px */
+    }
+    
+    .notification-message {
+        font-size: 11px; /* 在小屏幕时调整为11px */
     }
 }

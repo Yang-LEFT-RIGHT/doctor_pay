@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/student-dashboard.css">
     <link rel="stylesheet" href="css/notification.css">
+    <script src="js/task-manager.js"></script>
 </head>
 <body>
     <div class="top-bar">
@@ -101,7 +102,7 @@
             <!-- 数据概览 -->
             <div class="stats-grid">
                 <div class="stat-card" data-target="pending-tasks">
-                    <div class="stat-title">待确认任务</div>
+                    <div class="stat-title">待申请任务</div>
                     <div class="stat-value">3</div>
                     <div class="stat-desc">
                         <i class="fas fa-clock" style="color: #f39c12;"></i>
@@ -140,8 +141,8 @@
             <!-- 最近任务 -->
             <div class="section">
                 <div class="section-header">
-                    <h3 class="section-title">最近任务</h3>
-                    <a href="task-list.html" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
+                    <h3 class="section-title">已申请任务</h3>
+                    <a href="task-list.html?filter=applied" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
                 </div>
                 
                 <table class="task-table">
@@ -187,10 +188,10 @@
                 </table>
             </div>
             
-            <!-- 待处理任务 -->
+            <!-- 待申请任务 -->
             <div class="section" id="pending-tasks">
                 <div class="section-header">
-                    <h3 class="section-title">待处理任务</h3>
+                    <h3 class="section-title">待申请任务</h3>
                     <a href="task-list.html?filter=pending" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
                 </div>
                 

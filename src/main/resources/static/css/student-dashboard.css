@@ -1,22 +1,22 @@
-/* css/student-dashboard.css - 修复版（增加通知相关样式） */
+/* css/student-dashboard.css - 修复版（增加通知相关样式，尺寸优化） */
 
 html {
     scroll-behavior: smooth;
 }
 
-/* 数据概览卡片 */
+/* 数据概览卡片 - 紧凑设计 */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 25px;
 }
 
 .stat-card {
     background-color: var(--bg-primary);
-    padding: 28px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     transition: all var(--transition-normal);
     border: 1px solid var(--border-light);
     position: relative;
@@ -24,8 +24,8 @@ html {
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
     border-color: rgba(52, 152, 219, 0.2);
 }
 
@@ -35,7 +35,7 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
 }
 
@@ -45,28 +45,28 @@ html {
 .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
 
 .stat-title {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-secondary);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .stat-value {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     line-height: 1;
 }
 
 .stat-desc {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-weight: 500;
 }
 
@@ -81,13 +81,13 @@ html {
     cursor: pointer;
 }
 
-/* 区块样式 */
+/* 区块样式 - 紧凑设计 */
 .section {
     background-color: var(--bg-primary);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-light);
 }
 
@@ -95,24 +95,24 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--border-light);
 }
 
 .section-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text-primary);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .section-title::before {
     content: '';
-    width: 4px;
-    height: 18px;
+    width: 3px;
+    height: 16px;
     background: var(--secondary-color);
     border-radius: 2px;
 }
@@ -120,40 +120,41 @@ html {
 .view-all {
     color: var(--secondary-color);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     transition: all var(--transition-normal);
 }
 
 .view-all:hover {
-    gap: 10px;
+    gap: 6px;
     text-decoration: underline;
 }
 
-/* 任务表格 */
+/* 任务表格 - 紧凑设计 */
 .task-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    font-size: 13px;
 }
 
 .task-table th {
     text-align: left;
-    padding: 16px;
+    padding: 12px;
     font-weight: 600;
     color: var(--text-secondary);
-    border-bottom: 2px solid var(--border-light);
-    font-size: 14px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     background: var(--bg-tertiary);
 }
 
 .task-table td {
-    padding: 18px 16px;
+    padding: 14px 12px;
     border-bottom: 1px solid var(--border-light);
     vertical-align: middle;
 }
@@ -175,62 +176,100 @@ html {
     text-decoration: underline;
 }
 
-/* 待处理任务列表 */
+/* 状态徽章 */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.status-pending {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.status-confirmed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.status-rejected {
+    background-color: rgba(149, 165, 166, 0.1);
+    color: #95a5a6;
+    border: 1px solid rgba(149, 165, 166, 0.2);
+}
+
+.status-expired {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+/* 待处理任务列表 - 紧凑设计 */
 .pending-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .pending-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 16px;
     background-color: var(--bg-tertiary);
     border-radius: var(--radius-md);
-    border-left: 4px solid var(--secondary-color);
+    border-left: 3px solid var(--secondary-color);
     border: 1px solid var(--border-light);
+    transition: all var(--transition-normal);
 }
 
 .pending-item:hover {
     background-color: rgba(52, 152, 219, 0.05);
+    transform: translateX(2px);
 }
 
-/* 已确认任务列表 */
+/* 已确认任务列表 - 紧凑设计 */
 .confirmed-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .confirmed-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #f0f9f0;
+    padding: 16px;
+    background-color: rgba(46, 204, 113, 0.05);
     border-radius: var(--radius-md);
-    border-left: 4px solid #2ecc71;
-    border: 1px solid #e0f0e0;
+    border-left: 3px solid #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.1);
+    transition: all var(--transition-normal);
 }
 
 .confirmed-item:hover {
-    background-color: #e8f6e8;
+    background-color: rgba(46, 204, 113, 0.08);
+    transform: translateX(2px);
 }
 
 /* 任务信息通用样式 */
 .task-info h4 {
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .task-meta {
     display: flex;
-    gap: 20px;
-    font-size: 13px;
+    gap: 16px;
+    font-size: 12px;
     color: var(--text-secondary);
     flex-wrap: wrap;
 }
@@ -238,50 +277,73 @@ html {
 .task-meta span {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+}
+
+.task-meta i {
+    font-size: 11px;
 }
 
 .task-action .btn {
     background-color: var(--secondary-color);
     color: white;
     border: none;
-    padding: 10px 24px;
+    padding: 8px 16px;
     border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: 500;
     transition: all var(--transition-normal);
-    font-size: 14px;
+    font-size: 12px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .task-action .btn:hover {
     background-color: #2980b9;
 }
 
+/* 页面标题样式 */
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.page-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        gap: 12px;
     }
     
     .stat-card {
-        padding: 20px;
+        padding: 16px;
     }
     
     .stat-value {
-        font-size: 28px;
+        font-size: 20px;
     }
     
     .task-meta {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
     }
     
     .pending-item,
     .confirmed-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
+        gap: 12px;
+        padding: 14px;
     }
     
     .task-action {
@@ -292,10 +354,111 @@ html {
         width: 100%;
         justify-content: center;
     }
+    
+    .section {
+        padding: 16px;
+    }
+    
+    .task-table {
+        font-size: 12px;
+    }
+    
+    .task-table th,
+    .task-table td {
+        padding: 10px 8px;
+    }
 }
 
 @media (max-width: 480px) {
     .stats-grid {
         grid-template-columns: 1fr;
     }
+    
+    .stat-card {
+        padding: 14px;
+    }
+    
+    .task-meta span {
+        font-size: 11px;
+    }
+    
+    .section {
+        padding: 14px;
+        margin-bottom: 16px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .view-all {
+        align-self: flex-end;
+    }
 }
+
+/* 内容区域优化 */
+.content-area {
+    padding: 20px;
+}
+/* 
+.global-footer {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-light);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.footer-card {
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-light);
+}
+
+.footer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(52, 152, 219, 0.2);
+}
+
+.footer-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin: 0;
+} */

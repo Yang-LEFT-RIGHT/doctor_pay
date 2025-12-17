@@ -1,4 +1,4 @@
-// js/notification-detail.js - 修复版（通知详情页面JavaScript）
+// js/notification-detail.js - 修复版（移除内联样式，让CSS控制）
 class NotificationDetail {
     constructor() {
         this.notificationId = null;
@@ -236,7 +236,6 @@ class NotificationDetail {
                                 </div>
                                 <div class="detail-value">张三</div>
                             </div>
-                            <!-- 删除优先级 -->
                         </div>
                     </div>
                     
@@ -246,8 +245,8 @@ class NotificationDetail {
                             工作要求
                         </h3>
                         <div class="detail-item">
-                            <div class="detail-value">
-                                <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary);">
+                            <div class="detail-value task-requirements">
+                                <ul>
                                     <li>批改每周作业（约30份）</li>
                                     <li>组织每周一次答疑课</li>
                                     <li>协助课堂管理</li>
@@ -304,8 +303,8 @@ class NotificationDetail {
                             建议措施
                         </h3>
                         <div class="detail-item">
-                            <div class="detail-value">
-                                <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary);">
+                            <div class="detail-value maintenance-suggestions">
+                                <ul>
                                     <li>请在维护开始前保存好工作进度</li>
                                     <li>维护期间请勿尝试访问系统</li>
                                     <li>维护完成后如有问题请联系技术支持</li>
@@ -361,8 +360,8 @@ class NotificationDetail {
                             过期提醒
                         </h3>
                         <div class="detail-item">
-                            <div class="detail-value">
-                                <p style="color: var(--accent-color); margin: 0;">
+                            <div class="detail-value expiration-warning">
+                                <p>
                                     <i class="fas fa-exclamation-circle"></i>
                                     此任务即将过期，请及时处理以免影响津贴发放。
                                 </p>
@@ -403,8 +402,6 @@ class NotificationDetail {
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- 删除导师评价 -->
                 `;
                 break;
                 
@@ -573,12 +570,12 @@ class NotificationDetail {
         if (!container) return;
         
         container.innerHTML = `
-            <div style="text-align: center; padding: 60px 30px;">
-                <div style="font-size: 64px; color: var(--text-light); margin-bottom: 20px;">
+            <div class="notification-not-found">
+                <div class="not-found-icon">
                     <i class="far fa-bell-slash"></i>
                 </div>
-                <h2 style="color: var(--text-secondary); margin-bottom: 15px;">通知未找到</h2>
-                <p style="color: var(--text-light); margin-bottom: 30px;">
+                <h2 class="not-found-title">通知未找到</h2>
+                <p class="not-found-message">
                     您要查看的通知可能已被删除或不存在。
                 </p>
                 <a href="notification-center.html" class="btn-primary">

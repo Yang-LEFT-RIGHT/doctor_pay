@@ -16,7 +16,7 @@
 }
 
 .page-title {
-    font-size: 24px;
+    font-size: 22px; /* 统一页面主标题为22px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -24,7 +24,7 @@
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一副标题为13px */
 }
 
 .header-actions {
@@ -45,7 +45,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     white-space: nowrap;
     min-height: 40px;
 }
@@ -94,7 +94,7 @@
 .stat-card {
     background-color: var(--bg-primary);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 18px; /* 调整内边距 */
     border: 1px solid var(--border-light);
     display: flex;
     align-items: center;
@@ -109,15 +109,15 @@
 }
 
 .stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 42px; /* 调整大小 */
+    height: 42px;
+    border-radius: 10px; /* 调整圆角 */
     background: linear-gradient(135deg, #3498db, #2980b9);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 20px;
+    font-size: 18px; /* 调整图标大小 */
     flex-shrink: 0;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 24px; /* 调整为24px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 4px;
@@ -134,7 +134,7 @@
 }
 
 .stat-label {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     font-weight: 500;
 }
@@ -169,7 +169,7 @@
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px; /* 统一表单文字为13px */
     transition: all var(--transition-fast);
 }
 
@@ -184,7 +184,7 @@
     position: absolute;
     left: 15px;
     color: var(--text-light);
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .search-clear {
@@ -194,7 +194,7 @@
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     transition: color var(--transition-fast);
     display: flex;
     align-items: center;
@@ -213,6 +213,10 @@
 .filter-actions {
     display: flex;
     gap: 12px;
+}
+
+.filter-actions button {
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 /* 筛选条件区域 */
@@ -243,7 +247,7 @@
 }
 
 .filter-label {
-    font-size: 13px;
+    font-size: 12px; /* 统一表单标签为12px */
     color: var(--text-secondary);
     font-weight: 500;
 }
@@ -256,7 +260,7 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px; /* 统一表单文字为13px */
     transition: border-color var(--transition-fast);
 }
 
@@ -271,6 +275,10 @@
     gap: 12px;
     padding-top: 15px;
     border-top: 1px solid var(--border-light);
+}
+
+.filter-actions button {
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 /* 博士生列表区域 */
@@ -298,14 +306,14 @@
 }
 
 .section-title {
-    font-size: 16px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
 }
 
 .students-count {
-    font-size: 14px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -335,6 +343,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 .view-btn:hover {
@@ -373,7 +382,7 @@
     font-weight: 600;
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-light);
-    font-size: 13px;
+    font-size: 12px; /* 统一表格标题为12px */
     white-space: nowrap;
 }
 
@@ -389,7 +398,7 @@
 .students-table td {
     padding: 15px;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px; /* 统一表格内容为13px */
     vertical-align: middle;
 }
 
@@ -427,14 +436,14 @@
 }
 
 .student-avatar {
-    width: 48px;
-    height: 48px;
+    width: 42px; /* 调整大小 */
+    height: 42px;
     border-radius: 50%;
     background-color: var(--bg-tertiary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px; /* 调整字体大小 */
     font-weight: 600;
     color: var(--text-primary);
     border: 2px solid var(--border-light);
@@ -446,7 +455,7 @@
 }
 
 .student-name {
-    font-size: 15px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 3px;
@@ -456,7 +465,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    font-size: 12px;
+    font-size: 12px; /* 统一辅助文字为12px */
     color: var(--text-secondary);
 }
 
@@ -477,13 +486,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .contact-item i {
     color: var(--text-light);
-    width: 16px;
+    width: 14px; /* 调整宽度 */
     text-align: center;
+    font-size: 12px; /* 统一辅助文字为12px */
 }
 
 /* 状态徽章 */
@@ -491,7 +501,7 @@
     display: inline-block;
     padding: 4px 10px;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 11px; /* 统一状态标签为11px-12px */
     font-weight: 600;
     text-align: center;
     min-width: 60px;
@@ -528,7 +538,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .task-stat-label {
@@ -553,8 +563,8 @@
 }
 
 .action-btn {
-    width: 32px;
-    height: 32px;
+    width: 30px; /* 调整大小 */
+    height: 30px;
     border-radius: 6px;
     border: none;
     display: flex;
@@ -562,7 +572,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 13px;
+    font-size: 12px; /* 统一按钮文字为12px-13px */
     background-color: var(--bg-tertiary);
     color: var(--text-secondary);
 }
@@ -605,7 +615,7 @@
 }
 
 .pagination-info {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -627,7 +637,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 12px;
+    font-size: 11px; /* 统一辅助文字为11px */
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -659,7 +669,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-fast);
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
 }
 
 .page-number:hover {
@@ -676,7 +686,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
 }
 
@@ -687,7 +697,7 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     min-width: 80px;
 }
 
@@ -707,7 +717,7 @@
     background-color: var(--bg-primary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
-    padding: 20px;
+    padding: 18px; /* 调整内边距 */
     transition: all var(--transition-normal);
 }
 
@@ -725,14 +735,14 @@
 }
 
 .student-card-avatar {
-    width: 60px;
-    height: 60px;
+    width: 56px; /* 调整大小 */
+    height: 56px;
     border-radius: 50%;
     background-color: var(--bg-tertiary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px; /* 调整字体大小 */
     font-weight: 600;
     color: var(--text-primary);
     border: 2px solid var(--border-light);
@@ -740,14 +750,14 @@
 }
 
 .student-card-info h4 {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 5px;
 }
 
 .student-card-meta {
-    font-size: 13px;
+    font-size: 13px; /* 统一次要内容为13px */
     color: var(--text-secondary);
     display: flex;
     flex-direction: column;
@@ -773,14 +783,14 @@
 }
 
 .stat-value {
-    font-size: 16px;
+    font-size: 14px; /* 统一主要内容为14px */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 3px;
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 12px; /* 统一辅助文字为12px */
     color: var(--text-secondary);
 }
 
@@ -792,29 +802,35 @@
     border-top: 1px solid var(--border-light);
 }
 
+.student-card-actions .action-btn {
+    width: 28px; /* 调整大小 */
+    height: 28px;
+    font-size: 11px; /* 统一辅助文字为11px */
+}
+
 /* 空状态 */
 .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 50px 20px; /* 调整内边距 */
     color: var(--text-secondary);
 }
 
 .empty-icon {
-    font-size: 64px;
+    font-size: 48px; /* 调整图标大小 */
     color: var(--border-light);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     opacity: 0.5;
 }
 
 .empty-state h3 {
-    font-size: 20px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     margin-bottom: 10px;
     color: var(--text-secondary);
 }
 
 .empty-state p {
-    font-size: 15px;
+    font-size: 13px; /* 统一次要内容为13px */
     max-width: 400px;
     margin: 0 auto 20px;
 }
@@ -857,7 +873,7 @@
 }
 
 .modal-title {
-    font-size: 18px;
+    font-size: 16px; /* 统一区块标题为16px */
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
@@ -868,9 +884,9 @@
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    font-size: 18px;
-    width: 32px;
-    height: 32px;
+    font-size: 16px; /* 调整图标大小 */
+    width: 30px; /* 调整大小 */
+    height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -901,7 +917,7 @@
 }
 
 .form-group label {
-    font-size: 13px;
+    font-size: 12px; /* 统一表单标签为12px */
     color: var(--text-secondary);
     font-weight: 500;
 }
@@ -914,7 +930,7 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px; /* 统一表单文字为13px */
     transition: border-color var(--transition-fast);
 }
 
@@ -930,6 +946,10 @@
     gap: 12px;
     padding-top: 20px;
     border-top: 1px solid var(--border-light);
+}
+
+.form-actions button {
+    font-size: 12px; /* 统一按钮文字为12px-13px */
 }
 
 /* 响应式设计 */
@@ -1034,5 +1054,9 @@
     
     .form-actions button {
         width: 100%;
+    }
+    
+    .page-title {
+        font-size: 20px; /* 在小屏幕时调整为20px */
     }
 }

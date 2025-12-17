@@ -1,6 +1,8 @@
 package com.paper.BBM;
 
 import com.paper.DBM.MySQLHelper;
+import com.paper.Entity.Applications;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +51,11 @@ public class TaskManager {
         }
     
         return tasks;
+    }
+    public void addTaskApplication(Applications application) throws SQLException{
+        String sql = "INSERT INTO applications (job_id, student_id, status, confirmed_with_teacher) VALUES (?, ?, ?, ?)";
+        Object[] params = { application.getJob_id(), application.getStudent_id(), application.getStatus(), application.getConfirmed_with_teacher() };
+        mysqlhelper.executeSQL(sql, params);
     }
     public void close() {
         if (mysqlhelper != null) {
